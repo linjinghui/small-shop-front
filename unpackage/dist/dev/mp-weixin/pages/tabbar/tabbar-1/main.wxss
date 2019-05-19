@@ -1,0 +1,196 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.content {
+  overflow: hidden;
+}
+.header {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  border-bottom: solid 1px #f0f0f0;
+}
+.header > ._li {
+    position: relative;
+    float: left;
+    width: 33.33%;
+    text-align: center;
+}
+.header > ._li .wrap-icon {
+      position: relative;
+      display: inline-block;
+      width: 20px;
+      height: 100%;
+      vertical-align: middle;
+}
+.header > ._li .wrap-icon > .icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+}
+.header > ._li .wrap-icon .tick {
+        top: -2px;
+        left: -6px;
+}
+.header > ._li .wrap-icon .arrowup {
+        top: 2px;
+}
+.header > ._li .wrap-icon .arrowdown {
+        top: 10px;
+}
+.header > ._li.active {
+    color: #029c45;
+}
+.main {
+  height: calc(100% - 30px - 60px - 1px);
+}
+.main > .scroll-Y {
+    height: 100%;
+}
+.main .item {
+    position: relative;
+    padding-top: 10px;
+    height: 140px;
+}
+.main .item > .wrap-left {
+      position: relative;
+      float: left;
+      width: 100px;
+      height: 100%;
+}
+.main .item > .wrap-left > image {
+        position: absolute;
+        top: -10px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        width: 80px;
+        height: 80px;
+        will-change: transform;
+}
+.main .item > .wrap-right {
+      float: left;
+      padding-right: 10px;
+      width: calc(100% - 100px - 10px);
+      height: 100%;
+      line-height: 30px;
+}
+.main .item > .wrap-right > .name {
+        white-space: nowrap;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 18px;
+}
+.main .item > .wrap-right > .desc {
+        white-space: nowrap;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        overflow: hidden;
+        color: #aaa;
+}
+.main .item > .wrap-right .label {
+        margin-right: 5px;
+        padding: 2px 8px;
+        border-radius: 2px;
+}
+.main .item > .wrap-right .unit {
+        padding: 2px 8px;
+        border-radius: 2px;
+        color: #666;
+        background-color: #f6f6f6;
+}
+.main .item > .wrap-right .price {
+        display: inline-block;
+        margin-top: 5px;
+        margin-right: 5px;
+        color: #ff9000;
+        font-size: 18px;
+}
+.main .item > .wrap-right .price.del {
+        font-size: unset;
+        color: #aaa;
+        text-decoration: line-through;
+}
+.main .item .icon.add {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+}
+.main .item:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: calc(100% - 20px);
+    height: 1px;
+    background-color: #f0f0f0;
+}
+.footer {
+  position: relative;
+  padding-left: 10px;
+  height: 60px;
+  line-height: 60px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #333;
+}
+.footer > image {
+    display: inline-block;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+.footer > .total {
+    float: right;
+    padding: 0 10px;
+    font-size: 18px;
+}
+.footer > button {
+    float: right;
+    width: 32%;
+    height: 100%;
+    line-height: inherit;
+    border-radius: 0;
+    color: inherit;
+    background-color: #ff9000;
+}
+.footer > button:after {
+    border: 0;
+    border-radius: 0;
+}
+.footer > button:active {
+    background-color: #ff8000;
+}
+

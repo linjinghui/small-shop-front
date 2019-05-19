@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*每个页面公共css */
+page,
+view {
+	height: 100%;
+	font-size: 14px;
+}
+._p {
+	height: unset;
+}
+._ul {
+	list-style: none;
+}
+.price:before {
+	content: '\FFE5';
+	font-size: 14px;
+	color: inheirt;
+}
+.icon:active {
+	opacity: 0.8;
+}
+
