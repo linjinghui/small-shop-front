@@ -139,10 +139,10 @@
         color: #aaa;
         text-decoration: line-through;
 }
-.main .item .icon.add {
+.main .item .wrap-btn-bug {
       position: absolute;
       right: 10px;
-      bottom: 10px;
+      bottom: 14px;
 }
 .main .item:after {
     content: '';

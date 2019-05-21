@@ -102,11 +102,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/uni-icon/uni-icon":1};
+/******/ 		var cssChunks = {"components/uni-bug-btn/uni-bug-btn":1,"components/uni-icon/uni-icon":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/uni-icon/uni-icon":"components/uni-icon/uni-icon"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/uni-bug-btn/uni-bug-btn":"components/uni-bug-btn/uni-bug-btn","components/uni-icon/uni-icon":"components/uni-icon/uni-icon"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

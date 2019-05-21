@@ -22,7 +22,7 @@
 		</ul>
 		<view class="main">
 			<scroll-view class="scroll-Y" :scroll-top="scrollTop" scroll-y="true">
-                <view class="item" v-for="(info,index) in goods" :key="'item'+index">
+                <view class="item" v-for="(info,index) in goods" :key="info.id">
 					<view class="wrap-left">
 						<image lazy-load="true" :src="info.pic" @error="eventImageError(index)"></image>
 					</view>
@@ -30,7 +30,7 @@
 						<p class="name">{{info.name}}</p>
 						<p class="desc">{{info.desc}}</p>
 						<p class="wrap-unit">
-							<span class="label" :style="{color:info.label.color,backgroundColor:info.label.bcolor}">{{info.label.text}}</span>
+							<span class="label" v-if="info.label" :style="{color:info.label.color,backgroundColor:info.label.bcolor}">{{info.label.text}}</span>
 							<span class="unit">{{info.unit}}</span>
 						</p>
 						<p class="wrap-price">
@@ -38,24 +38,29 @@
 							<span class="price del" v-if="info.rebate<10">{{info.price}}</span>
 						</p>						
 					</view>
-					<uni-icon class="icon add" type="plus-filled" color="#029c45" size="30" @click="clkChoose(index)" />
+					<bug-btn class="wrap-btn-bug" :max="info.stock" @click="clkChoose($event,index)"/>
 				</view>
 			</scroll-view>
 		</view>
 		<view class="footer">
-			<image src="http://img2.imgtn.bdimg.com/it/u=1122649470,955539824&fm=26&gp=0.jpg"></image>
+			<image :src="user.avatarUrl" @click="clkImage"></image>
 			已选 ({{totalCount}})
-			<button>去下单</button>
+			<button ref:vref open-type="getUserInfo" @getuserinfo="getUserInfo">去预定</button>
 			<p class="price total">{{total}}</p>
 		</view>
 	</view>
 </template>
 
 <script>
-import uniIcon from '@/components/uni-icon/uni-icon.vue'
+import uniIcon from '@/components/uni-icon/uni-icon.vue';
+import bugBtn from '@/components/uni-bug-btn/uni-bug-btn.vue';
+import {mapState} from 'vuex';
+import {ajaxGetGoods} from '@/data/ajax.js';
+import {getClientUser, turnPage} from '@/common/global.js';
 export default {
 	components: {
-		uniIcon
+		uniIcon,
+		bugBtn
 	},
 	data() {
 		return {
@@ -70,21 +75,11 @@ export default {
 			// 选中的商品
 			chooses: [],
 			// 商品列表
-			goods: [
-				{id: 1, pic: 'https://paimgcdn.baidu.com/5918F7129600ED58?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F2322278189.jpg&rz=urar_2_968_600&v=0', name: '台湾莲雾123', desc: '满足高要求的你 香芋清甜 脆嫩多汁', unit: '1kg-1.5kg/个', price: 11.5, rebate: 9.5, stock: 12, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 2, pic: 'https://paimgcdn.baidu.com/5918F7129600ED58?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F2322278189.jpg&rz=urar_2_968_600&v=0', name: '金芒果', desc: '香味荣誉 微黄/微绿可食用', unit: '1kg-1.5kg/个', price: 12.5, rebate: 9, stock: 112, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 3, pic: 'https://paimgcdn.baidu.com/8B6D975CBE27E68B?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F1415181851.jpg&rz=urar_2_968_600&v=0', name: '台湾莲雾', desc: '满足高要求的你 香芋清甜 脆嫩多汁', unit: '1kg-1.5kg/个', price: 9.5, rebate: 8.5, stock: 2, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 4, pic: 'https://paimgcdn.baidu.com/5918F7129600ED58?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F2322278189.jpg&rz=urar_2_968_600&v=0', name: '金芒果', desc: '香味荣誉 微黄/微绿可食用', unit: '1kg-1.5kg/个', price: 13.5, rebate: 8, stock: 22, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 5, pic: 'https://paimgcdn.baidu.com/8B6D975CBE27E68B?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F1415181851.jpg&rz=urar_2_968_600&v=0', name: '台湾莲雾', desc: '满足高要求的你 香芋清甜 脆嫩多汁', unit: '1kg-1.5kg/个', price: 8.5, rebate: 7.5, stock: 13, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 6, pic: 'https://paimgcdn.baidu.com/5918F7129600ED58?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F2322278189.jpg&rz=urar_2_968_600&v=0', name: '金芒果', desc: '香味荣誉 微黄/微绿可食用', unit: '1kg-1.5kg/个', price: 14.5, rebate: 8, stock: 14, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 7, pic: 'https://paimgcdn.baidu.com/8B6D975CBE27E68B?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F1415181851.jpg&rz=urar_2_968_600&v=0', name: '台湾莲雾', desc: '满足高要求的你 香芋清甜 脆嫩多汁', unit: '1kg-1.5kg/个', price: 6.5, rebate: 9.5, stock: 15, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 8, pic: 'https://paimgcdn.baidu.com/5918F7129600ED58?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F2322278189.jpg&rz=urar_2_968_600&v=0', name: '金芒果', desc: '香味荣誉 微黄/微绿可食用', unit: '1kg-1.5kg/个', price: 15.5, rebate: 10, stock: 19, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 9, pic: 'https://paimgcdn.baidu.com/8B6D975CBE27E68B?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F1415181851.jpg&rz=urar_2_968_600&v=0', name: '台湾莲雾', desc: '满足高要求的你 香芋清甜 脆嫩多汁', unit: '1kg-1.5kg/个', price: 5.5, rebate: 9, stock: 32, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }},
-				{id: 10, pic: 'https://paimgcdn.baidu.com/5918F7129600ED58?src=http%3A%2F%2Fms.bdimg.com%2Fdsp-image%2F2322278189.jpg&rz=urar_2_968_600&v=0', name: '金芒果', desc: '香味荣誉 微黄/微绿可食用', unit: '1kg-1.5kg/个', price: 16.5, rebate: 5, stock: 33, label: { text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }}
-			]
+			goods: []
 		};
 	},
 	computed: {
+		...mapState(['user']),
 		total () {
 			let result = 0;
 			for (let i = 0;i < this.chooses.length;i++) {
@@ -103,8 +98,17 @@ export default {
 			return result;
 		}
 	},
-	onLoad() {},
+	onLoad() {
+		let _this = this;
+		let result = ajaxGetGoods('', function (data) {
+			_this.goods = data.result;
+		});
+		getClientUser(function (userInfo) {
+			_this.$store.commit('setUser', userInfo);
+		});
+	},
 	methods: {
+		// 顶部排序导航点击
 		clkNav (index) {
 			let dire = this.active.dire === 'up' ? 'down' : 'up';
 			this.$set(this.active, 'index', index);
@@ -126,15 +130,19 @@ export default {
 			});
 		},
 		// 选中商品
-		clkChoose (index) {
-			let good = this.goods[index];
-			let _good = this.utlGetGoodFromChoose(good);
-			if (_good) {
-				this.$set(_good, 'count', (_good.count || 1) + 1);
+		clkChoose (e, index) {
+			if (e.error) {
+				uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
 			} else {
-				this.chooses.push(good);
+				let good = this.goods[index];
+				let _good = this.utlGetGoodFromChoose(good);
+				if (_good) {
+					this.$set(_good, 'count', e.num);
+				} else {
+					this.chooses.push(good);
+				}
+				uni.showToast({title: '添加成功', icon: 'none', position: 'center'});
 			}
-			uni.showToast({title: '添加成功', icon: 'none', position: 'center'});
 		},
 		// 获取选中商品在已添加商品中的信息
 		utlGetGoodFromChoose (good) {
@@ -158,10 +166,8 @@ export default {
 			let good = this.goods[index];
 			this.$set(good, 'pic', this.defGoodPic);
 		},
-		clkConfirm () {
-			uni.navigateTo({
-				url: '/pages/untabbar/car/main'
-			});
+		clkImage () {
+			turnPage('my');
 		}
 	}
 };
@@ -290,10 +296,10 @@ export default {
 			}
 		}
 		
-		.icon.add {
+		.wrap-btn-bug {
 			position: absolute;
 			right: 10px;
-			bottom: 10px;
+			bottom: 14px;
 		}
 		
 	}

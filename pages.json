@@ -12,11 +12,15 @@
 		{
 			"path": "pages/untabbar/car/main",
 			"style": {}
+		},
+		{
+			"path": "pages/untabbar/my/main",
+			"style": {}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "快又鲜海",
+		"navigationBarTitleText": "快鱼鲜活",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

@@ -2,12 +2,13 @@
   "pages": [
     "pages/tabbar/tabbar-1/main",
     "pages/tabbar/tabbar-2/main",
-    "pages/untabbar/car/main"
+    "pages/untabbar/car/main",
+    "pages/untabbar/my/main"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "快又鲜海",
+    "navigationBarTitleText": "快鱼鲜活",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
