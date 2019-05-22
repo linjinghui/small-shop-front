@@ -1,22 +1,32 @@
 {
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		// 首页
 		{
 			"path": "pages/tabbar/tabbar-1/main",
 			"style": {}
 		},
+		// 
 		{
 			"path": "pages/tabbar/tabbar-2/main",
 			"style": {}
 		},
+		// 购物车
 		{
 			"path": "pages/untabbar/car/main",
 			"style": {}
 		},
+		// 我的
 		{
 			"path": "pages/untabbar/my/main",
 			"style": {}
+		},
+		// 详情页
+		{
+			"path": "pages/untabbar/detail/main",
+			"style": {}
 		}
+		
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

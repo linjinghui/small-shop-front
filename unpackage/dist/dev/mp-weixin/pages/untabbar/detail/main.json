@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "uni-iconfont": "/components/uni-iconfont/uni-icon",
+    "uni-swiper-dot": "/components/uni-swiper-dot/uni-swiper-dot"
+  }
+}

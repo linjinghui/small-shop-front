@@ -128,16 +128,7 @@
         background-color: #f6f6f6;
 }
 .main .item > .wrap-right .price {
-        display: inline-block;
         margin-top: 5px;
-        margin-right: 5px;
-        color: #ff9000;
-        font-size: 18px;
-}
-.main .item > .wrap-right .price.del {
-        font-size: unset;
-        color: #aaa;
-        text-decoration: line-through;
 }
 .main .item .wrap-btn-bug {
       position: absolute;

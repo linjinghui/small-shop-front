@@ -3,7 +3,8 @@
     "pages/tabbar/tabbar-1/main",
     "pages/tabbar/tabbar-2/main",
     "pages/untabbar/car/main",
-    "pages/untabbar/my/main"
+    "pages/untabbar/my/main",
+    "pages/untabbar/detail/main"
   ],
   "subPackages": [],
   "window": {

@@ -16,7 +16,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import '@/common/global.scss';
 .content {
 	text-align: center;
 	height: 400upx;

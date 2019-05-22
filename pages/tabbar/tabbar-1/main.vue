@@ -23,10 +23,10 @@
 		<view class="main">
 			<scroll-view class="scroll-Y" :scroll-top="scrollTop" scroll-y="true">
                 <view class="item" v-for="(info,index) in goods" :key="info.id">
-					<view class="wrap-left">
+					<view class="wrap-left" @click="clkLine(info)">
 						<image lazy-load="true" :src="info.pic" @error="eventImageError(index)"></image>
 					</view>
-					<view class="wrap-right">
+					<view class="wrap-right" @click="clkLine(info)">
 						<p class="name">{{info.name}}</p>
 						<p class="desc">{{info.desc}}</p>
 						<p class="wrap-unit">
@@ -45,7 +45,7 @@
 		<view class="footer">
 			<image :src="user.avatarUrl" @click="clkImage"></image>
 			已选 ({{ftdata.count}})
-			<button ref:vref open-type="getUserInfo" @getuserinfo="getUserInfo">去预定</button>
+			<button @click="clkConfirm">去预定</button>
 			<p class="price total">{{ftdata.total}}</p>
 		</view>
 	</view>
@@ -124,6 +124,10 @@ export default {
 				return result;
 			});
 		},
+		clkLine (good) {
+			console.log(good);
+			turnPage('detail');
+		},
 		// 选中商品
 		clkChoose (e, index) {
 			if (e.error) {
@@ -141,6 +145,16 @@ export default {
 				if (e.num === 0 && _index >= 0) {
 					this.chooses.splice(_index, 1);
 				}
+			}
+		},
+		clkImage () {
+			turnPage('my');
+		},
+		clkConfirm () {
+			if (this.chooses.length === 0) {
+				uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});
+			} else {
+				turnPage('car');
 			}
 		},
 		// 获取选中商品在已添加商品中的信息
@@ -167,15 +181,13 @@ export default {
 		eventImageError (index) {
 			let good = this.goods[index];
 			this.$set(good, 'pic', this.defGoodPic);
-		},
-		clkImage () {
-			turnPage('my');
 		}
 	}
 };
 </script>
 
 <style lang="scss">
+@import '@/common/global.scss';
 .content {
 	overflow: hidden;
 }
@@ -183,7 +195,7 @@ export default {
 	width: 100%;
 	height: 30px;
 	line-height: 30px;
-	border-bottom: solid 1px #f0f0f0;
+	border-bottom: solid 1px $border-color;
 	
 	> li {
 		position: relative;
@@ -220,7 +232,7 @@ export default {
 		}
 	}
 	> li.active {
-		color: #029c45;
+		color: $theme;
 	}
 }
 
@@ -285,16 +297,7 @@ export default {
 				background-color: #f6f6f6;
 			}
 			.price {
-				display: inline-block;
 				margin-top: 5px;
-				margin-right: 5px;
-				color: #ff9000;
-				font-size: 18px;
-			}
-			.price.del {
-				font-size: unset;
-				color: #aaa;
-				text-decoration: line-through;
 			}
 		}
 		
@@ -314,7 +317,7 @@ export default {
 		margin: auto;
 		width: calc(100% - 20px);
 		height: 1px;
-		background-color: #f0f0f0;
+		background-color: $border-color;
 	}
 }
 
@@ -349,7 +352,7 @@ export default {
 		line-height: inherit;
 		border-radius: 0;
 		color: inherit;
-		background-color: #ff9000;
+		background-color: $theme-2;
 	}
 	> button:after {
 		border: 0;

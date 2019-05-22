@@ -134,6 +134,10 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
         return result;
       });
     },
+    clkLine: function clkLine(good) {
+      console.log(good);
+      (0, _global.turnPage)('detail');
+    },
     // 选中商品
     clkChoose: function clkChoose(e, index) {
       if (e.error) {
@@ -151,6 +155,16 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
         if (e.num === 0 && _index >= 0) {
           this.chooses.splice(_index, 1);
         }
+      }
+    },
+    clkImage: function clkImage() {
+      (0, _global.turnPage)('my');
+    },
+    clkConfirm: function clkConfirm() {
+      if (this.chooses.length === 0) {
+        uni.showToast({ title: '请先选择商品', icon: 'none', position: 'bottom' });
+      } else {
+        (0, _global.turnPage)('car');
       }
     },
     // 获取选中商品在已添加商品中的信息
@@ -177,9 +191,6 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
     eventImageError: function eventImageError(index) {
       var good = this.goods[index];
       this.$set(good, 'pic', this.defGoodPic);
-    },
-    clkImage: function clkImage() {
-      (0, _global.turnPage)('my');
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

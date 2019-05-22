@@ -33,6 +33,9 @@ const turnPage = (type) => {
 		case 'car':
 			url = '/pages/untabbar/car/main';
 			break;
+		case 'detail':
+			url = '/pages/untabbar/detail/main';
+			break;
 		default:
 			url = '/pages/untabbar/my/main';
 			break;
