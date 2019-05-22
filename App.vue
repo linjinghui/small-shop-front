@@ -49,4 +49,10 @@ export default {
 	.icon:active {
 		opacity: 0.8;
 	}
+	
+	.uni-list:before,
+	.uni-list:after,
+	.uni-list-item__container:after {
+		background-color: #f0f0f0!important;
+	}
 </style>

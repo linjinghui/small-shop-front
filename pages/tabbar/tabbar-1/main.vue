@@ -34,7 +34,7 @@
 							<span class="unit">{{info.unit}}</span>
 						</p>
 						<p class="wrap-price">
-							<span class="price">{{utlRealPrice(index)}}</span>
+							<span class="price">{{utlRealPrice(info)}}</span>
 							<span class="price del" v-if="info.rebate<10">{{info.price}}</span>
 						</p>						
 					</view>
@@ -44,9 +44,9 @@
 		</view>
 		<view class="footer">
 			<image :src="user.avatarUrl" @click="clkImage"></image>
-			已选 ({{totalCount}})
+			已选 ({{ftdata.count}})
 			<button ref:vref open-type="getUserInfo" @getuserinfo="getUserInfo">去预定</button>
-			<p class="price total">{{total}}</p>
+			<p class="price total">{{ftdata.total}}</p>
 		</view>
 	</view>
 </template>
@@ -80,22 +80,17 @@ export default {
 	},
 	computed: {
 		...mapState(['user']),
-		total () {
-			let result = 0;
+		ftdata () {
+			let count = 0;
+			let total = 0;
 			for (let i = 0;i < this.chooses.length;i++) {
-				let count = this.chooses[i].count || 1;
-				let price = this.chooses[i].price;
-				result += parseFloat(price) * parseFloat(count);
+				let _good = this.chooses[i];
+				let _count = _good.count;
+				let _rprice = this.utlRealPrice(_good);
+				count += _count;
+				total += _rprice * _count;
 			}
-			return parseFloat(result).toFixed(2);
-		},
-		totalCount () {
-			let result = 0;
-			for (let i = 0;i < this.chooses.length;i++) {
-				let count = this.chooses[i].count || 1;
-				result += parseInt(count);
-			}
-			return result;
+			return {count, total: total.toFixed(2)};
 		}
 	},
 	onLoad() {
@@ -134,33 +129,40 @@ export default {
 			if (e.error) {
 				uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
 			} else {
-				let good = this.goods[index];
-				let _good = this.utlGetGoodFromChoose(good);
-				if (_good) {
-					this.$set(_good, 'count', e.num);
-				} else {
-					this.chooses.push(good);
+				let good = JSON.parse(JSON.stringify(this.goods[index]));
+				let obj = this.utlGetGoodFromChoose(good);
+				let _good = obj.info;
+				let _index = obj.index;
+				if (!_good) {
+					_good = good;
+					this.chooses.push(_good);
 				}
-				uni.showToast({title: '添加成功', icon: 'none', position: 'center'});
+				this.$set(_good, 'count', e.num);
+				if (e.num === 0 && _index >= 0) {
+					this.chooses.splice(_index, 1);
+				}
 			}
 		},
 		// 获取选中商品在已添加商品中的信息
 		utlGetGoodFromChoose (good) {
 			let result = '';
+			let index = '';
 			for (let i = 0;i < this.chooses.length;i++) {
 				let _good = this.chooses[i];
 				if (_good.id === good.id && _good.name === good.name) {
+					index = i;
 					result = _good;
 					break;
 				}
 			}
-			return result;
+			return {
+				info: result,
+				index: index
+			};
 		},
 		// 计算折扣后的真实价格
-		utlRealPrice (index) {
-			let good = this.goods[index];
-			let _price = good.price * good.rebate / 10;
-			return _price.toFixed(2);
+		utlRealPrice (good) {
+			return (good.price * good.rebate / 10).toFixed(2);
 		},
 		eventImageError (index) {
 			let good = this.goods[index];

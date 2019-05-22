@@ -90,22 +90,17 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
   },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['user']), {
-    total: function total() {
-      var result = 0;
+    ftdata: function ftdata() {
+      var count = 0;
+      var total = 0;
       for (var i = 0; i < this.chooses.length; i++) {
-        var count = this.chooses[i].count || 1;
-        var price = this.chooses[i].price;
-        result += parseFloat(price) * parseFloat(count);
+        var _good = this.chooses[i];
+        var _count = _good.count;
+        var _rprice = this.utlRealPrice(_good);
+        count += _count;
+        total += _rprice * _count;
       }
-      return parseFloat(result).toFixed(2);
-    },
-    totalCount: function totalCount() {
-      var result = 0;
-      for (var i = 0; i < this.chooses.length; i++) {
-        var count = this.chooses[i].count || 1;
-        result += parseInt(count);
-      }
-      return result;
+      return { count: count, total: total.toFixed(2) };
     } }),
 
   onLoad: function onLoad() {
@@ -144,33 +139,40 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
       if (e.error) {
         uni.showToast({ title: '无法购买更多', icon: 'none', position: 'bottom' });
       } else {
-        var good = this.goods[index];
-        var _good = this.utlGetGoodFromChoose(good);
-        if (_good) {
-          this.$set(_good, 'count', e.num);
-        } else {
-          this.chooses.push(good);
+        var good = JSON.parse(JSON.stringify(this.goods[index]));
+        var obj = this.utlGetGoodFromChoose(good);
+        var _good = obj.info;
+        var _index = obj.index;
+        if (!_good) {
+          _good = good;
+          this.chooses.push(_good);
         }
-        uni.showToast({ title: '添加成功', icon: 'none', position: 'center' });
+        this.$set(_good, 'count', e.num);
+        if (e.num === 0 && _index >= 0) {
+          this.chooses.splice(_index, 1);
+        }
       }
     },
     // 获取选中商品在已添加商品中的信息
     utlGetGoodFromChoose: function utlGetGoodFromChoose(good) {
       var result = '';
+      var index = '';
       for (var i = 0; i < this.chooses.length; i++) {
         var _good = this.chooses[i];
         if (_good.id === good.id && _good.name === good.name) {
+          index = i;
           result = _good;
           break;
         }
       }
-      return result;
+      return {
+        info: result,
+        index: index };
+
     },
     // 计算折扣后的真实价格
-    utlRealPrice: function utlRealPrice(index) {
-      var good = this.goods[index];
-      var _price = good.price * good.rebate / 10;
-      return _price.toFixed(2);
+    utlRealPrice: function utlRealPrice(good) {
+      return (good.price * good.rebate / 10).toFixed(2);
     },
     eventImageError: function eventImageError(index) {
       var good = this.goods[index];
@@ -210,7 +212,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   var l0 = _vm.goods.map(function(info, index) {
-    var m0 = _vm.utlRealPrice(index)
+    var m0 = _vm.utlRealPrice(info)
     return {
       $orig: _vm.__get_orig(info),
       m0: m0
