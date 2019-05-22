@@ -1,11 +1,10 @@
 <template>
-	<view class="content">
+	<view class="content" v-if="goodInfo.id">
 		<view class="wrap-good">
 			<view class="wrap-swiper">
-				<!-- mode: long indexes nav -->
-				<uni-swiper-dot :info="info" :current="current" mode="long" :dots-styles="dotsStyles">
+				<uni-swiper-dot :info="covers" :current="current" mode="long" :dots-styles="dotsStyles">
 					<swiper class="swiper-box" @change="change">
-						<swiper-item v-for="(item ,index) in info" :key="index">
+						<swiper-item v-for="(item ,index) in covers" :key="index">
 							<view :class="item.colorClass" class="swiper-item">
 								<image :src="item.url" mode="aspectFill" />
 							</view>
@@ -13,23 +12,36 @@
 					</swiper>
 				</uni-swiper-dot>
 			</view>
-			<p class="name">净贝美国钳(活)</p>
-			<p class="desc">请保险存储 使用前清洗即可</p>
+			<p class="name">{{goodInfo.name}}</p>
+			<p class="desc">{{goodInfo.desc}}</p>
 			<p class="wrap-price">
-				<span class="price">3.98</span>
-				<span class="price del">5.5</span>
+				<span class="price">{{utlRealPrice(goodInfo)}}</span>
+				<span class="price del" v-if="goodInfo.rebate<10">{{goodInfo.price}}</span>
 			</p>
 			<view class="wrap-labels">
-				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="gwd" />约350g/份</view>
-				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="shdd3" />广东湛江</view>
+				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="gwd" />{{goodInfo.unit}}</view>
+				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="shdd3" />{{goodInfo.pplace}}</view>
 			</view>
 		</view>
-		<view class="wrap-recommend">
+		<view class="wrap-recommend" v-if="recommends.length>0">
 			<view class="title"><span>推荐商品</span></view>
+			<view class="uni-product-list">
+				<view class="uni-product" v-for="(good,index) in recommends" :key="good.id">
+					<view class="image-view">
+						<image class="uni-product-image" :src="good.pic"></image>
+					</view>
+					<view class="uni-product-title">{{good.name}}</view>
+					<view class="uni-product-price">
+						<text class="price">{{utlRealPrice(good)}}</text>
+						<text class="price del">{{good.price}}</text>
+						<text class="uni-product-tip" v-if="good.label" :style="{color:good.label.color,backgroundColor:good.label.bcolor}">{{good.label.text}}</text>
+					</view>
+				</view>
+			</view>
 		</view>
-		<view class="wrap-detail">
+		<view class="wrap-detail" v-if="goodInfo.dtlpics.length>0">
 			<view class="title"><span>商品详情</span></view>
-			<image :lazy-load="true" mode="widthFix" src="http://wx1.sinaimg.cn/orj360/c213c57bgy1g2b5vcamhgj20rs8j7b2d.jpg"></image>
+			<image :lazy-load="true" mode="widthFix" v-for="item in goodInfo.dtlpics" :key="item" :src="item"></image>
 		</view>
 		<view class="wrap-placehold"></view>
 		<footer>
@@ -43,6 +55,9 @@
 	import {mapState} from 'vuex';
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
 	import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue'
+	import {countRealPrice} from '@/common/global.js'
+	import {ajaxGetGoodInfo, ajaxGetRecommendGoods} from '@/data/ajax.js'
+	
 	export default {
 		components: {
 			uniIconfont,
@@ -54,22 +69,9 @@
 		data () {
 			return {
 				current: 0,
-				info: [
-					{
-						colorClass: 'uni-bg-red',
-						url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg',
-						content: '内容 A'
-					},
-					{
-						colorClass: 'uni-bg-green',
-						url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg',
-						content: '内容 B'
-					},
-					{
-						colorClass: 'uni-bg-blue',
-						url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',
-						content: '内容 C'
-					}
+				goodInfo: {},
+				covers: [
+					// {colorClass: 'uni-bg-blue', url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',　content: '内容 C'}
 				],
 				dotsStyles: {
 					backgroundColor: '#fff',
@@ -77,13 +79,31 @@
 					color: '#fff',
 					selectedBackgroundColor: '#fff',
 					selectedBorder: '0'
-				}
+				},
+				recommends: []
 			};
 		},
-		onLoad () {},
+		onLoad (e) {
+			// 获取商品详情
+			let _this = this;
+			ajaxGetGoodInfo(e, function (data) {
+				_this.covers = [];
+				data.result.covers.forEach( item => {
+					_this.covers.push({url: item});
+				});
+				_this.goodInfo = data.result;
+				ajaxGetRecommendGoods('', function (data) {
+					_this.recommends = data.result;
+				});
+			});
+		},
 		methods: {
 			change (e) {
 				this.current = e.detail.current;
+			},
+			// 计算折扣后的真实价格
+			utlRealPrice (good) {
+				return countRealPrice(good);
 			}
 		}
 	}
@@ -126,11 +146,9 @@
 			
 			> .wrap-swiper {
 				margin-bottom: 5px;
-				height: 300px;
-				background-color: antiquewhite;
 				
 				.swiper-box {
-					height: 100%;
+					height: 300px;
 				}
 				.swiper-item {
 					display: flex;
@@ -150,11 +168,13 @@
 				}
 			}
 			> .name {
+				padding: 0 10px;
 				font-size: 20px;
 			}
 			> .desc {
 				margin-top: 5px;
 				margin-bottom: 5px;
+				padding: 0 10px;
 				font-size: 14px;
 			}
 			> .wrap-price {
@@ -179,6 +199,66 @@
 			}
 		}
 		
+		> .wrap-recommend {
+			/* product */
+			.uni-product-list {
+			    display: flex;
+			    width: 100%;
+			    flex-wrap: wrap;
+			    flex-direction: row;
+			}
+			
+			.uni-product {
+			    padding: 20upx;
+			    display: flex;
+			    flex-direction: column;
+			}
+			
+			.image-view {
+			    height: 330upx;
+			    width: 330upx;
+				margin:12upx 0;
+			}
+			
+			.uni-product-image {
+			    height: 330upx;
+			    width: 330upx;
+			}
+			
+			.uni-product-title {
+			    width: 300upx;
+			    word-break: break-all;
+			    display: -webkit-box;
+			    overflow: hidden;
+				line-height:1.5;
+			    text-overflow: ellipsis;
+			    -webkit-box-orient: vertical;
+			    -webkit-line-clamp: 2;
+			}
+			
+			.uni-product-price {
+				margin-top:10upx;
+			    font-size: 28upx;
+				line-height:1.5;
+			    position: relative;
+			}
+			
+			.price {
+				font-size: 14px;
+			}
+			
+			.price.del {
+			    font-size: 12px;
+			}
+			
+			.uni-product-tip {
+			    position: absolute;
+			    right: 10upx;
+			    padding: 0 10upx;
+			    border-radius: 5upx;
+			}
+		}
+		
 		> .wrap-detail {
 			> image {
 				width: 100%;
@@ -188,7 +268,6 @@
 		// 占位区
 		> .wrap-placehold {
 			height: 40px;
-			background-color: red;
 		}
 		
 		> footer {

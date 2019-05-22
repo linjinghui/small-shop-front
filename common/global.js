@@ -24,7 +24,7 @@ const getClientUser = (callback) => {
 }
 
 // 页面跳转
-const turnPage = (type) => {
+const turnPage = (type, obj) => {
 	let url = '';
 	switch (type) {
 		case 'my':
@@ -34,7 +34,7 @@ const turnPage = (type) => {
 			url = '/pages/untabbar/car/main';
 			break;
 		case 'detail':
-			url = '/pages/untabbar/detail/main';
+			url = '/pages/untabbar/detail/main?id=' + obj.id;
 			break;
 		default:
 			url = '/pages/untabbar/my/main';
@@ -43,4 +43,9 @@ const turnPage = (type) => {
 	uni.navigateTo({url: url});
 }
 
-export {getClientUser, turnPage};
+// 计算折扣后的真实价格
+const countRealPrice = (good) => {
+		return (good.price * good.rebate / 10).toFixed(2);
+}
+
+export {getClientUser, turnPage, countRealPrice};

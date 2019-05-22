@@ -55,8 +55,8 @@
 import uniIcon from '@/components/uni-icon/uni-icon.vue';
 import bugBtn from '@/components/uni-bug-btn/uni-bug-btn.vue';
 import {mapState} from 'vuex';
+import {getClientUser, turnPage, countRealPrice} from '@/common/global.js';
 import {ajaxGetGoods} from '@/data/ajax.js';
-import {getClientUser, turnPage} from '@/common/global.js';
 export default {
 	components: {
 		uniIcon,
@@ -125,8 +125,7 @@ export default {
 			});
 		},
 		clkLine (good) {
-			console.log(good);
-			turnPage('detail');
+			turnPage('detail', good);
 		},
 		// 选中商品
 		clkChoose (e, index) {
@@ -176,7 +175,7 @@ export default {
 		},
 		// 计算折扣后的真实价格
 		utlRealPrice (good) {
-			return (good.price * good.rebate / 10).toFixed(2);
+			return countRealPrice(good);
 		},
 		eventImageError (index) {
 			let good = this.goods[index];
@@ -189,6 +188,7 @@ export default {
 <style lang="scss">
 @import '@/common/global.scss';
 .content {
+	height: 100%;
 	overflow: hidden;
 }
 .header {
@@ -201,6 +201,7 @@ export default {
 		position: relative;
 		float: left;
 		width: 33.33%;
+		height: 100%;
 		text-align: center;
 		
 		.wrap-icon {
@@ -358,8 +359,8 @@ export default {
 		border: 0;
 		border-radius: 0;
 	}
-	> button:active {
-		background-color: #ff8000;
-	}
+	// > button:active {
+	// 	background-color: #ff8000;
+	// }
 }
 </style>

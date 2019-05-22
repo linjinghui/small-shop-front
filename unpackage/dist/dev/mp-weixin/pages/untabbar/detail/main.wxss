@@ -56,11 +56,9 @@
 }
 .content > .wrap-good > .wrap-swiper {
       margin-bottom: 5px;
-      height: 300px;
-      background-color: antiquewhite;
 }
 .content > .wrap-good > .wrap-swiper .swiper-box {
-        height: 100%;
+        height: 300px;
 }
 .content > .wrap-good > .wrap-swiper .swiper-item {
         display: -webkit-box;
@@ -88,11 +86,13 @@
         height: 100%;
 }
 .content > .wrap-good > .name {
+      padding: 0 10px;
       font-size: 20px;
 }
 .content > .wrap-good > .desc {
       margin-top: 5px;
       margin-bottom: 5px;
+      padding: 0 10px;
       font-size: 14px;
 }
 .content > .wrap-good > .wrap-price > .price:not(.del) {
@@ -118,12 +118,79 @@
           display: block;
           margin-top: 6px;
 }
+.content > .wrap-recommend {
+    /* product */
+}
+.content > .wrap-recommend .uni-product-list {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      width: 100%;
+      -webkit-flex-wrap: wrap;
+          -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+}
+.content > .wrap-recommend .uni-product {
+      padding: 20rpx;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+}
+.content > .wrap-recommend .image-view {
+      height: 330rpx;
+      width: 330rpx;
+      margin: 12rpx 0;
+}
+.content > .wrap-recommend .uni-product-image {
+      height: 330rpx;
+      width: 330rpx;
+}
+.content > .wrap-recommend .uni-product-title {
+      width: 300rpx;
+      word-break: break-all;
+      display: -webkit-box;
+      overflow: hidden;
+      line-height: 1.5;
+      -o-text-overflow: ellipsis;
+         text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+}
+.content > .wrap-recommend .uni-product-price {
+      margin-top: 10rpx;
+      font-size: 28rpx;
+      line-height: 1.5;
+      position: relative;
+}
+.content > .wrap-recommend .price {
+      font-size: 14px;
+}
+.content > .wrap-recommend .price.del {
+      font-size: 12px;
+}
+.content > .wrap-recommend .uni-product-tip {
+      position: absolute;
+      right: 10rpx;
+      padding: 0 10rpx;
+      border-radius: 5rpx;
+}
 .content > .wrap-detail > image {
     width: 100%;
 }
 .content > .wrap-placehold {
     height: 40px;
-    background-color: red;
 }
 .content > ._footer {
     position: fixed;

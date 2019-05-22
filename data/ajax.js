@@ -32,7 +32,73 @@ let ajaxGetGoods = (pms, callback) => {
 			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 		},
 		success: (data) => {
-			callback && callback(data);
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			} else {
+				uni.showToast({title: '' + data.msg, icon: 'none', position: 'bottom'});
+			}
+		}
+	});
+}
+
+// 获取商品详情
+let ajaxGetGoodInfo = (pms, callback, fail) => {
+	let params = {
+		id: pms.id
+	};
+	
+	uni.showLoading({title: LOADINGTEXT});
+	uni.request({
+		url: URL + '/goods/info',
+		method: 'GET',
+		data: params,
+		header: {
+			'AUTH': AUTH
+		},
+		dataType: 'json',
+		complete: (data) => {
+			uni.hideLoading();
+		},
+		fail: () => {
+			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+		},
+		success: (data) => {
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			} else {
+				uni.showToast({title: '' + data.msg, icon: 'none', position: 'bottom'});
+			}
+		}
+	});
+}
+
+// 获取推荐商品列表
+let ajaxGetRecommendGoods = (pms, callback, fail) => {
+	uni.showLoading({title: LOADINGTEXT});
+	uni.request({
+		url: URL + '/goods/recommend',
+		method: 'GET',
+		data: params,
+		header: {
+			'AUTH': AUTH
+		},
+		dataType: 'json',
+		complete: (data) => {
+			uni.hideLoading();
+		},
+		fail: () => {
+			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+		},
+		success: (data) => {
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			}
 		}
 	});
 }
@@ -40,6 +106,8 @@ let ajaxGetGoods = (pms, callback) => {
 if (DEBUG) {
 	const majax = require('./mock.js');
 	ajaxGetGoods = majax.ajaxGetGoods;
+	ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
+	ajaxGetRecommendGoods = majax.ajaxGetRecommendGoods;
 }
 
-export {ajaxGetGoods};
+export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods};

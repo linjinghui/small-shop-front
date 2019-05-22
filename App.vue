@@ -28,8 +28,7 @@ export default {
 	/*每个页面公共css */ 
 	@import '@/common/global.scss';
 	
-	page,
-	view {
+	page {
 		height: 100%;
 		font-size: 14px;
 	}
@@ -48,6 +47,9 @@ export default {
 	button:after {
 		border: 0;
 		border-radius: 0;
+	}
+	button:active {
+		opacity: 0.8;
 	}
 	
 	.name {

@@ -25,6 +25,7 @@
 /* 透明度 */
 /* 文章场景相关 */
 .content {
+  height: 100%;
   overflow: hidden;
 }
 .header {
@@ -37,6 +38,7 @@
     position: relative;
     float: left;
     width: 33.33%;
+    height: 100%;
     text-align: center;
 }
 .header > ._li .wrap-icon {
@@ -180,8 +182,5 @@
 .footer > button:after {
     border: 0;
     border-radius: 0;
-}
-.footer > button:active {
-    background-color: #ff8000;
 }
 
