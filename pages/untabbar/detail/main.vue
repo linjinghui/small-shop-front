@@ -45,7 +45,10 @@
 		</view>
 		<view class="wrap-placehold"></view>
 		<footer>
-			<view class="wrap-btn-car"><uni-iconfont class="icon" size="24" type="car" />购物车</view>
+			<view class="wrap-btn-car">
+				<uni-iconfont class="icon" size="24" type="car" />购物车
+				<uni-badge class="badge" :text="car.count" type="error" />
+			</view>
 			<button>加入购物车</button>
 		</footer>
 	</view>
@@ -55,16 +58,18 @@
 	import {mapState} from 'vuex';
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
 	import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue'
+	import uniBadge from '@/components/uni-badge/uni-badge.vue'
 	import {countRealPrice} from '@/common/global.js'
 	import {ajaxGetGoodInfo, ajaxGetRecommendGoods} from '@/data/ajax.js'
 	
 	export default {
 		components: {
 			uniIconfont,
-			uniSwiperDot
+			uniSwiperDot,
+			uniBadge
 		},
 		computed: {
-			...mapState(['user'])
+			...mapState(['car'])
 		},
 		data () {
 			return {
@@ -281,6 +286,7 @@
 			background-color: #fff;
 			
 			> .wrap-btn-car {
+				position: relative;
 				float: left;
 				margin: 0;
 				width: 40%;
@@ -290,6 +296,13 @@
 				> .icon {
 					display: block;
 					margin-top: 5px;
+				}
+				> .badge {
+					position: absolute;
+					top: 3px;
+					right: 0;
+					left: 26px;
+					margin: auto;
 				}
 			}
 			> button {

@@ -48,22 +48,34 @@ export default {
 		border: 0;
 		border-radius: 0;
 	}
-	button:active {
+	button:active,
+	icon:active {
 		opacity: 0.8;
 	}
 	
-	.name {
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		font-size: 18px;
+	image {
+		will-change: transform;
 	}
 	
-	.desc {
+	.center-hv {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: auto;
+	}
+	
+	.text-over {
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
-		color: #aaa;
+	}
+	
+	.uni-list:before,
+	.uni-list:after,
+	.uni-list-item__container:after {
+		background-color: $border-color!important;
 	}
 	
 	.price {
@@ -83,13 +95,5 @@ export default {
 		text-decoration: line-through;
 	}
 	
-	.icon:active {
-		opacity: 0.8;
-	}
 	
-	.uni-list:before,
-	.uni-list:after,
-	.uni-list-item__container:after {
-		background-color: $border-color!important;
-	}
 </style>

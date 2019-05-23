@@ -25,8 +25,105 @@
 /* 透明度 */
 /* 文章场景相关 */
 .content {
-  text-align: center;
-  height: 400rpx;
-  margin-top: 200rpx;
+  height: 100%;
+  background-color: #f8f8f8;
+}
+.content .no-good {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: 200px;
+    text-align: center;
+    font-size: 14px;
+}
+.content .no-good > ._p {
+      margin-top: 8px;
+      margin-bottom: 14px;
+      color: #ddd;
+}
+.content .no-good > button {
+      width: 80px;
+      height: 30;
+      line-height: 30px;
+      font-size: inherit;
+      color: #fff;
+      border-radius: 20px;
+      background-color: #029c45;
+}
+.content > .main {
+    height: 100%;
+}
+.content > .main > .scroll-Y {
+      margin: 0;
+      padding: 0;
+      height: calc(100% - 60px);
+}
+.content > .main > .scroll-Y .wrap-address {
+        color: #999;
+        text-align: center;
+        padding: 12px 0;
+}
+.content > .main > .footer {
+      position: relative;
+      padding-left: 5px;
+      height: 60px;
+      line-height: 60px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #333;
+      overflow: hidden;
+}
+.content > .main > .footer > .wrap-icon {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        vertical-align: middle;
+}
+.content > .main > .footer > .wrap-icon > .icon {
+          display: inline-block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          margin: auto;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          z-index: 2;
+}
+.content > .main > .footer > .wrap-icon > .icon-bg {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          margin: auto;
+          width: 16px;
+          height: 16px;
+          background-color: #fff;
+          z-index: 1;
+}
+.content > .main > .footer > .total {
+        float: right;
+        padding: 0 10px;
+        font-size: 18px;
+}
+.content > .main > .footer > button {
+        float: right;
+        width: 32%;
+        height: 100%;
+        line-height: inherit;
+        border-radius: 0;
+        color: inherit;
+        background-color: #ff9000;
+}
+.content > .main > .footer > button:after {
+        border: 0;
+        border-radius: 0;
 }
 

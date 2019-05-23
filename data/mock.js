@@ -1,6 +1,6 @@
 import Mock from '@/static/mock/mock.js';
 const Random = Mock.Random;
-const dure = 3000;
+const dure = 1000;
 const LOADINGTEXT = '加载中...';
 
 // 获取商品列表
@@ -22,12 +22,17 @@ export function ajaxGetGoods (pms, callback) {
 			'price|1': [3.5, 5, 11, 12.5, 22.3],
 			// 折扣
 			'rebate|1': [9.5, 8.5, 10, 5, 4.5],
+			// 真实单价|折后单价
+			'rprice|1': [3.5, 5, 11, 12.5, 22.3],
 			// 库存
 			'stock|1': [10, 5, '', 50],
 			// 标签
-			'label|1': [
-				'',
-				{ text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }
+			'label|0-3': [
+				{ 
+					'text|1': ['折扣', '清仓', '极鲜'], 
+					'bcolor|1': ['#bf2058', '#ced642', '#fbb519'], 
+					'color': '#000'
+				}
 			]
 			// 购买数量
 			// 'count': 1
@@ -58,12 +63,17 @@ export function ajaxGetGoodInfo (pms, callback) {
 			'price|1': [3.5, 5, 11, 12.5, 22.3],
 			// 折扣
 			'rebate|1': [9.5, 8.5, 10, 5, 4.5],
+			// 真实单价|折后单价
+			'rprice|1': [3.5, 5, 11, 12.5, 22.3],
 			// 库存
 			'stock|1': [10, 5, '', 50],
 			// 标签
-			'label|1': [
-				'',
-				{ text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }
+			'label|0-3': [
+				{ 
+					'text|1': ['折扣', '清仓', '极鲜'], 
+					'bcolor|1': ['#bf2058', '#ced642', '#fbb519'], 
+					'color': '#000'
+				}
 			],
 			// 产地
 			'pplace|1': ['福建', '连江', '苔箓', '北郊'],
@@ -94,12 +104,17 @@ export function ajaxGetRecommendGoods (pms, callback) {
 			'price|1': [3.5, 5, 11, 12.5, 22.3],
 			// 折扣
 			'rebate|1': [9.5, 8.5, 10, 5, 4.5],
+			// 真实单价|折后单价
+			'rprice|1': [3.5, 5, 11, 12.5, 22.3],
 			// 库存
 			'stock|1': [10, 5, '', 50],
-			// 标签
-			'label|1': [
-				'',
-				{ text: '特惠', color: '#e55e5e', bcolor: '#fce7e7' }
+			// 标签, 最多3个
+			'label|0-3': [
+				{ 
+					'text|1': ['折扣', '清仓', '极鲜'], 
+					'bcolor|1': ['#bf2058', '#ced642', '#fbb519'], 
+					'color': '#000'
+				}
 			]
 		}]
 	});

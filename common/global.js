@@ -27,6 +27,9 @@ const getClientUser = (callback) => {
 const turnPage = (type, obj) => {
 	let url = '';
 	switch (type) {
+		case 'home':
+			url = '/pages/tabbar/tabbar-1/main';
+			break;
 		case 'my':
 			url = '/pages/untabbar/my/main';
 			break;
@@ -37,7 +40,7 @@ const turnPage = (type, obj) => {
 			url = '/pages/untabbar/detail/main?id=' + obj.id;
 			break;
 		default:
-			url = '/pages/untabbar/my/main';
+			url = '/pages/tabbar/tabbar-1/main';
 			break;
 	}
 	uni.navigateTo({url: url});

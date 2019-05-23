@@ -1,9 +1,9 @@
 <!-- 购买按钮 -->
 <template>
 	<view class="wrap-bug-btn">
-		<uni-icon class="minus" v-if="num>0" type="minus" :color="num>0?'#029c45':'#bbb'" size="24" @click="clkMinus" />
-		<span v-if="num>0">{{num}}</span>
-		<uni-icon class="plus" type="plus-filled" :color="num<max?'#029c45':'#bbb'" size="24" @click="clkPlus" />
+		<uni-icon class="minus" v-if="value>0" type="minus" :color="value>0?'#029c45':'#bbb'" size="24" @click="clkMinus" />
+		<span v-if="value>0">{{value}}</span>
+		<uni-icon class="plus" type="plus-filled" :color="value<max?'#029c45':'#bbb'" size="24" @click="clkPlus" />
 	</view>
 </template>
 
@@ -15,27 +15,42 @@
 		},
 		name: 'Bugbtn',
 		data () {
-			return {
-				num: 0
-			};
+			return {};
 		},
 		props: {
+			value: {
+				default: 0
+			},
 			max: {
 				default: 10
 			}
 		},
+		watch: {
+			value (val) {
+				this.initValue();
+			}
+		},
+		onLoad() {
+			this.initValue();
+		},
 		methods: {
+			initValue () {
+				if (this.value !== 0 && !this.value) {
+					this.value = 0;
+				}
+				console.log(value);
+			},
 			clkMinus () {
-				this.num > 0 && (this.num -= 1);
+				this.value > 0 && (this.value -= 1);
 				this.$emit('click', {
-					'num': this.num
+					'num': this.value
 				});
 			},
 			clkPlus () {
-				if (this.num < this.max) {
-					this.num += 1;
+				if (this.value < this.max) {
+					this.value += 1;
 					this.$emit('click', {
-						'num': this.num
+						'num': this.value
 					});
 				} else {
 					this.$emit('click', {
@@ -54,7 +69,6 @@
 		width: 74px;
 		height: 26px;
 		text-align: right;
-		background-color: #fff;
 		
 		> .minus,
 		> .plus {

@@ -4,7 +4,7 @@
 		<ul class="header">
 			<li :class="{'active':active.index===0}" @click="clkNav(0)">有货
 				<view class="wrap-icon">
-					<uni-icon class="icon tick" type="checkmarkempty" size="32" :color="active.index===0&&'#029c45'"/>
+					<uni-icon class="icon tick" type="checkmarkempty" size="32" :color="active.index===0?'#029c45':'#000'"/>
 				</view>
 			</li>
 			<li :class="{'active':active.index===1}" @click="clkNav(1)">价格
@@ -22,31 +22,14 @@
 		</ul>
 		<view class="main">
 			<scroll-view class="scroll-Y" :scroll-top="scrollTop" scroll-y="true">
-                <view class="item" v-for="(info,index) in goods" :key="info.id">
-					<view class="wrap-left" @click="clkLine(info)">
-						<image lazy-load="true" :src="info.pic" @error="eventImageError(index)"></image>
-					</view>
-					<view class="wrap-right" @click="clkLine(info)">
-						<p class="name">{{info.name}}</p>
-						<p class="desc">{{info.desc}}</p>
-						<p class="wrap-unit">
-							<span class="label" v-if="info.label" :style="{color:info.label.color,backgroundColor:info.label.bcolor}">{{info.label.text}}</span>
-							<span class="unit">{{info.unit}}</span>
-						</p>
-						<p class="wrap-price">
-							<span class="price">{{utlRealPrice(info)}}</span>
-							<span class="price del" v-if="info.rebate<10">{{info.price}}</span>
-						</p>						
-					</view>
-					<bug-btn class="wrap-btn-bug" :max="info.stock" @click="clkChoose($event,index)"/>
-				</view>
+				<good-list v-model="goods"></good-list>
 			</scroll-view>
 		</view>
 		<view class="footer">
 			<image :src="user.avatarUrl" @click="clkImage"></image>
-			已选 ({{ftdata.count}})
+			已选 ({{car.count}})
 			<button @click="clkConfirm">去预定</button>
-			<p class="price total">{{ftdata.total}}</p>
+			<p class="price total">{{car.total}}</p>
 		</view>
 	</view>
 </template>
@@ -54,13 +37,15 @@
 <script>
 import uniIcon from '@/components/uni-icon/uni-icon.vue';
 import bugBtn from '@/components/uni-bug-btn/uni-bug-btn.vue';
+import goodList from '@/components/good-list/good-list.vue';
 import {mapState} from 'vuex';
-import {getClientUser, turnPage, countRealPrice} from '@/common/global.js';
+import {getClientUser, turnPage} from '@/common/global.js';
 import {ajaxGetGoods} from '@/data/ajax.js';
 export default {
 	components: {
 		uniIcon,
-		bugBtn
+		bugBtn,
+		goodList
 	},
 	data() {
 		return {
@@ -79,19 +64,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['user']),
-		ftdata () {
-			let count = 0;
-			let total = 0;
-			for (let i = 0;i < this.chooses.length;i++) {
-				let _good = this.chooses[i];
-				let _count = _good.count;
-				let _rprice = this.utlRealPrice(_good);
-				count += _count;
-				total += _rprice * _count;
-			}
-			return {count, total: total.toFixed(2)};
-		}
+		...mapState(['user', 'car'])
 	},
 	onLoad() {
 		let _this = this;
@@ -124,62 +97,15 @@ export default {
 				return result;
 			});
 		},
-		clkLine (good) {
-			turnPage('detail', good);
-		},
-		// 选中商品
-		clkChoose (e, index) {
-			if (e.error) {
-				uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
-			} else {
-				let good = JSON.parse(JSON.stringify(this.goods[index]));
-				let obj = this.utlGetGoodFromChoose(good);
-				let _good = obj.info;
-				let _index = obj.index;
-				if (!_good) {
-					_good = good;
-					this.chooses.push(_good);
-				}
-				this.$set(_good, 'count', e.num);
-				if (e.num === 0 && _index >= 0) {
-					this.chooses.splice(_index, 1);
-				}
-			}
-		},
 		clkImage () {
 			turnPage('my');
 		},
 		clkConfirm () {
-			if (this.chooses.length === 0) {
+			if (this.$store.state.car.data.length === 0) {
 				uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});
 			} else {
 				turnPage('car');
 			}
-		},
-		// 获取选中商品在已添加商品中的信息
-		utlGetGoodFromChoose (good) {
-			let result = '';
-			let index = '';
-			for (let i = 0;i < this.chooses.length;i++) {
-				let _good = this.chooses[i];
-				if (_good.id === good.id && _good.name === good.name) {
-					index = i;
-					result = _good;
-					break;
-				}
-			}
-			return {
-				info: result,
-				index: index
-			};
-		},
-		// 计算折扣后的真实价格
-		utlRealPrice (good) {
-			return countRealPrice(good);
-		},
-		eventImageError (index) {
-			let good = this.goods[index];
-			this.$set(good, 'pic', this.defGoodPic);
 		}
 	}
 };
@@ -243,83 +169,6 @@ export default {
 	> .scroll-Y {
 		height: 100%;
 	}
-	
-	.item {
-		position: relative;
-		padding-top: 10px;
-		height: 140px;
-		
-		> .wrap-left {
-			position: relative;
-			float: left;
-			width: 100px;
-			height: 100%;
-			
-			> image {
-				position: absolute;
-				top: -10px;
-				right: 0;
-				bottom: 0;
-				left: 0;
-				margin: auto;
-				width: 80px;
-				height: 80px;
-				will-change: transform;
-			}
-		}
-		> .wrap-right {
-			float: left;
-			padding-right: 10px;
-			width: calc(100% - 100px - 10px);
-			height: 100%;
-			line-height: 30px;
-			
-			> .name {
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
-				font-size: 18px;
-			}
-			> .desc {
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
-				color: #aaa;
-			}
-			.label {
-				margin-right: 5px;
-				padding: 2px 8px;
-				border-radius: 2px;
-			}
-			.unit {
-				padding: 2px 8px;
-				border-radius: 2px;
-				color: #666;
-				background-color: #f6f6f6;
-			}
-			.price {
-				margin-top: 5px;
-			}
-		}
-		
-		.wrap-btn-bug {
-			position: absolute;
-			right: 10px;
-			bottom: 14px;
-		}
-		
-	}
-	.item:after {
-		content: '';
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		margin: auto;
-		width: calc(100% - 20px);
-		height: 1px;
-		background-color: $border-color;
-	}
 }
 
 .footer {
@@ -359,8 +208,5 @@ export default {
 		border: 0;
 		border-radius: 0;
 	}
-	// > button:active {
-	// 	background-color: #ff8000;
-	// }
 }
 </style>

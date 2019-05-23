@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "uni-iconfont": "/components/uni-iconfont/uni-icon",
+    "bug-btn": "/components/uni-bug-btn/uni-bug-btn"
+  },
+  "component": true
+}
