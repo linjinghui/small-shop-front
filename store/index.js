@@ -21,12 +21,11 @@ export default new Vuex.Store({
 			state.user = data;
         },
 		// 商品加入购物车
-		addGoodToCar (state, data) {
-			let good = data[0];
-			let count = data[1];
+		addGoodToCar (state, good) {
+			let count = good.count;
 			// 判断商品是否已经在购物车中，如果是则更新数量，不是则添加进购物车 ，如果数量是0 则移除商品
 			// s-1 获取商品在购物车中的位置
-			good = JSON.parse(JSON.stringify(good));
+			// good = JSON.parse(JSON.stringify(good));
 			let index = '';
 			for (let i = 0;i < state.car.data.length;i++) {
 				let _item = state.car.data[i];

@@ -1,10 +1,10 @@
 <!-- 商品列表组件 -->
 <template>
 	<view class="wrap-good-list" :class="{'select':nselect,'small':small}">
-		<view class="wrap-good-item" v-for="(info,index) in value" :key="info" @click="clkLine(info)">
-			<span class="label" v-if="!nselect&&!small" v-for="lbinfo in info.label" :key="lbinfo" :style="{'color':lbinfo.color,'backgroundColor':lbinfo.bcolor}">{{lbinfo.text}}</span>
+		<view class="wrap-good-item" v-for="(info,index) in value" :key="info.id" @click="clkLine(info)">
+			<span class="label" v-if="!nselect&&!small" v-for="lbinfo in info.label" :key="lbinfo.id" :style="{'color':lbinfo.color,'backgroundColor':lbinfo.bcolor}">{{lbinfo.text}}</span>
 			<view class="wrap-icon" v-if="nselect&&!small">
-				<uni-iconfont class="icon center-hv" :type="select?'gx':'wgx'" size="26" color="#ff9000" @click="select=!select" />
+				<uni-iconfont class="icon center-hv" :type="info.select?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelect(info)" />
 			</view>
 			<view class="wrap-img">
 				<image class="center-hv" lazy-load="true" :src="info.pic"></image>
@@ -60,36 +60,24 @@
 			}
 		},
 		computed: {},
-		watch: {
-			value () {
-				this.initValueData();
-			}
-		},
-		onLoad() {
-			this.initValueData();
-		},
+		watch: {},
+		onLoad() {},
 		methods: {
-			// 处理传入的数据
-			initValueData () {
-				let _this = this;
-				for (let i in _this.value) {
-					let item = _this.value[i];
-					if (!item.count && item.count !== 0) {
-						item.count = 0;
-					}
-				}
-				console.log(_this.value);
-			},
 			// 选中商品
 			clkChoose (e, data) {
 				if (e.error) {
 					uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
 				} else {
-					this.$store.commit('addGoodToCar', [data, e.num]);
+					// 勾选中商品
+					data.select = true;
+					this.$store.commit('addGoodToCar', data);
 				}
 			},
 			clkLine (data) {
-				turnPage('detail', data);
+				this.$emit('click', data);
+			},
+			clkSelect (data) {
+				this.$set(data, 'select', !data.select);
 			}
 		}
 	}
@@ -186,6 +174,7 @@
 			bottom: 15px;
 			width: 74px;
 			height: 26px;
+			background-color: #aaa;
 		}
 	}
 	.wrap-good-list.select > .wrap-good-item > .wrap-main {

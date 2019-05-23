@@ -85,24 +85,12 @@
 }
 .content > .main > .footer > .wrap-icon > .icon {
           display: inline-block;
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          margin: auto;
-          width: 30px;
-          height: 30px;
-          line-height: 30px;
+          width: 26px;
+          height: 26px;
+          line-height: 20px;
           z-index: 2;
 }
 .content > .main > .footer > .wrap-icon > .icon-bg {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          margin: auto;
           width: 16px;
           height: 16px;
           background-color: #fff;

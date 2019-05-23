@@ -2,12 +2,12 @@
 	<view class="content">
 		
 		<!-- 未选购提示 -->
-		<!-- <view class="no-good" v-if="car.data.length===0">
+		<view class="no-good" v-if="car.data.length===0">
 			<uni-iconfont class="icon" size="50" type="sp" color="#ddd" />
 			<p>您还未添加商品~</p>
 			<button @click="clkQgg">去逛逛</button>
-		</view> -->
-		<view class="main">
+		</view>
+		<view class="main" v-else>
 			<scroll-view class="scroll-Y" scroll-y="true">
 				<view class="wrap-address">
 					配送至：福建省奥林匹克体育中心体育馆<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
@@ -16,12 +16,12 @@
 			</scroll-view>
 			<view class="footer">
 				<view class="wrap-icon">
-					<view class="icon-bg" v-if="selectAll"></view>
-					<uni-iconfont class="icon" :type="selectAll?'gx':'wgx'" size="30" color="#ff9000" @click="selectAll=!selectAll" />
+					<view class="icon-bg center-hv" v-if="selectAll"></view>
+					<uni-iconfont class="icon center-hv" :type="selectAll?'gx':'wgx'" size="26" color="#ff9000" @click="selectAll=!selectAll" />
 				</view>
-				已选 (10)
+				已选 ({{car.count}})
 				<button>去预定</button>
-				<p class="price total">102</p>
+				<p class="price total">{{car.total}}</p>
 			</view>
 		</view>
 	</view>
@@ -122,26 +122,15 @@
 					height: 40px;
 					vertical-align: middle;
 					
+					
 					> .icon {
 						display: inline-block;
-						position: absolute;
-						top: 0;
-						right: 0;
-						bottom: 0;
-						left: 0;
-						margin: auto;
-						width: 30px;
-						height: 30px;
-						line-height: 30px;
+						width: 26px;
+						height: 26px;
+						line-height: 20px;
 						z-index: 2;
 					}
 					> .icon-bg {
-						position: absolute;
-						top: 0;
-						right: 0;
-						bottom: 0;
-						left: 0;
-						margin: auto;
 						width: 16px;
 						height: 16px;
 						background-color: #fff;

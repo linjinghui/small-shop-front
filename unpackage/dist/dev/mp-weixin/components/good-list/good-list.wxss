@@ -108,6 +108,7 @@
     bottom: 15px;
     width: 74px;
     height: 26px;
+    background-color: #aaa;
 }
 .wrap-good-list.select > .wrap-good-item > .wrap-main {
   width: calc(100% - 40px - 100px);

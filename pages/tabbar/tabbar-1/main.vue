@@ -22,7 +22,7 @@
 		</ul>
 		<view class="main">
 			<scroll-view class="scroll-Y" :scroll-top="scrollTop" scroll-y="true">
-				<good-list v-model="goods"></good-list>
+				<good-list v-model="goods" @click="clkLine"></good-list>
 			</scroll-view>
 		</view>
 		<view class="footer">
@@ -69,7 +69,10 @@ export default {
 	onLoad() {
 		let _this = this;
 		let result = ajaxGetGoods('', function (data) {
-			_this.goods = data.result;
+			data = data.result || [];
+			// 注入初始数量
+			data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"stock"');
+			_this.goods = JSON.parse(data);
 		});
 		getClientUser(function (userInfo) {
 			_this.$store.commit('setUser', userInfo);
@@ -106,6 +109,9 @@ export default {
 			} else {
 				turnPage('car');
 			}
+		},
+		clkLine (data) {
+			turnPage('detail', data);
 		}
 	}
 };
