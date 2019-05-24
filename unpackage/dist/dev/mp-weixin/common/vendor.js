@@ -17196,6 +17196,7 @@ new _vuex.default.Store({
 
       // s-2-1 判断商品库存
       if (good.count > good.stock) {
+        good.count = good.stock;
         uni.showToast({ title: '无法购买更多', icon: 'none', position: 'bottom' });
         return;
       }
