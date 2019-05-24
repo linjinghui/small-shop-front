@@ -122,3 +122,24 @@ export function ajaxGetRecommendGoods (pms, callback) {
 	uni.showLoading({title: LOADINGTEXT});
 	setTimeout(function () {uni.hideLoading(); callback && callback(data);}, Math.floor(Math.random() * dure));
 }
+
+// 获取用户配送地址信息
+export function ajaxGetAddresses (pms, callback) {
+	let data = Mock.mock({
+		'msg': '',
+		'code': 200,
+		'result|0-3': [{
+			'id': '@id()',
+			// 收获人名称
+			'name': '@ctitle(3, 8)',
+			// 收获人电话
+			'mobile': /^1[385][1-9]\d{8}/,
+			// 收获地址
+			'address': '@ctitle(10, 20)',
+			// 收获门牌地址
+			'doorAddress': '@ctitle(5, 10)'
+		}]
+	});
+	uni.showLoading({title: LOADINGTEXT});
+	setTimeout(function () {uni.hideLoading(); callback && callback(data);}, Math.floor(Math.random() * dure));
+}

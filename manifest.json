@@ -53,6 +53,11 @@
         "setting" : {
             "urlCheck" : true
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "用户配送信息填写"
+            }
+        }
     }
 }

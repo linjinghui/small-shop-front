@@ -9,8 +9,10 @@
 		</view>
 		<view class="main" v-else>
 			<scroll-view class="scroll-Y" scroll-y="true">
-				<view class="wrap-address">
-					配送至：福建省奥林匹克体育中心体育馆<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
+				<view class="wrap-address" @click="clkConsignee">
+					<!-- 配送至：福建省奥林匹克体育中心体育馆 -->
+					{{consignee&&consignee.length>0?(consignee[0].address):'您还未填写配送地址，请点击添加'}}
+					<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
 				</view>
 				<good-list v-model="carData" :nselect="true" @changeCount="changeCount"></good-list>
 			</scroll-view>
@@ -32,6 +34,8 @@
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import goodList from '@/components/good-list/good-list.vue';
+	import {turnPage} from '@/common/global.js';
+	import {ajaxGetAddresses} from '@/data/ajax.js';
 	export default {
 		components: {
 			uniIcon,
@@ -44,7 +48,7 @@
 			};
 		},
 		computed: {
-			...mapState(['car']),
+			...mapState(['car', 'consignee']),
 			carData: {
 				get () {
 					return this.$store.getters.doneCar;
@@ -59,7 +63,13 @@
 				return result;
 			}
 		},
-		onLoad() {},
+		onLoad() {
+			let _this = this;
+			// 获取收货地址信息
+			ajaxGetAddresses(this.$store.state.user, (data) => {
+				_this.$store.commit('setConsignee', data.result);
+			});
+		},
 		methods: {
 			clkQgg () {
 				uni.navigateBack();
@@ -67,6 +77,9 @@
 			clkSelectAll () {
 				this.selectAll = !this.selectAll;
 				this.$store.commit('setSelectAll', [this.selectAll]);
+			},
+			clkConsignee () {
+				turnPage('consignee');
 			},
 			changeCount (data) {
 				this.EVENTHUB.$emit('updateCount', data);

@@ -38,10 +38,14 @@
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-iconfont\\uni-icon.vue"));};var uniIcon = function uniIcon() {return __webpack_require__.e(/*! import() | components/uni-icon/uni-icon */ "components/uni-icon/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-icon/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-icon\\uni-icon.vue"));};var goodList = function goodList() {return Promise.all(/*! import() | components/good-list/good-list */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/good-list/good-list")]).then(__webpack_require__.bind(null, /*! @/components/good-list/good-list.vue */ "F:\\linjinghui\\github\\seafood\\components\\good-list\\good-list.vue"));};var _default =
+
+
+var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 
+var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\github\\seafood\\common\\global.js");
+var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\seafood\\data\\ajax.js");function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-iconfont\\uni-icon.vue"));};var uniIcon = function uniIcon() {return __webpack_require__.e(/*! import() | components/uni-icon/uni-icon */ "components/uni-icon/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-icon/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-icon\\uni-icon.vue"));};var goodList = function goodList() {return __webpack_require__.e(/*! import() | components/good-list/good-list */ "components/good-list/good-list").then(__webpack_require__.bind(null, /*! @/components/good-list/good-list.vue */ "F:\\linjinghui\\github\\seafood\\components\\good-list\\good-list.vue"));};var _default =
 {
   components: {
     uniIcon: uniIcon,
@@ -54,7 +58,7 @@ var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.j
 
   },
   computed: _objectSpread({},
-  (0, _vuex.mapState)(['car']), {
+  (0, _vuex.mapState)(['car', 'consignee']), {
     carData: {
       get: function get() {
         return this.$store.getters.doneCar;
@@ -69,7 +73,13 @@ var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.j
       return result;
     } }),
 
-  onLoad: function onLoad() {},
+  onLoad: function onLoad() {
+    var _this = this;
+    // 获取收货地址信息
+    (0, _ajax.ajaxGetAddresses)(this.$store.state.user, function (data) {
+      _this.$store.commit('setConsignee', data.result);
+    });
+  },
   methods: {
     clkQgg: function clkQgg() {
       uni.navigateBack();
@@ -77,6 +87,9 @@ var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.j
     clkSelectAll: function clkSelectAll() {
       this.selectAll = !this.selectAll;
       this.$store.commit('setSelectAll', [this.selectAll]);
+    },
+    clkConsignee: function clkConsignee() {
+      (0, _global.turnPage)('consignee');
     },
     changeCount: function changeCount(data) {
       this.EVENTHUB.$emit('updateCount', data);

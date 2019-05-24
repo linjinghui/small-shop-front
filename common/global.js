@@ -39,6 +39,9 @@ const turnPage = (type, obj) => {
 		case 'detail':
 			url = '/pages/detail/main?id=' + obj.id;
 			break;
+		case 'consignee':
+			url = '/pages/consignee/main';
+			break;
 		default:
 			url = '/pages/home/main';
 			break;

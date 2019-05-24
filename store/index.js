@@ -21,7 +21,9 @@ export default new Vuex.Store({
 			data: [],
 			// 商品数量变化
 			changeData: {}
-		}
+		},
+		// 地址
+		consignee: []
     },  
 	getters: {
 		// 返回用户信息
@@ -114,6 +116,10 @@ export default new Vuex.Store({
 			for (let i = 0; i < state.car.data.length; i++) {
 				state.car.data[i].select = select;
 			}
+		},
+		// 设置收货地址
+		setConsignee (state, data) {
+			state.consignee = data || [];
 		}
     }  
 }) 

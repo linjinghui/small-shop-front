@@ -22,6 +22,11 @@
 		{
 			"path": "pages/detail/main",
 			"style": {}
+		},
+		// 配送地址页
+		{
+			"path": "pages/consignee/main",
+			"style": {}
 		}
 		
 	],

@@ -78,9 +78,40 @@ let ajaxGetGoodInfo = (pms, callback, fail) => {
 
 // 获取推荐商品列表
 let ajaxGetRecommendGoods = (pms, callback, fail) => {
+	let params = pms;
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
 		url: URL + '/goods/recommend',
+		method: 'GET',
+		data: params,
+		header: {
+			'AUTH': AUTH
+		},
+		dataType: 'json',
+		complete: (data) => {
+			uni.hideLoading();
+		},
+		fail: () => {
+			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+		},
+		success: (data) => {
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			}
+		}
+	});
+}
+
+// 获取用户配送地址信息
+let ajaxGetAddresses = (pms, callback, fail) => {
+	let params = {
+		id: pms.openId
+	};
+	uni.showLoading({title: LOADINGTEXT});
+	uni.request({
+		url: URL + '/user/address',
 		method: 'GET',
 		data: params,
 		header: {
@@ -108,6 +139,7 @@ if (DEBUG) {
 	ajaxGetGoods = majax.ajaxGetGoods;
 	ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
 	ajaxGetRecommendGoods = majax.ajaxGetRecommendGoods;
+	ajaxGetAddresses = majax.ajaxGetAddresses;
 }
 
-export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods};
+export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses};

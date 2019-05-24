@@ -8138,6 +8138,9 @@ exports.getClientUser = getClientUser;var turnPage = function turnPage(type, obj
     case 'detail':
       url = '/pages/detail/main?id=' + obj.id;
       break;
+    case 'consignee':
+      url = '/pages/consignee/main';
+      break;
     default:
       url = '/pages/home/main';
       break;}
@@ -8161,9 +8164,9 @@ exports.turnPage = turnPage;var countRealPrice = function countRealPrice(good) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxGetRecommendGoods = exports.ajaxGetGoodInfo = exports.ajaxGetGoods = void 0; /**
-                                                                                                                                                                     * 交互接口
-                                                                                                                                                                     */
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxGetAddresses = exports.ajaxGetRecommendGoods = exports.ajaxGetGoodInfo = exports.ajaxGetGoods = void 0; /**
+                                                                                                                                                                                                * 交互接口
+                                                                                                                                                                                                */
 
 var URL = '';
 // 设置DEBUG模式，使用mock虚拟数据
@@ -8241,6 +8244,7 @@ exports.ajaxGetGoods = ajaxGetGoods;var ajaxGetGoodInfo = function ajaxGetGoodIn
 
 // 获取推荐商品列表
 exports.ajaxGetGoodInfo = ajaxGetGoodInfo;var ajaxGetRecommendGoods = function ajaxGetRecommendGoods(pms, callback, fail) {
+  var params = pms;
   uni.showLoading({ title: LOADINGTEXT });
   uni.request({
     url: URL + '/goods/recommend',
@@ -8264,13 +8268,44 @@ exports.ajaxGetGoodInfo = ajaxGetGoodInfo;var ajaxGetRecommendGoods = function a
       }
     } });
 
-};exports.ajaxGetRecommendGoods = ajaxGetRecommendGoods;
+};
+
+// 获取用户配送地址信息
+exports.ajaxGetRecommendGoods = ajaxGetRecommendGoods;var ajaxGetAddresses = function ajaxGetAddresses(pms, callback, fail) {
+  var params = {
+    id: pms.openId };
+
+  uni.showLoading({ title: LOADINGTEXT });
+  uni.request({
+    url: URL + '/user/address',
+    method: 'GET',
+    data: params,
+    header: {
+      'AUTH': AUTH },
+
+    dataType: 'json',
+    complete: function complete(data) {
+      uni.hideLoading();
+    },
+    fail: function fail() {
+      uni.showToast({ title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom' });
+    },
+    success: function success(data) {
+      if (data.code === 200) {
+        callback && callback(data);
+      } else if (fail) {
+        fail(data);
+      }
+    } });
+
+};exports.ajaxGetAddresses = ajaxGetAddresses;
 
 if (DEBUG) {
   var majax = __webpack_require__(/*! ./mock.js */ "F:\\linjinghui\\github\\seafood\\data\\mock.js");
   exports.ajaxGetGoods = ajaxGetGoods = majax.ajaxGetGoods;
   exports.ajaxGetGoodInfo = ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
   exports.ajaxGetRecommendGoods = ajaxGetRecommendGoods = majax.ajaxGetRecommendGoods;
+  exports.ajaxGetAddresses = ajaxGetAddresses = majax.ajaxGetAddresses;
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
@@ -8284,7 +8319,7 @@ if (DEBUG) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxGetGoods = ajaxGetGoods;exports.ajaxGetGoodInfo = ajaxGetGoodInfo;exports.ajaxGetRecommendGoods = ajaxGetRecommendGoods;var _mock = _interopRequireDefault(__webpack_require__(/*! @/static/mock/mock.js */ "F:\\linjinghui\\github\\seafood\\static\\mock\\mock.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxGetGoods = ajaxGetGoods;exports.ajaxGetGoodInfo = ajaxGetGoodInfo;exports.ajaxGetRecommendGoods = ajaxGetRecommendGoods;exports.ajaxGetAddresses = ajaxGetAddresses;var _mock = _interopRequireDefault(__webpack_require__(/*! @/static/mock/mock.js */ "F:\\linjinghui\\github\\seafood\\static\\mock\\mock.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 var Random = _mock.default.Random;
 var dure = 1000;
 var LOADINGTEXT = '加载中...';
@@ -8408,6 +8443,27 @@ function ajaxGetRecommendGoods(pms, callback) {
   uni.showLoading({ title: LOADINGTEXT });
   setTimeout(function () {uni.hideLoading();callback && callback(data);}, Math.floor(Math.random() * dure));
 }
+
+// 获取用户配送地址信息
+function ajaxGetAddresses(pms, callback) {
+  var data = _mock.default.mock({
+    'msg': '',
+    'code': 200,
+    'result|0-3': [{
+      'id': '@id()',
+      // 收获人名称
+      'name': '@ctitle(3, 8)',
+      // 收获人电话
+      'mobile': /^1[385][1-9]\d{8}/,
+      // 收获地址
+      'address': '@ctitle(10, 20)',
+      // 收获门牌地址
+      'doorAddress': '@ctitle(5, 10)' }] });
+
+
+  uni.showLoading({ title: LOADINGTEXT });
+  setTimeout(function () {uni.hideLoading();callback && callback(data);}, Math.floor(Math.random() * dure));
+}
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),
@@ -8454,6 +8510,23 @@ createApp(app).$mount();
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
 var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/car/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\car\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_main.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
+
+/***/ }),
+
+/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Fconsignee%2Fmain\"}":
+/*!********************************************************************************!*\
+  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Fconsignee%2Fmain"} ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\linjinghui\\github\\seafood\\pages.json");
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/consignee/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\consignee\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_main.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
@@ -17130,8 +17203,10 @@ new _vuex.default.Store({
       // 商品列表
       data: [],
       // 商品数量变化
-      changeData: {} } },
+      changeData: {} },
 
+    // 地址
+    consignee: [] },
 
   getters: {
     // 返回用户信息
@@ -17224,6 +17299,10 @@ new _vuex.default.Store({
       for (var i = 0; i < state.car.data.length; i++) {
         state.car.data[i].select = select;
       }
+    },
+    // 设置收货地址
+    setConsignee: function setConsignee(state, data) {
+      state.consignee = data || [];
     } } });exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
