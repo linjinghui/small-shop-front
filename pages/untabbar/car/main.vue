@@ -12,7 +12,7 @@
 				<view class="wrap-address">
 					配送至：福建省奥林匹克体育中心体育馆<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
 				</view>
-				<good-list v-model="car.data" :nselect="true"></good-list>
+				<good-list v-model="carData" :nselect="true"></good-list>
 			</scroll-view>
 			<view class="footer">
 				<view class="wrap-icon">
@@ -32,7 +32,6 @@
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import goodList from '@/components/good-list/good-list.vue';
-	import {turnPage} from '@/common/global.js';
 	export default {
 		components: {
 			uniIcon,
@@ -45,12 +44,20 @@
 			};
 		},
 		computed: {
-			...mapState(['car'])
+			...mapState(['car']),
+			carData: {
+				get () {
+					return this.$store.getters.doneCardata;
+				},
+				set () {
+					// 
+				}
+			}
 		},
 		onLoad() {},
 		methods: {
 			clkQgg () {
-				turnPage('home');
+				uni.navigateBack();
 			}
 		}
 	};

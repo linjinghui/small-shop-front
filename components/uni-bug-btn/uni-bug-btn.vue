@@ -27,6 +27,11 @@
 				default: 50
 			}
 		},
+		watch: {
+			value (val) {
+				this.num = val;
+			}
+		},
 		methods: {
 			clkMinus () {
 				this.num > 0 && (this.num -= 1);

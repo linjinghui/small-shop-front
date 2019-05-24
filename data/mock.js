@@ -51,7 +51,8 @@ export function ajaxGetGoodInfo (pms, callback) {
 		'code': 200,
 		'result': {
 			'id': '@id()',
-			// 封面图片地址
+			'pic': "@image(80x80)",
+			// 广告图片
 			'covers|1-2': ['https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg'],
 			// 商品名称
 			'name|1': '@ctitle(3, 8)',

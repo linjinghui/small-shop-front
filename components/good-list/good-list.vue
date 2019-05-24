@@ -1,7 +1,7 @@
 <!-- 商品列表组件 -->
 <template>
 	<view class="wrap-good-list" :class="{'select':nselect,'small':small}">
-		<view class="wrap-good-item" v-for="(info,index) in value" :key="info.id" @click="clkLine(info)">
+		<view class="wrap-good-item" v-for="(info,index) in list" :key="info.id" @click="clkLine(info)">
 			<span class="label" v-if="!nselect&&!small" v-for="lbinfo in info.label" :key="lbinfo.id" :style="{'color':lbinfo.color,'backgroundColor':lbinfo.bcolor}">{{lbinfo.text}}</span>
 			<view class="wrap-icon" v-if="nselect&&!small">
 				<uni-iconfont class="icon center-hv" :type="info.select?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelect(info)" />
@@ -20,7 +20,7 @@
 				</view>	
 			</view>
 			<view class="wrap-btn" @click.stop>
-				<bug-btn class="bugBtn" v-model="info.count" @click="clkChoose($event,info)"></bug-btn>
+				<bug-btn class="bugBtn" v-model="info.count" :max="info.stock" @click="clkChoose($event,info)"></bug-btn>
 			</view>
 		</view>
 	</view>
@@ -38,7 +38,7 @@
 		},
 		data () {
 			return {
-				select: false
+				list: this.value
 			}
 		},
 		props: {
@@ -59,8 +59,11 @@
 				}
 			}
 		},
-		computed: {},
-		watch: {},
+		watch: {
+			value (val) {
+				this.list = val;
+			}
+		},
 		onLoad() {},
 		methods: {
 			// 选中商品
@@ -69,8 +72,11 @@
 					uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
 				} else {
 					// 勾选中商品
-					data.select = true;
+					this.$set(data, 'select', true);
 					this.$store.commit('addGoodToCar', data);
+					// 数量变化监听
+					this.$emit('changeCount', data);
+					this.$emit('input', this.list);
 				}
 			},
 			clkLine (data) {
@@ -78,6 +84,7 @@
 			},
 			clkSelect (data) {
 				this.$set(data, 'select', !data.select);
+				this.$emit('input', this.list);
 			}
 		}
 	}

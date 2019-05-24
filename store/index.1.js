@@ -5,51 +5,29 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({  
     state: {  
-		// 用户信息
         user: {
 			openId: '',
-			nickName: '未登录',
+			nickName: '',
 			avatarUrl: require('../static/img/avater.png')
 		},
-		// 购物车
 		car: {
-			// 商品数量
 			total: 0,
-			// 商品总价
 			count: 0,
-			// 商品列表
 			data: [],
 			// 商品数量变化
 			changeData: {}
 		}
     },  
 	getters: {
-		// 返回用户信息
-		doneUser: state => {
-			return state.user;
-		},
-		// 返回购物车中的商品信息
-		doneCar: state => {
+		doneCardata: state => {
 		  return state.car.data;
-		},
-		// 返回购物车中的商品数量
-		doneCount: state => {
-		  return state.car.count;
-		},
-		// 返回购物车中的商品总价
-		doneTotal: state => {
-		  return state.car.total;
 		}
 	},
     mutations: {  
-		// 设置登录用户
         setUser (state, data) {
 			state.user = data;
         },
 		// 商品加入购物车
-		addGood (state, data) {
-			
-		},
 		addGoodToCar (state, good) {
 			let count = good.count;	
 			// 判断商品是否已经在购物车中，如果是则更新数量，不是则添加进购物车 ，如果数量是0 则移除商品

@@ -15,7 +15,7 @@
 			<p class="name">{{goodInfo.name}}</p>
 			<p class="desc">{{goodInfo.desc}}</p>
 			<p class="wrap-price">
-				<span class="price">{{utlRealPrice(goodInfo)}}</span>
+				<span class="price">{{goodInfo.rprice}}</span>
 				<span class="price del" v-if="goodInfo.rebate<10">{{goodInfo.price}}</span>
 			</p>
 			<view class="wrap-labels">
@@ -32,7 +32,7 @@
 					</view>
 					<view class="uni-product-title">{{good.name}}</view>
 					<view class="uni-product-price">
-						<text class="price">{{utlRealPrice(good)}}</text>
+						<text class="price">{{good.rprice}}</text>
 						<text class="price del">{{good.price}}</text>
 						<text class="uni-product-tip" v-if="good.label" :style="{color:good.label.color,backgroundColor:good.label.bcolor}">{{good.label.text}}</text>
 					</view>
@@ -45,11 +45,11 @@
 		</view>
 		<view class="wrap-placehold"></view>
 		<footer>
-			<view class="wrap-btn-car">
+			<view class="wrap-btn-car" @click="clkCar">
 				<uni-iconfont class="icon" size="24" type="car" />购物车
 				<uni-badge class="badge" :text="car.count" type="error" />
 			</view>
-			<button>加入购物车</button>
+			<button @click="clkAddCar">加入购物车</button>
 		</footer>
 	</view>
 </template>
@@ -59,7 +59,7 @@
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
 	import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue'
 	import uniBadge from '@/components/uni-badge/uni-badge.vue'
-	import {countRealPrice} from '@/common/global.js'
+	import {turnPage} from '@/common/global.js'
 	import {ajaxGetGoodInfo, ajaxGetRecommendGoods} from '@/data/ajax.js'
 	
 	export default {
@@ -106,9 +106,15 @@
 			change (e) {
 				this.current = e.detail.current;
 			},
-			// 计算折扣后的真实价格
-			utlRealPrice (good) {
-				return countRealPrice(good);
+			clkCar () {
+				turnPage('car');
+			},
+			clkAddCar () {
+				this.$set(this.goodInfo, '_from', 'detail');
+				this.$set(this.goodInfo, 'count', 1);
+				this.$set(this.goodInfo, 'select', true);
+				this.$store.commit('addGoodToCar', this.goodInfo);
+				uni.showToast({'title': '添加成功，在购物车等您~'});
 			}
 		}
 	}

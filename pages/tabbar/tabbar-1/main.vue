@@ -63,6 +63,30 @@ export default {
 			goods: []
 		};
 	},
+	watch: {
+		'car.changeData': {
+			'deep': true,
+			'handler': function (val) {
+				let info = '';
+				let id = '';
+				let count = '';
+				for (let key in val) {
+					id = key;
+					count = val[key];
+				}
+				for (let i = 0; i < this.goods.length; i++) {
+					if (this.goods[i].id === id && this.goods[i].count !== count) {
+						info = this.goods[i];
+						break;
+					}
+				}
+				
+				if (info !== '' && count !== '') {
+					this.$set(info, 'count', count);	
+				}
+			}
+		}
+	},
 	computed: {
 		...mapState(['user', 'car'])
 	},
