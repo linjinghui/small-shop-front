@@ -28,19 +28,19 @@ const turnPage = (type, obj) => {
 	let url = '';
 	switch (type) {
 		case 'home':
-			url = '/pages/tabbar/tabbar-1/main';
+			url = '/pages/home/main';
 			break;
 		case 'my':
-			url = '/pages/untabbar/my/main';
+			url = '/pages/my/main';
 			break;
 		case 'car':
-			url = '/pages/untabbar/car/main';
+			url = '/pages/car/main';
 			break;
 		case 'detail':
-			url = '/pages/untabbar/detail/main?id=' + obj.id;
+			url = '/pages/detail/main?id=' + obj.id;
 			break;
 		default:
-			url = '/pages/tabbar/tabbar-1/main';
+			url = '/pages/home/main';
 			break;
 	}
 	uni.navigateTo({url: url});

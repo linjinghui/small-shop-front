@@ -4,7 +4,7 @@
 			<view class="wrap-swiper">
 				<uni-swiper-dot :info="covers" :current="current" mode="long" :dots-styles="dotsStyles">
 					<swiper class="swiper-box" @change="change">
-						<swiper-item v-for="(item ,index) in covers" :key="index">
+						<swiper-item v-for="(item,index) in covers" :key="index">
 							<view :class="item.colorClass" class="swiper-item">
 								<image :src="item.url" mode="aspectFill" />
 							</view>
@@ -41,7 +41,7 @@
 		</view>
 		<view class="wrap-detail" v-if="goodInfo.dtlpics.length>0">
 			<view class="title"><span>商品详情</span></view>
-			<image :lazy-load="true" mode="widthFix" v-for="item in goodInfo.dtlpics" :key="item" :src="item"></image>
+			<image :lazy-load="true" mode="widthFix" v-for="(item,index) in goodInfo.dtlpics" :key="index" :src="item"></image>
 		</view>
 		<view class="wrap-placehold"></view>
 		<footer>
@@ -110,11 +110,13 @@
 				turnPage('car');
 			},
 			clkAddCar () {
-				this.$set(this.goodInfo, '_from', 'detail');
-				this.$set(this.goodInfo, 'count', 1);
+				let _this = this;
 				this.$set(this.goodInfo, 'select', true);
-				this.$store.commit('addGoodToCar', this.goodInfo);
-				uni.showToast({'title': '添加成功，在购物车等您~'});
+				this.$store.commit('addGood', [this.goodInfo, (data) => {
+					// 添加商品到购物车后的回调
+					_this.EVENTHUB.$emit('updateCount', data);
+					uni.showToast({'title': '添加成功，在购物车等您~'});
+				}]);
 			}
 		}
 	}

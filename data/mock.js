@@ -50,7 +50,7 @@ export function ajaxGetGoodInfo (pms, callback) {
 		'msg': '',
 		'code': 200,
 		'result': {
-			'id': '@id()',
+			'id': pms.id,
 			'pic': "@image(80x80)",
 			// 广告图片
 			'covers|1-2': ['https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg'],

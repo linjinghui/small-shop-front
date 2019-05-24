@@ -36,21 +36,15 @@
 			clkMinus () {
 				this.num > 0 && (this.num -= 1);
 				this.$emit('input', this.num);
-				this.$emit('click', {
-					'num': this.num
-				});
+				this.$emit('click', {'num': this.num});
 			},
 			clkPlus () {
 				if (this.num < this.max) {
 					this.num += 1;
 					this.$emit('input', this.num);
-					this.$emit('click', {
-						'num': this.num
-					});
+					this.$emit('click', {'num': this.num});
 				} else {
-					this.$emit('click', {
-						'error': '已达上限'
-					});
+					this.$emit('click', {'error': '已达上限'});
 				}
 			}
 		}

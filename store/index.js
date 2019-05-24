@@ -39,6 +39,16 @@ export default new Vuex.Store({
 		// 返回购物车中的商品总价
 		doneTotal: state => {
 		  return state.car.total;
+		},
+		doneSelectedCount: state => {
+			let seletedCount = 0;
+			for (let i = 0;i < state.car.data.length;i++) {
+				let _item = state.car.data[i];
+				if (_item.select) {
+					seletedCount += 1;
+				}
+			}
+			return seletedCount;
 		}
 	},
     mutations: {  
@@ -47,12 +57,9 @@ export default new Vuex.Store({
 			state.user = data;
         },
 		// 商品加入购物车
-		addGood (state, data) {
-			
-		},
-		addGoodToCar (state, good) {
+		addGood (state, [good, callback]) {
+			good = JSON.parse(JSON.stringify(good));
 			let count = good.count;	
-			// 判断商品是否已经在购物车中，如果是则更新数量，不是则添加进购物车 ，如果数量是0 则移除商品
 			// s-1 获取商品在购物车中的位置
 			let index = '';
 			for (let i = 0;i < state.car.data.length;i++) {
@@ -63,41 +70,64 @@ export default new Vuex.Store({
 					break;
 				}
 			}
+						
 			// s-2 更新商品数量
-			if (good.from === 'detail') {
-				// 商品来源详情页
-				good.count += 1;
-			} else {
-				good.count = count;	
-			}
-			// if (count === '+1') {
-			// 	(good.count === undefined) && (good.count = 0);
-			// 	good.count += 1;
-			// } else {
-			// 	
-			// }
-			// s-2-1 维护商品数量变化
-			state.car.changeData = JSON.parse('{\"' + good.id + '\":' + good.count + '}');
-			// s-3 判断数量是0，移除商品
-			if (index !== '' && count <= 0) {
-				state.car.data.splice(index, 1);
+			if (!isNaN(count)) {
+				// 有指定数量，直接设置
+				good.count = count;
 			} else if (index === '') {
-				// s-4 商品不在购物车中，添加进购物车
-				state.car.data.push(good);
+				// 没有指定数量，且不存在购物车中
+				good.count = 1;
+			} else {
+				// 没有指定数量，但已存在购物车中
+				good.count += 1;
 			}
-			// s-5 统计购物车中的商品总数，总价
-			let total = 0;
+			
+			// s-2-1 判断商品库存
+			console.log(good);
+			if (good.count > good.stock) {
+				uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
+				return;
+			}
+
+			// s-3 维护购物车中商品
+			if (index === '') {
+				// 商品添加进入购物车中
+				state.car.data.push(good);
+			} else if (good.count <= 0) {
+				// 商品从购物车中移除
+				state.car.data.splice(index, 1);
+			} else {
+				// 更新商品
+				state.car.data.splice(index, 1, good);
+			}
+			
+			// s-4 统计购物车中的商品总数、总价
 			let totalCount = 0;
+			let totalMoney = 0;
 			for (let z = 0;z < state.car.data.length;z++) {
 				let _good = state.car.data[z];
 				let _count = _good.count;
-				totalCount += _count;
-				total += _good.rprice * _count;
+				let _rprice = _good.rprice;
+				let _select = _good.select;
+				if (_select) {
+					totalCount += _count;
+					totalMoney += _rprice * _count;
+				}
 			}
 			state.car.count = totalCount;
-			state.car.total = total.toFixed(2);
-			console.log('==store==');
-			console.log(state.car.data);
+			state.car.total = totalMoney.toFixed(2);
+			
+			callback && callback(good);
+		},
+		// 设置商品勾选状态
+		selectItem (state, [index, select, type]) {
+			state.car.data[index].select = select;
+			// console.log('==设置商品勾选状态==');
+			// console.log(index);
+			// console.log(select);
+			// console.log(type);
+			// console.log(state.car.data);
 		}
     }  
 }) 

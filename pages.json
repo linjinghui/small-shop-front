@@ -5,27 +5,22 @@
 		
 		// 首页
 		{
-			"path": "pages/tabbar/tabbar-1/main",
-			"style": {}
-		},
-		// 
-		{
-			"path": "pages/tabbar/tabbar-2/main",
+			"path": "pages/home/main",
 			"style": {}
 		},
 		// 购物车
 		{
-			"path": "pages/untabbar/car/main",
+			"path": "pages/car/main",
 			"style": {}
 		},
 		// 我的
 		{
-			"path": "pages/untabbar/my/main",
+			"path": "pages/my/main",
 			"style": {}
 		},
 		// 详情页
 		{
-			"path": "pages/untabbar/detail/main",
+			"path": "pages/detail/main",
 			"style": {}
 		}
 		

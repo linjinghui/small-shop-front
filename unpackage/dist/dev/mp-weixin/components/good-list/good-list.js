@@ -83,7 +83,7 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
       } else {
         // 勾选中商品
         this.$set(data, 'select', true);
-        this.$store.commit('addGoodToCar', data);
+        this.$store.commit('addGood', [data]);
         // 数量变化监听
         this.$emit('changeCount', data);
         this.$emit('input', this.list);
@@ -92,9 +92,23 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
     clkLine: function clkLine(data) {
       this.$emit('click', data);
     },
-    clkSelect: function clkSelect(data) {
-      this.$set(data, 'select', !data.select);
-      this.$emit('input', this.list);
+    clkSelect: function clkSelect(index, data) {
+      var select = !data.select;
+      this.$set(data, 'select', select);
+      this.$store.commit('selectItem', [index, select]);
+    },
+    utlGetSelectResult: function utlGetSelectResult() {
+      console.log(this.list);
+      var selectCount = 0;
+      var selectMoney = 0;
+      for (var i = 0; i < this.list.length; i++) {
+        var _select = this.list[i].select;
+        var _count = this.list[i].count;
+        // if () {
+        // 	selectCount += 1;
+        // 	selectMoney += this.list[i].;
+        // }
+      }
     } } };exports.default = _default2;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

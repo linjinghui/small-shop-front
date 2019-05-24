@@ -12,14 +12,14 @@
 				<view class="wrap-address">
 					配送至：福建省奥林匹克体育中心体育馆<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
 				</view>
-				<good-list v-model="carData" :nselect="true"></good-list>
+				<good-list v-model="carData" :nselect="true" @changeCount="changeCount"></good-list>
 			</scroll-view>
 			<view class="footer">
 				<view class="wrap-icon">
 					<view class="icon-bg center-hv" v-if="selectAll"></view>
 					<uni-iconfont class="icon center-hv" :type="selectAll?'gx':'wgx'" size="26" color="#ff9000" @click="selectAll=!selectAll" />
 				</view>
-				已选 ({{car.count}})
+				已选 ({{selectedCount}})
 				<button>去预定</button>
 				<p class="price total">{{car.total}}</p>
 			</view>
@@ -47,17 +47,23 @@
 			...mapState(['car']),
 			carData: {
 				get () {
-					return this.$store.getters.doneCardata;
+					return this.$store.getters.doneCar;
 				},
 				set () {
 					// 
 				}
+			},
+			selectedCount () {
+				return this.$store.getters.doneSelectedCount;
 			}
 		},
 		onLoad() {},
 		methods: {
 			clkQgg () {
 				uni.navigateBack();
+			},
+			changeCount (data) {
+				this.EVENTHUB.$emit('updateCount', data);
 			}
 		}
 	};

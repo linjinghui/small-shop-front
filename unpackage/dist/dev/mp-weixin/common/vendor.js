@@ -8127,19 +8127,19 @@ exports.getClientUser = getClientUser;var turnPage = function turnPage(type, obj
   var url = '';
   switch (type) {
     case 'home':
-      url = '/pages/tabbar/tabbar-1/main';
+      url = '/pages/home/main';
       break;
     case 'my':
-      url = '/pages/untabbar/my/main';
+      url = '/pages/my/main';
       break;
     case 'car':
-      url = '/pages/untabbar/car/main';
+      url = '/pages/car/main';
       break;
     case 'detail':
-      url = '/pages/untabbar/detail/main?id=' + obj.id;
+      url = '/pages/detail/main?id=' + obj.id;
       break;
     default:
-      url = '/pages/tabbar/tabbar-1/main';
+      url = '/pages/home/main';
       break;}
 
   uni.navigateTo({ url: url });
@@ -8336,7 +8336,7 @@ function ajaxGetGoodInfo(pms, callback) {
     'msg': '',
     'code': 200,
     'result': {
-      'id': '@id()',
+      'id': pms.id,
       'pic': "@image(80x80)",
       // 广告图片
       'covers|1-2': ['https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg'],
@@ -8432,7 +8432,7 @@ _vue.default.config.productionTip = false;
 _App.default.mpType = 'app';
 
 // 全局事件
-_vue.default.prototype.$eventHub = new _vue.default();
+_vue.default.prototype.EVENTHUB = new _vue.default();
 
 var app = new _vue.default(_objectSpread({},
 _App.default));
@@ -8442,10 +8442,10 @@ createApp(app).$mount();
 
 /***/ }),
 
-/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Ftabbar%2Ftabbar-1%2Fmain\"}":
-/*!****************************************************************************************!*\
-  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Ftabbar%2Ftabbar-1%2Fmain"} ***!
-  \****************************************************************************************/
+/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Fcar%2Fmain\"}":
+/*!**************************************************************************!*\
+  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Fcar%2Fmain"} ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8453,16 +8453,16 @@ createApp(app).$mount();
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\linjinghui\\github\\seafood\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/tabbar/tabbar-1/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\tabbar\\tabbar-1\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/car/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\car\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_main.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Ftabbar%2Ftabbar-2%2Fmain\"}":
-/*!****************************************************************************************!*\
-  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Ftabbar%2Ftabbar-2%2Fmain"} ***!
-  \****************************************************************************************/
+/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Fdetail%2Fmain\"}":
+/*!*****************************************************************************!*\
+  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Fdetail%2Fmain"} ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8470,16 +8470,16 @@ createPage(_main.default);
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\linjinghui\\github\\seafood\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/tabbar/tabbar-2/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\tabbar\\tabbar-2\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/detail/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\detail\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_main.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Funtabbar%2Fcar%2Fmain\"}":
-/*!*************************************************************************************!*\
-  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Funtabbar%2Fcar%2Fmain"} ***!
-  \*************************************************************************************/
+/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Fhome%2Fmain\"}":
+/*!***************************************************************************!*\
+  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Fhome%2Fmain"} ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8487,16 +8487,16 @@ createPage(_main.default);
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\linjinghui\\github\\seafood\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/untabbar/car/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\untabbar\\car\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/home/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\home\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_main.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Funtabbar%2Fdetail%2Fmain\"}":
-/*!****************************************************************************************!*\
-  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Funtabbar%2Fdetail%2Fmain"} ***!
-  \****************************************************************************************/
+/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Fmy%2Fmain\"}":
+/*!*************************************************************************!*\
+  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Fmy%2Fmain"} ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8504,24 +8504,7 @@ createPage(_main.default);
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\linjinghui\\github\\seafood\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/untabbar/detail/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\untabbar\\detail\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_main.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
-
-/***/ }),
-
-/***/ "F:\\linjinghui\\github\\seafood\\main.js?{\"page\":\"pages%2Funtabbar%2Fmy%2Fmain\"}":
-/*!************************************************************************************!*\
-  !*** F:/linjinghui/github/seafood/main.js?{"page":"pages%2Funtabbar%2Fmy%2Fmain"} ***!
-  \************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\linjinghui\\github\\seafood\\pages.json");
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/untabbar/my/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\untabbar\\my\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _main = _interopRequireDefault(__webpack_require__(/*! ./pages/my/main.vue */ "F:\\linjinghui\\github\\seafood\\pages\\my\\main.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_main.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
@@ -17125,8 +17108,8 @@ module.exports = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3k
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}
 
 _vue.default.use(_vuex.default);var _default =
 
@@ -17166,6 +17149,16 @@ new _vuex.default.Store({
     // 返回购物车中的商品总价
     doneTotal: function doneTotal(state) {
       return state.car.total;
+    },
+    doneSelectedCount: function doneSelectedCount(state) {
+      var seletedCount = 0;
+      for (var i = 0; i < state.car.data.length; i++) {
+        var _item = state.car.data[i];
+        if (_item.select) {
+          seletedCount += 1;
+        }
+      }
+      return seletedCount;
     } },
 
   mutations: {
@@ -17174,12 +17167,9 @@ new _vuex.default.Store({
       state.user = data;
     },
     // 商品加入购物车
-    addGood: function addGood(state, data) {
-
-    },
-    addGoodToCar: function addGoodToCar(state, good) {
+    addGood: function addGood(state, _ref) {var _ref2 = _slicedToArray(_ref, 2),good = _ref2[0],callback = _ref2[1];
+      good = JSON.parse(JSON.stringify(good));
       var count = good.count;
-      // 判断商品是否已经在购物车中，如果是则更新数量，不是则添加进购物车 ，如果数量是0 则移除商品
       // s-1 获取商品在购物车中的位置
       var index = '';
       for (var i = 0; i < state.car.data.length; i++) {
@@ -17190,42 +17180,66 @@ new _vuex.default.Store({
           break;
         }
       }
+
       // s-2 更新商品数量
-      if (good.from === 'detail') {
-        // 商品来源详情页
-        good.count += 1;
-      } else {
+      if (!isNaN(count)) {
+        // 有指定数量，直接设置
         good.count = count;
-      }
-      // if (count === '+1') {
-      // 	(good.count === undefined) && (good.count = 0);
-      // 	good.count += 1;
-      // } else {
-      // 	
-      // }
-      // s-2-1 维护商品数量变化
-      state.car.changeData = JSON.parse('{\"' + good.id + '\":' + good.count + '}');
-      // s-3 判断数量是0，移除商品
-      if (index !== '' && count <= 0) {
-        state.car.data.splice(index, 1);
       } else if (index === '') {
-        // s-4 商品不在购物车中，添加进购物车
-        state.car.data.push(good);
+        // 没有指定数量，且不存在购物车中
+        good.count = 1;
+      } else {
+        // 没有指定数量，但已存在购物车中
+        good.count += 1;
       }
-      // s-5 统计购物车中的商品总数，总价
-      var total = 0;
+
+      // s-2-1 判断商品库存
+      console.log(good);
+      if (good.count > good.stock) {
+        uni.showToast({ title: '无法购买更多', icon: 'none', position: 'bottom' });
+        return;
+      }
+
+      // s-3 维护购物车中商品
+      if (index === '') {
+        // 商品添加进入购物车中
+        state.car.data.push(good);
+      } else if (good.count <= 0) {
+        // 商品从购物车中移除
+        state.car.data.splice(index, 1);
+      } else {
+        // 更新商品
+        state.car.data.splice(index, 1, good);
+      }
+
+      // s-4 统计购物车中的商品总数、总价
       var totalCount = 0;
+      var totalMoney = 0;
       for (var z = 0; z < state.car.data.length; z++) {
         var _good = state.car.data[z];
         var _count = _good.count;
-        totalCount += _count;
-        total += _good.rprice * _count;
+        var _rprice = _good.rprice;
+        var _select = _good.select;
+        if (_select) {
+          totalCount += _count;
+          totalMoney += _rprice * _count;
+        }
       }
       state.car.count = totalCount;
-      state.car.total = total.toFixed(2);
-      console.log('==store==');
-      console.log(state.car.data);
+      state.car.total = totalMoney.toFixed(2);
+
+      callback && callback(good);
+    },
+    // 设置商品勾选状态
+    selectItem: function selectItem(state, _ref3) {var _ref4 = _slicedToArray(_ref3, 3),index = _ref4[0],select = _ref4[1],type = _ref4[2];
+      state.car.data[index].select = select;
+      // console.log('==设置商品勾选状态==');
+      // console.log(index);
+      // console.log(select);
+      // console.log(type);
+      // console.log(state.car.data);
     } } });exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ })
 

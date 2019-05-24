@@ -1,10 +1,9 @@
 {
   "pages": [
-    "pages/tabbar/tabbar-1/main",
-    "pages/tabbar/tabbar-2/main",
-    "pages/untabbar/car/main",
-    "pages/untabbar/my/main",
-    "pages/untabbar/detail/main"
+    "pages/home/main",
+    "pages/car/main",
+    "pages/my/main",
+    "pages/detail/main"
   ],
   "subPackages": [],
   "window": {
@@ -13,5 +12,6 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

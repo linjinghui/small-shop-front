@@ -27,9 +27,9 @@
 		</view>
 		<view class="footer">
 			<image :src="user.avatarUrl" @click="clkImage"></image>
-			已选 ({{car.count}})
+			已选 ({{totalCount}})
 			<button @click="clkConfirm">去预定</button>
-			<p class="price total">{{car.total}}</p>
+			<p class="price total">{{totalMoney}}</p>
 		</view>
 	</view>
 </template>
@@ -64,43 +64,55 @@ export default {
 		};
 	},
 	watch: {
-		'car.changeData': {
-			'deep': true,
-			'handler': function (val) {
-				let info = '';
-				let id = '';
-				let count = '';
-				for (let key in val) {
-					id = key;
-					count = val[key];
-				}
-				for (let i = 0; i < this.goods.length; i++) {
-					if (this.goods[i].id === id && this.goods[i].count !== count) {
-						info = this.goods[i];
-						break;
-					}
-				}
-				
-				if (info !== '' && count !== '') {
-					this.$set(info, 'count', count);	
-				}
-			}
-		}
+		// 'car.changeData': {
+		// 	'deep': true,
+		// 	'handler': function (val) {
+		// 		let info = '';
+		// 		let id = '';
+		// 		let count = '';
+		// 		for (let key in val) {
+		// 			id = key;
+		// 			count = val[key];
+		// 		}
+		// 		for (let i = 0; i < this.goods.length; i++) {
+		// 			if (this.goods[i].id === id && this.goods[i].count !== count) {
+		// 				info = this.goods[i];
+		// 				break;
+		// 			}
+		// 		}
+		// 		
+		// 		if (info !== '' && count !== '') {
+		// 			this.$set(info, 'count', count);	
+		// 		}
+		// 	}
+		// }
 	},
 	computed: {
-		...mapState(['user', 'car'])
+		// ...mapState(['user', 'car'])
+		user () {
+			return this.$store.getters.doneUser;
+		},
+		totalCount () {
+			return this.$store.getters.doneCount;
+		},
+		totalMoney () {
+			return this.$store.getters.doneTotal;
+		}
 	},
 	onLoad() {
 		let _this = this;
 		let result = ajaxGetGoods('', function (data) {
 			data = data.result || [];
-			// 注入初始数量
+			// 注入初始数量 0
 			data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"stock"');
 			_this.goods = JSON.parse(data);
 		});
+		// 获取微信用户信息
 		getClientUser(function (userInfo) {
 			_this.$store.commit('setUser', userInfo);
 		});
+		
+		this.EVENTHUB.$on('updateCount', this.utlUpdateGoodCount);
 	},
 	methods: {
 		// 顶部排序导航点击
@@ -136,6 +148,21 @@ export default {
 		},
 		clkLine (data) {
 			turnPage('detail', data);
+		},
+		// 更新商品数量
+		utlUpdateGoodCount (data) {
+			let id = data.id;
+			let count = data.count;
+			for (let i = 0; i < this.goods.length; i++) {
+				if (this.goods[i].id === id && this.goods[i].count !== count) {
+					data = this.goods[i];
+					break;
+				}
+			}
+				
+			if (count || count === 0) {
+				this.$set(data, 'count', count);	
+			}
 		}
 	}
 };

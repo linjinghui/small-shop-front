@@ -9,7 +9,7 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 // 全局事件
-Vue.prototype.$eventHub = new Vue();
+Vue.prototype.EVENTHUB = new Vue();
 
 const app = new Vue({
     ...App

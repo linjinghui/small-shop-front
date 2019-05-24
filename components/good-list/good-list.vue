@@ -4,7 +4,7 @@
 		<view class="wrap-good-item" v-for="(info,index) in list" :key="info.id" @click="clkLine(info)">
 			<span class="label" v-if="!nselect&&!small" v-for="lbinfo in info.label" :key="lbinfo.id" :style="{'color':lbinfo.color,'backgroundColor':lbinfo.bcolor}">{{lbinfo.text}}</span>
 			<view class="wrap-icon" v-if="nselect&&!small">
-				<uni-iconfont class="icon center-hv" :type="info.select?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelect(info)" />
+				<uni-iconfont class="icon center-hv" :type="info.select?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelect(index,info)" />
 			</view>
 			<view class="wrap-img">
 				<image class="center-hv" lazy-load="true" :src="info.pic"></image>
@@ -73,7 +73,7 @@
 				} else {
 					// 勾选中商品
 					this.$set(data, 'select', true);
-					this.$store.commit('addGoodToCar', data);
+					this.$store.commit('addGood', [data]);
 					// 数量变化监听
 					this.$emit('changeCount', data);
 					this.$emit('input', this.list);
@@ -82,9 +82,23 @@
 			clkLine (data) {
 				this.$emit('click', data);
 			},
-			clkSelect (data) {
-				this.$set(data, 'select', !data.select);
-				this.$emit('input', this.list);
+			clkSelect (index, data) {
+				let select = !data.select;
+				this.$set(data, 'select', select);
+				this.$store.commit('selectItem', [index, select]);
+			},
+			utlGetSelectResult () {
+				console.log(this.list);
+				let selectCount = 0;
+				let selectMoney = 0;
+				for (let i = 0; i < this.list.length; i++) {
+					let _select = this.list[i].select;
+					let _count = this.list[i].count;
+					// if () {
+					// 	selectCount += 1;
+					// 	selectMoney += this.list[i].;
+					// }
+				}
 			}
 		}
 	}
