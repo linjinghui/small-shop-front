@@ -27,9 +27,9 @@
 		</view>
 		<view class="footer">
 			<image :src="user.avatarUrl" @click="clkImage"></image>
-			已选 ({{totalCount}})
+			已选 ({{selectResult.selectCount}})
 			<button @click="clkConfirm">去预定</button>
-			<p class="price total">{{totalMoney}}</p>
+			<p class="price total">{{selectResult.selectMoney}}</p>
 		</view>
 	</view>
 </template>
@@ -63,40 +63,13 @@ export default {
 			goods: []
 		};
 	},
-	watch: {
-		// 'car.changeData': {
-		// 	'deep': true,
-		// 	'handler': function (val) {
-		// 		let info = '';
-		// 		let id = '';
-		// 		let count = '';
-		// 		for (let key in val) {
-		// 			id = key;
-		// 			count = val[key];
-		// 		}
-		// 		for (let i = 0; i < this.goods.length; i++) {
-		// 			if (this.goods[i].id === id && this.goods[i].count !== count) {
-		// 				info = this.goods[i];
-		// 				break;
-		// 			}
-		// 		}
-		// 		
-		// 		if (info !== '' && count !== '') {
-		// 			this.$set(info, 'count', count);	
-		// 		}
-		// 	}
-		// }
-	},
+	watch: {},
 	computed: {
-		// ...mapState(['user', 'car'])
 		user () {
 			return this.$store.getters.doneUser;
 		},
-		totalCount () {
-			return this.$store.getters.doneCount;
-		},
-		totalMoney () {
-			return this.$store.getters.doneTotal;
+		selectResult () {
+			return this.$store.getters.doneSelectResult;
 		}
 	},
 	onLoad() {
@@ -104,7 +77,7 @@ export default {
 		let result = ajaxGetGoods('', function (data) {
 			data = data.result || [];
 			// 注入初始数量 0
-			data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"stock"');
+			data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
 			_this.goods = JSON.parse(data);
 		});
 		// 获取微信用户信息

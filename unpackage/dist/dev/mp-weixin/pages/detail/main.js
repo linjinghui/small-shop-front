@@ -70,64 +70,66 @@ var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.j
 
 
 var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\github\\seafood\\common\\global.js");
-var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\seafood\\data\\ajax.js");function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-iconfont\\uni-icon.vue"));};var uniSwiperDot = function uniSwiperDot() {return __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-swiper-dot\\uni-swiper-dot.vue"));};var uniBadge = function uniBadge() {return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-badge\\uni-badge.vue"));};var _default =
-
-{
-  components: {
-    uniIconfont: uniIconfont,
-    uniSwiperDot: uniSwiperDot,
-    uniBadge: uniBadge },
-
-  computed: _objectSpread({},
-  (0, _vuex.mapState)(['car'])),
-
-  data: function data() {
-    return {
-      current: 0,
-      goodInfo: {},
-      covers: [
-        // {colorClass: 'uni-bg-blue', url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',　content: '内容 C'}
-      ],
-      dotsStyles: {
-        backgroundColor: '#fff',
-        border: '0',
-        color: '#fff',
-        selectedBackgroundColor: '#fff',
-        selectedBorder: '0' },
-
-      recommends: [] };
-
-  },
-  onLoad: function onLoad(e) {
-    // 获取商品详情
-    var _this = this;
-    (0, _ajax.ajaxGetGoodInfo)(e, function (data) {
-      _this.covers = [];
-      data.result.covers.forEach(function (item) {
-        _this.covers.push({ url: item });
-      });
-      _this.goodInfo = data.result;
-      (0, _ajax.ajaxGetRecommendGoods)('', function (data) {
-        _this.recommends = data.result;
-      });
-    });
-  },
-  methods: {
-    change: function change(e) {
-      this.current = e.detail.current;
-    },
-    clkCar: function clkCar() {
-      (0, _global.turnPage)('car');
-    },
-    clkAddCar: function clkAddCar() {
-      var _this = this;
-      this.$set(this.goodInfo, 'select', true);
-      this.$store.commit('addGood', [this.goodInfo, function (data) {
-        // 添加商品到购物车后的回调
-        _this.EVENTHUB.$emit('updateCount', data);
-        uni.showToast({ 'title': '添加成功，在购物车等您~' });
-      }]);
-    } } };exports.default = _default;
+var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\seafood\\data\\ajax.js"); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-iconfont\\uni-icon.vue"));};var uniSwiperDot = function uniSwiperDot() {return __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-swiper-dot\\uni-swiper-dot.vue"));};var uniBadge = function uniBadge() {return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-badge\\uni-badge.vue"));};var _default = { components: { uniIconfont: uniIconfont, uniSwiperDot: uniSwiperDot, uniBadge: uniBadge }, computed: { selectResult: function selectResult() {return this.$store.getters.doneSelectResult;} }, data: function data() {return { current: 0, goodInfo: {}, covers: [// {colorClass: 'uni-bg-blue', url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',　content: '内容 C'}
+      ], dotsStyles: { backgroundColor: '#fff', border: '0', color: '#fff', selectedBackgroundColor: '#fff', selectedBorder: '0' }, recommends: [] };}, onLoad: function onLoad(e) {// 获取商品详情
+    var _this = this;(0, _ajax.ajaxGetGoodInfo)(e, function (data) {_this.covers = [];data.result.covers.forEach(function (item) {_this.covers.push({ url: item });});_this.goodInfo = data.result;(0, _ajax.ajaxGetRecommendGoods)('', function (data) {_this.recommends = data.result;});});}, methods: { change: function change(e) {this.current = e.detail.current;}, clkCar: function clkCar() {(0, _global.turnPage)('car');}, clkAddCar: function clkAddCar() {var _this = this;this.$set(this.goodInfo, 'select', true);this.$store.commit('addGood', [this.goodInfo, function (data) {// 添加商品到购物车后的回调
+        _this.EVENTHUB.$emit('updateCount', data);uni.showToast({ 'title': '添加成功，在购物车等您~' });}]);} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),

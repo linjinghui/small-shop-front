@@ -17,11 +17,11 @@
 			<view class="footer">
 				<view class="wrap-icon">
 					<view class="icon-bg center-hv" v-if="selectAll"></view>
-					<uni-iconfont class="icon center-hv" :type="selectAll?'gx':'wgx'" size="26" color="#ff9000" @click="selectAll=!selectAll" />
+					<uni-iconfont class="icon center-hv" :type="selectAll?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelectAll" />
 				</view>
-				已选 ({{selectedCount}})
+				已选 ({{selectResult.selectCount}})
 				<button>去预定</button>
-				<p class="price total">{{car.total}}</p>
+				<p class="price total">{{selectResult.selectMoney}}</p>
 			</view>
 		</view>
 	</view>
@@ -53,14 +53,20 @@
 					// 
 				}
 			},
-			selectedCount () {
-				return this.$store.getters.doneSelectedCount;
+			selectResult () {
+				let result = this.$store.getters.doneSelectResult;
+				this.selectAll = result.allCount === result.selectCount;
+				return result;
 			}
 		},
 		onLoad() {},
 		methods: {
 			clkQgg () {
 				uni.navigateBack();
+			},
+			clkSelectAll () {
+				this.selectAll = !this.selectAll;
+				this.$store.commit('setSelectAll', [this.selectAll]);
 			},
 			changeCount (data) {
 				this.EVENTHUB.$emit('updateCount', data);

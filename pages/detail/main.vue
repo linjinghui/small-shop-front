@@ -47,7 +47,7 @@
 		<footer>
 			<view class="wrap-btn-car" @click="clkCar">
 				<uni-iconfont class="icon" size="24" type="car" />购物车
-				<uni-badge class="badge" :text="car.count" type="error" />
+				<uni-badge class="badge" :text="selectResult.selectCount" type="error" />
 			</view>
 			<button @click="clkAddCar">加入购物车</button>
 		</footer>
@@ -69,7 +69,9 @@
 			uniBadge
 		},
 		computed: {
-			...mapState(['car'])
+			selectResult () {
+				return this.$store.getters.doneSelectResult;
+			}
 		},
 		data () {
 			return {

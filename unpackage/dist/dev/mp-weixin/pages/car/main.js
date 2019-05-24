@@ -63,14 +63,20 @@ var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.j
         // 
       } },
 
-    selectedCount: function selectedCount() {
-      return this.$store.getters.doneSelectedCount;
+    selectResult: function selectResult() {
+      var result = this.$store.getters.doneSelectResult;
+      this.selectAll = result.allCount === result.selectCount;
+      return result;
     } }),
 
   onLoad: function onLoad() {},
   methods: {
     clkQgg: function clkQgg() {
       uni.navigateBack();
+    },
+    clkSelectAll: function clkSelectAll() {
+      this.selectAll = !this.selectAll;
+      this.$store.commit('setSelectAll', [this.selectAll]);
     },
     changeCount: function changeCount(data) {
       this.EVENTHUB.$emit('updateCount', data);
@@ -105,11 +111,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      _vm.selectAll = !_vm.selectAll
-    }
-  }
 }
 var staticRenderFns = []
 render._withStripped = true

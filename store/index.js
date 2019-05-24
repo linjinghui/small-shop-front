@@ -32,23 +32,24 @@ export default new Vuex.Store({
 		doneCar: state => {
 		  return state.car.data;
 		},
-		// 返回购物车中的商品数量
-		doneCount: state => {
-		  return state.car.count;
-		},
-		// 返回购物车中的商品总价
-		doneTotal: state => {
-		  return state.car.total;
-		},
-		doneSelectedCount: state => {
-			let seletedCount = 0;
+		// 返回购物车中选中结果
+		doneSelectResult: state => {
+			let selectCount = 0;
+			let selectMoney = 0;
+			let allCount = 0;
 			for (let i = 0;i < state.car.data.length;i++) {
 				let _item = state.car.data[i];
+				allCount += _item.count;
 				if (_item.select) {
-					seletedCount += 1;
+					selectCount += _item.count;
+					selectMoney += _item.rprice * _item.count;
 				}
 			}
-			return seletedCount;
+			return {
+				allCount: allCount,
+				selectCount: selectCount,
+				selectMoney: selectMoney
+			};
 		}
 	},
     mutations: {  
@@ -84,7 +85,6 @@ export default new Vuex.Store({
 			}
 			
 			// s-2-1 判断商品库存
-			console.log(good);
 			if (good.count > good.stock) {
 				uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
 				return;
@@ -102,32 +102,17 @@ export default new Vuex.Store({
 				state.car.data.splice(index, 1, good);
 			}
 			
-			// s-4 统计购物车中的商品总数、总价
-			let totalCount = 0;
-			let totalMoney = 0;
-			for (let z = 0;z < state.car.data.length;z++) {
-				let _good = state.car.data[z];
-				let _count = _good.count;
-				let _rprice = _good.rprice;
-				let _select = _good.select;
-				if (_select) {
-					totalCount += _count;
-					totalMoney += _rprice * _count;
-				}
-			}
-			state.car.count = totalCount;
-			state.car.total = totalMoney.toFixed(2);
-			
 			callback && callback(good);
 		},
 		// 设置商品勾选状态
-		selectItem (state, [index, select, type]) {
+		selectItem (state, [index, select]) {
 			state.car.data[index].select = select;
-			// console.log('==设置商品勾选状态==');
-			// console.log(index);
-			// console.log(select);
-			// console.log(type);
-			// console.log(state.car.data);
+		},
+		// 商品全部勾选或取消勾选
+		setSelectAll (state, [select]) {
+			for (let i = 0; i < state.car.data.length; i++) {
+				state.car.data[i].select = select;
+			}
 		}
     }  
 }) 
