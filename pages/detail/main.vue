@@ -26,7 +26,7 @@
 		<view class="wrap-recommend" v-if="recommends.length>0">
 			<view class="title"><span>推荐商品</span></view>
 			<view class="uni-product-list">
-				<view class="uni-product" v-for="(good,index) in recommends" :key="good.id">
+				<view class="uni-product" v-for="(good,index) in recommends" :key="good.id" @click="clkRecommend(good)">
 					<view class="image-view">
 						<image class="uni-product-image" :src="good.pic"></image>
 					</view>
@@ -119,6 +119,9 @@
 					_this.EVENTHUB.$emit('updateCount', data);
 					uni.showToast({'title': '已添加到购物车'});
 				}]);
+			},
+			clkRecommend (data) {
+				turnPage('detail', data);
 			}
 		}
 	}
