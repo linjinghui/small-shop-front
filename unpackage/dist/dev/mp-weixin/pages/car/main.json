@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "购物车",
   "usingComponents": {
     "uni-icon": "/components/uni-icon/uni-icon",
     "uni-iconfont": "/components/uni-iconfont/uni-icon",

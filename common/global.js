@@ -40,7 +40,16 @@ const turnPage = (type, obj) => {
 			url = '/pages/detail/main?id=' + obj.id;
 			break;
 		case 'consignee':
-			url = '/pages/consignee/main';
+			url = '/pages/consignee/main?from=' + obj;
+			break;
+		case 'csg-creat':
+			url = '/pages/consignee/creat';
+			if (obj || obj === 0) {
+				url += '?index=' +　obj;
+			}
+			break;
+		case 'order':
+			url = '/pages/order/main';
 			break;
 		default:
 			url = '/pages/home/main';

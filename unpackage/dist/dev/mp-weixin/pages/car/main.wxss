@@ -64,7 +64,7 @@
 .content > .main > .scroll-Y .wrap-address {
         color: #999;
         text-align: center;
-        padding: 12px 0;
+        padding: 12px 10px;
 }
 .content > .main > .footer {
       position: relative;

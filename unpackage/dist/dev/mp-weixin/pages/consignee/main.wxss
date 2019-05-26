@@ -59,21 +59,22 @@
 }
 .content > .main > view {
       position: relative;
-      padding: 5px 10px;
+      padding: 10px;
       border-bottom: solid 1px #f0f0f0;
 }
-.content > .main > view > ._p:first-of-type {
+.content > .main > view > ._p {
         width: calc(100% - 40px);
 }
-.content > .main > view > ._p:last-of-type {
-        width: calc(100% - 40px);
+.content > .main > view > .p-2 {
         color: #999;
 }
-.content > .main > view > .compose {
+.content > .main > view > .wrap-icon {
         left: inherit;
-        right: 10px;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+}
+.content > .main > view > .wrap-icon > .compose {
+          width: 30px;
+          height: 30px;
 }
 .content > .main > view:active {
       background-color: #fafafa;

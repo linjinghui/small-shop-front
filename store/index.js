@@ -23,7 +23,7 @@ export default new Vuex.Store({
 			changeData: {}
 		},
 		// 地址
-		consignee: []
+		consignees: []
     },  
 	getters: {
 		// 返回用户信息
@@ -39,18 +39,21 @@ export default new Vuex.Store({
 			let selectCount = 0;
 			let selectMoney = 0;
 			let allCount = 0;
+			let selectGoods = [];
 			for (let i = 0;i < state.car.data.length;i++) {
 				let _item = state.car.data[i];
 				allCount += _item.count;
 				if (_item.select) {
 					selectCount += _item.count;
 					selectMoney += _item.rprice * _item.count;
+					selectGoods.push(_item);
 				}
 			}
 			return {
 				allCount: allCount,
 				selectCount: selectCount,
-				selectMoney: selectMoney
+				selectMoney: selectMoney,
+				selectGoods: selectGoods
 			};
 		}
 	},
@@ -119,7 +122,22 @@ export default new Vuex.Store({
 		},
 		// 设置收货地址
 		setConsignee (state, data) {
-			state.consignee = data || [];
+			state.consignees = data || [];
+		},
+		// 把收货地址放到第一项
+		setFirstConsignee (state, index) {
+			let arr = state.consignees.splice(index, 1);
+			state.consignees.unshift(arr[0]);
+		},
+		// 新增、编辑收货地址
+		newEditConsignee (state, [data, index]) {
+			if (!index && index !== 0) {
+				// 新增
+				state.consignees.push(data);
+			} else {
+				// 修改
+				state.consignees.splice(index, 1, data);
+			}
 		}
     }  
 }) 

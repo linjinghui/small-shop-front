@@ -4,7 +4,9 @@
     "pages/car/main",
     "pages/my/main",
     "pages/detail/main",
-    "pages/consignee/main"
+    "pages/consignee/main",
+    "pages/consignee/creat",
+    "pages/order/main"
   ],
   "subPackages": [],
   "window": {

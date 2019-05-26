@@ -9,9 +9,8 @@
 		</view>
 		<view class="main" v-else>
 			<scroll-view class="scroll-Y" scroll-y="true">
-				<view class="wrap-address" @click="clkConsignee">
-					<!-- 配送至：福建省奥林匹克体育中心体育馆 -->
-					{{consignee&&consignee.length>0?(consignee[0].address):'您还未填写配送地址，请点击添加'}}
+				<view class="wrap-address text-over" @click="clkConsignee">
+					{{consignees&&consignees.length>0?('配送至：'+consignees[0].doorAddress):'请选择配送地址'}}
 					<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
 				</view>
 				<good-list v-model="carData" :nselect="true" @changeCount="changeCount"></good-list>
@@ -22,7 +21,7 @@
 					<uni-iconfont class="icon center-hv" :type="selectAll?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelectAll" />
 				</view>
 				已选 ({{selectResult.selectCount}})
-				<button>去预定</button>
+				<button @click="clkPlaceOrder">去预定</button>
 				<p class="price total">{{selectResult.selectMoney}}</p>
 			</view>
 		</view>
@@ -35,7 +34,7 @@
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import goodList from '@/components/good-list/good-list.vue';
 	import {turnPage} from '@/common/global.js';
-	import {ajaxGetAddresses} from '@/data/ajax.js';
+	import {ajaxPlaceOrder} from '@/data/ajax.js';
 	export default {
 		components: {
 			uniIcon,
@@ -48,7 +47,7 @@
 			};
 		},
 		computed: {
-			...mapState(['car', 'consignee']),
+			...mapState(['car', 'consignees']),
 			carData: {
 				get () {
 					return this.$store.getters.doneCar;
@@ -63,13 +62,7 @@
 				return result;
 			}
 		},
-		onLoad() {
-			let _this = this;
-			// 获取收货地址信息
-			ajaxGetAddresses(this.$store.state.user, (data) => {
-				_this.$store.commit('setConsignee', data.result);
-			});
-		},
+		onLoad() {},
 		methods: {
 			clkQgg () {
 				uni.navigateBack();
@@ -79,10 +72,23 @@
 				this.$store.commit('setSelectAll', [this.selectAll]);
 			},
 			clkConsignee () {
-				turnPage('consignee');
+				turnPage('consignee', 'car');
 			},
 			changeCount (data) {
 				this.EVENTHUB.$emit('updateCount', data);
+			},
+			clkPlaceOrder () {
+				let obj = Object.assign(this.consignees[0] || {}, {
+					goods: this.selectResult.selectGoods,
+					money: this.selectResult.selectMoney
+				});
+				
+				ajaxPlaceOrder(obj, () => {
+					uni.showToast({'title': '预定成功'});
+					setTimeout(() => {
+						turnPage('order', 1);
+					}, 2000);
+				});
 			}
 		}
 	};
@@ -133,7 +139,7 @@
 				.wrap-address {
 					color: #999;
 					text-align: center;
-					padding: 12px 0;
+					padding: 12px 10px;
 				}
 			}
 			

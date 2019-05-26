@@ -107,7 +107,7 @@ let ajaxGetRecommendGoods = (pms, callback, fail) => {
 // 获取用户配送地址信息
 let ajaxGetAddresses = (pms, callback, fail) => {
 	let params = {
-		id: pms.openId
+		userid: pms.openId
 	};
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
@@ -134,12 +134,123 @@ let ajaxGetAddresses = (pms, callback, fail) => {
 	});
 }
 
+// 保存配送地址信息, 返回id
+let ajaxSaveAddresses = (pms, callback, fail) => {
+	let params = {
+		userid: pms.openId,
+		id: pms.id || '',
+		// 收货人名称
+		name: pms.name,
+		// 收货人电话
+		mobile: pms.mobile,
+		// 收货地址
+		address: pms.address,
+		// 收货门牌地址
+		doorAddress: pms.doorAddress
+	};
+	if (!params.name) {
+		uni.showToast({title: '请填写收货人名称', icon: 'none', position: 'bottom'});
+	} else if (!params.mobile) {
+		uni.showToast({title: '请填写收货人电话', icon: 'none', position: 'bottom'});
+	} else if (!params.address && !params.doorAddress) {
+		uni.showToast({title: '请选择收货地址', icon: 'none', position: 'bottom'});
+	} else {
+		uni.showLoading({title: LOADINGTEXT});
+		uni.request({
+			url: URL + '/user/address/save',
+			method: 'POST',
+			data: params,
+			header: {
+				'AUTH': AUTH
+			},
+			dataType: 'json',
+			complete: (data) => {
+				uni.hideLoading();
+			},
+			fail: () => {
+				uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+			},
+			success: (data) => {
+				if (data.code === 200) {
+					callback && callback(data);
+				} else if (fail) {
+					fail(data);
+				}
+			}
+		});
+	}
+}
+
+// 下订单
+let ajaxPlaceOrder = (pms, callback, fail) => {
+	let goods = pms.goods || [];
+	let params = {
+		userid: pms.openId,
+		// 收货人名称
+		name: pms.name,
+		// 收货人电话
+		mobile: pms.mobile,
+		// 收货地址
+		address: pms.address,
+		// 收货门牌地址
+		doorAddress: pms.doorAddress,
+		goods: [],
+		money: pms.money || 0
+	};
+	for (let i = 0; i < goods.length; i++) {
+		params.goods.push({
+			id: goods[i].id,
+			name: goods[i].name,
+			count: goods[i].count,
+			rprice: goods[i].rprice,
+			unit: goods[i].unit
+		});
+	}
+	if (!params.goods) {
+		uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});
+	} else if (!params.name) {
+		uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
+	} else if (!params.mobile) {
+		uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
+	} else if (!params.address && !params.doorAddress) {
+		uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
+	} else {
+		console.log('==下订单==');
+		console.log(params);
+		uni.showLoading({title: LOADINGTEXT});
+		uni.request({
+			url: URL + '/user/address/save',
+			method: 'POST',
+			data: params,
+			header: {
+				'AUTH': AUTH
+			},
+			dataType: 'json',
+			complete: (data) => {
+				uni.hideLoading();
+			},
+			fail: () => {
+				uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+			},
+			success: (data) => {
+				if (data.code === 200) {
+					callback && callback(data);
+				} else if (fail) {
+					fail(data);
+				}
+			}
+		});
+	}
+}
+
 if (DEBUG) {
 	const majax = require('./mock.js');
 	ajaxGetGoods = majax.ajaxGetGoods;
 	ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
 	ajaxGetRecommendGoods = majax.ajaxGetRecommendGoods;
 	ajaxGetAddresses = majax.ajaxGetAddresses;
+	ajaxSaveAddresses = majax.ajaxSaveAddresses;
+	ajaxPlaceOrder = majax.ajaxPlaceOrder;
 }
 
-export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses};
+export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses, ajaxSaveAddresses, ajaxPlaceOrder};

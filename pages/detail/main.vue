@@ -117,7 +117,7 @@
 				this.$store.commit('addGood', [this.goodInfo, (data) => {
 					// 添加商品到购物车后的回调
 					_this.EVENTHUB.$emit('updateCount', data);
-					uni.showToast({'title': '添加成功，在购物车等您~'});
+					uni.showToast({'title': '已添加到购物车'});
 				}]);
 			}
 		}
