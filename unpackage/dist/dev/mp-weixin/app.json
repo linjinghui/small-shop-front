@@ -20,5 +20,6 @@
       "desc": "用户配送信息填写"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }
