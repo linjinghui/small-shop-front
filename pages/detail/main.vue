@@ -131,7 +131,7 @@
 	@import '@/common/global.scss';
 	
 	.content {
-		background-color: #f8f8f8;
+		background-color: #f4f5f6;
 		
 		> view {
 			margin-bottom: 10px;

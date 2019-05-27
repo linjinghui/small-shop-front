@@ -195,7 +195,8 @@ let ajaxPlaceOrder = (pms, callback, fail) => {
 		// 收货门牌地址
 		doorAddress: pms.doorAddress,
 		goods: [],
-		money: pms.money || 0
+		money: pms.money || 0,
+		count: pms.count || 0
 	};
 	for (let i = 0; i < goods.length; i++) {
 		params.goods.push({
@@ -243,6 +244,74 @@ let ajaxPlaceOrder = (pms, callback, fail) => {
 	}
 }
 
+// 获取订单列表
+let ajaxGetOrders = (pms, callback) => {
+	let params = {
+		userid: pms.openId,
+		page: pms.page || 1,
+		size: pms.size || 10
+	};
+	
+	uni.showLoading({title: LOADINGTEXT});
+	uni.request({
+		url: URL + '/order',
+		method: 'GET',
+		data: params,
+		header: {
+			'AUTH': AUTH
+		},
+		dataType: 'json',
+		complete: (data) => {
+			uni.hideLoading();
+		},
+		fail: () => {
+			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+		},
+		success: (data) => {
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			} else {
+				uni.showToast({title: '' + data.msg, icon: 'none', position: 'bottom'});
+			}
+		}
+	});
+}
+
+// 获取订单详情
+let ajaxGetOrderInfo = (pms, callback) => {
+	let params = {
+		id: pms.id
+	};
+	
+	uni.showLoading({title: LOADINGTEXT});
+	uni.request({
+		url: URL + '/order/info',
+		method: 'GET',
+		data: params,
+		header: {
+			'AUTH': AUTH
+		},
+		dataType: 'json',
+		complete: (data) => {
+			uni.hideLoading();
+		},
+		fail: () => {
+			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+		},
+		success: (data) => {
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			} else {
+				uni.showToast({title: '' + data.msg, icon: 'none', position: 'bottom'});
+			}
+		}
+	});
+}
+
 if (DEBUG) {
 	const majax = require('./mock.js');
 	ajaxGetGoods = majax.ajaxGetGoods;
@@ -251,6 +320,8 @@ if (DEBUG) {
 	ajaxGetAddresses = majax.ajaxGetAddresses;
 	ajaxSaveAddresses = majax.ajaxSaveAddresses;
 	ajaxPlaceOrder = majax.ajaxPlaceOrder;
+	ajaxGetOrders = majax.ajaxGetOrders;
+	ajaxGetOrderInfo = majax.ajaxGetOrderInfo;
 }
 
-export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses, ajaxSaveAddresses, ajaxPlaceOrder};
+export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses, ajaxSaveAddresses, ajaxPlaceOrder, ajaxGetOrders, ajaxGetOrderInfo};

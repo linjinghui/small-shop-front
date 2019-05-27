@@ -177,7 +177,8 @@ export function ajaxPlaceOrder (pms, callback) {
 		// 收货门牌地址
 		doorAddress: pms.doorAddress,
 		goods: [],
-		money: pms.money || 0
+		money: pms.money || 0,
+		count: pms.count || 0
 	};
 	for (let i = 0; i < goods.length; i++) {
 		params.goods.push({
@@ -208,3 +209,75 @@ export function ajaxPlaceOrder (pms, callback) {
 	}
 }
 
+// 获取订单列表
+export function ajaxGetOrders (pms, callback) {
+	let data = Mock.mock({
+		'msg': '',
+		'code': 200,
+		'result|0-10': [
+			{
+				// 订单ID
+				'id': '@id()',
+				// 商品列表
+				'goods|2': [{
+					'id': '@id()',
+					'pic': "@image(80x80)",
+					'name': '@ctitle(3, 8)',
+					'count|1': [1, 2, 3]
+				}],
+				// 订单状态 1：待接单，2：备货中，3：配送中，4：已完成
+				'status|1': [1, 2, 3, 4],
+				// 总数量
+				'count': 10,
+				// 金额
+				'money': 100,
+				'time': '@date()'
+			}
+			
+		]
+	});
+	uni.showLoading({title: LOADINGTEXT});
+	setTimeout(function () {uni.hideLoading(); callback && callback(data);}, Math.floor(Math.random() * dure));
+}
+
+// 获取订单详情
+export function ajaxGetOrderInfo (pms, callback) {
+	let data = Mock.mock({
+		'msg': '',
+		'code': 200,
+		'result': {
+			// 订单ID
+			'id': '@id()',
+			// 商品列表
+			'goods|1-5': [{
+				'id': '@id()',
+				'pic': "@image(80x80)",
+				'name': '@ctitle(3, 8)',
+				'count|1': [1, 2, 3],
+				// 订购价格|折后价格
+				'rprice|1': [3.5, 5, 11, 12.5, 22.3],
+				// 最新价格
+				'nprice|1': ['', 5, 11, 12.5, 22.3]
+			}],
+			// 订单状态 1：待接单，2：备货中，3：配送中，4：已完成
+			'status|1': [1, 2, 3, 4],
+			// 总数量
+			'count': 10,
+			// 金额
+			'money': 100,
+			// 快递费用
+			'expMoney': 10,
+			'time': '@date()',
+			// 收货人名称
+			'name': '@name()',
+			// 收货人电话
+			'mobile': /^1[385][1-9]\d{8}/,
+			// 收货地址
+			'address': '@ctitle(10, 20)',
+			// 收货门牌地址
+			'doorAddress': '@ctitle(5, 10)'
+		}
+	});
+	uni.showLoading({title: LOADINGTEXT});
+	setTimeout(function () {uni.hideLoading(); callback && callback(data);}, Math.floor(Math.random() * dure));
+}

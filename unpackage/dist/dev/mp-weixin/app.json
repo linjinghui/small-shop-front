@@ -6,7 +6,8 @@
     "pages/detail/main",
     "pages/consignee/main",
     "pages/consignee/creat",
-    "pages/order/main"
+    "pages/order/main",
+    "pages/order/detail"
   ],
   "subPackages": [],
   "window": {
@@ -20,6 +21,5 @@
       "desc": "用户配送信息填写"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

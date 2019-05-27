@@ -2,8 +2,6 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		
-		
-		
 		// 首页
 		{
 			"path": "pages/home/main",
@@ -49,6 +47,13 @@
 			"path": "pages/order/main",
 			"style": {
 				"navigationBarTitleText": "我的订单"
+			}
+		},
+		// 订单详情页
+		{
+			"path": "pages/order/detail",
+			"style": {
+				"navigationBarTitleText": "订单详情"
 			}
 		}
 		

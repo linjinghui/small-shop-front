@@ -51,6 +51,9 @@ const turnPage = (type, obj) => {
 		case 'order':
 			url = '/pages/order/main';
 			break;
+		case 'order-info':
+			url = '/pages/order/detail?id=' + obj;
+			break;
 		default:
 			url = '/pages/home/main';
 			break;
@@ -58,9 +61,9 @@ const turnPage = (type, obj) => {
 	uni.navigateTo({url: url});
 }
 
-// 计算折扣后的真实价格
-const countRealPrice = (good) => {
-		return (good.price * good.rebate / 10).toFixed(2);
-}
+// // 计算折扣后的真实价格
+// const countRealPrice = (good) => {
+// 		return (good.price * good.rebate / 10).toFixed(2);
+// }
 
-export {getClientUser, turnPage, countRealPrice};
+export {getClientUser, turnPage};

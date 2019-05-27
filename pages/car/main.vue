@@ -80,7 +80,8 @@
 			clkPlaceOrder () {
 				let obj = Object.assign(this.consignees[0] || {}, {
 					goods: this.selectResult.selectGoods,
-					money: this.selectResult.selectMoney
+					money: this.selectResult.selectMoney,
+					count: this.selectResult.selectCount
 				});
 				
 				ajaxPlaceOrder(obj, () => {
@@ -98,7 +99,7 @@
 	@import '@/common/global.scss';
 	.content {
 		height: 100%;
-		background-color: #f8f8f8;
+		background-color: #f4f5f6;
 		
 		// 未选购提示
 		.no-good {

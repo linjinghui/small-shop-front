@@ -70,7 +70,7 @@
 	@import '@/common/global.scss';
 	.content {
 		height: 100%;
-		background-color: #f8f8f8;
+		background-color: #f4f5f6;
 		
 		// 没有配送地址信息的提示
 		.no-consignee {

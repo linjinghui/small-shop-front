@@ -24,4 +24,100 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+.content {
+  height: 100%;
+  overflow: auto;
+  background-color: #f4f5f6;
+}
+.content > .no-order {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: 200px;
+    text-align: center;
+    font-size: 14px;
+}
+.content > .no-order > ._p {
+      margin-top: 8px;
+      margin-bottom: 14px;
+      color: #ddd;
+}
+.content > .no-order > button {
+      width: 80px;
+      height: 30;
+      line-height: 30px;
+      font-size: inherit;
+      color: #fff;
+      border-radius: 20px;
+      background-color: #029c45;
+}
+.content > .wrap-order {
+    margin-top: 10px;
+    padding: 0 10px;
+    background-color: #fff;
+}
+.content > .wrap-order > .wrap-header {
+      padding: 10px 0;
+      border-bottom: solid 1px #f0f0f0;
+}
+.content > .wrap-order > .wrap-header > .status {
+        margin-right: 5px;
+        font-weight: bold;
+}
+.content > .wrap-order > .wrap-header > .time {
+        font-size: 12px;
+        color: #999;
+}
+.content > .wrap-order > .wrap-header > .icon {
+        float: right;
+}
+.content > .wrap-order > .wrap-list > .wrap-item {
+      padding: 10px;
+      padding-right: 0;
+      font-size: 12px;
+      border-bottom: solid 1px #f0f0f0;
+      overflow: hidden;
+}
+.content > .wrap-order > .wrap-list > .wrap-item image {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        vertical-align: middle;
+}
+.content > .wrap-order > .wrap-list > .wrap-item > .name {
+        margin-left: 10px;
+}
+.content > .wrap-order > .wrap-list > .wrap-item > .count {
+        float: right;
+        margin-top: 8px;
+}
+.content > .wrap-order > .wrap-list > .wrap-item > .total {
+        float: right;
+}
+.content > .wrap-order > .wrap-list > .wrap-item > .total > .price {
+          font-size: 16px;
+}
+.content > .wrap-order > .wrap-footer {
+      padding: 8px 0;
+      text-align: right;
+}
+.content > .wrap-order > .wrap-footer button {
+        display: inline-block;
+        margin: 0;
+        padding: 0 14px;
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        font-size: 12px;
+        color: #029c45;
+        background-color: transparent;
+        border: solid 1px #029c45;
+}
+.content > .wrap-order > .wrap-footer > .del {
+        color: #999;
+        border: solid 1px #f0f0f0;
+}
 

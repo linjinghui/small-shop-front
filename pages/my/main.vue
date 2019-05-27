@@ -96,7 +96,7 @@
 		> .main {
 			padding-top: 1px;
 			height: calc(100% - 150px - 1px);
-			background-color: #f8f8f8;
+			background-color: #f4f5f6;
 			
 			.uni-list {
 				margin-top: 10px;
