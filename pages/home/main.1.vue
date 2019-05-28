@@ -20,8 +20,11 @@
 				</view>
 			</li>
 		</ul>
-		<good-list v-model="goods" @click="clkLine"></good-list>
-		<uni-load-more :status="status" />
+		<view class="main">
+			<scroll-view class="scroll-Y" :scroll-top="scrollTop" scroll-y="true">
+				<good-list v-model="goods" @click="clkLine"></good-list>
+			</scroll-view>
+		</view>
 		<view class="footer">
 			<image :src="user.avatarUrl" @click="clkImage"></image>
 			已选 ({{selectResult.selectCount}})
@@ -35,7 +38,6 @@
 import uniIcon from '@/components/uni-icon/uni-icon.vue';
 import bugBtn from '@/components/uni-bug-btn/uni-bug-btn.vue';
 import goodList from '@/components/good-list/good-list.vue';
-import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 import {mapState} from 'vuex';
 import {getClientUser, turnPage} from '@/common/global.js';
 import {ajaxGetGoods} from '@/data/ajax.js';
@@ -43,8 +45,7 @@ export default {
 	components: {
 		uniIcon,
 		bugBtn,
-		goodList,
-		uniLoadMore
+		goodList
 	},
 	data() {
 		return {
@@ -59,21 +60,7 @@ export default {
 			// 选中的商品
 			chooses: [],
 			// 商品列表
-			goods: [],
-			// 分页-当前页
-			page: 1,
-			// 分页-每页大小
-			size: 10,
-			// 分页-总页数
-			totalPage: 1,
-			// 上拉显示更多组件
-			// more loading noMore
-			status: 'more',
-			contentText: {
-				contentdown: '查看更多',
-				contentrefresh: '加载中',
-				contentnomore: '没有更多'
-			}
+			goods: []
 		};
 	},
 	watch: {},
@@ -85,34 +72,13 @@ export default {
 			return this.$store.getters.doneSelectResult;
 		}
 	},
-	onPullDownRefresh () {
-		let _this = this;
-		_this.page = 1;
-		_this.status = 'loading';
-		_this.getListData(() => {
-			uni.stopPullDownRefresh();
-			_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
-		});
-	},
-    onReachBottom () {
-		let _this = this;
-		if (_this.totalPage > _this.page) {
-			_this.page += 1;
-			// 获取列表数据
-			_this.status = 'loading';
-			_this.getListData(() => {
-				_this.status = 'more';
-			});
-		} else {
-			// 没有更多数据
-			_this.status = 'noMore';
-		}
-    },
 	onLoad() {
 		let _this = this;
-		// 获取列表数据
-		_this.getListData(() => {
-			_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+		let result = ajaxGetGoods('', function (data) {
+			data = data.result || [];
+			// 注入初始数量 0
+			data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
+			_this.goods = JSON.parse(data);
 		});
 		// 获取微信用户信息
 		getClientUser(function (userInfo) {
@@ -170,130 +136,107 @@ export default {
 			if (count || count === 0) {
 				this.$set(data, 'count', count);	
 			}
-		},
-		getListData (callback) {
-			let _this = this;
-			let result = ajaxGetGoods({
-				page: _this.page,
-				size: _this.size
-			}, function (data) {
-				// 计算总页数
-				_this.totalPage = parseInt((data.total - 1) / _this.size + 1);
-				data = data.result || [];
-				// 注入初始数量 0
-				data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
-				if (_this.page <= 1) {
-					_this.goods = JSON.parse(data);	
-				} else {
-					_this.goods = _this.goods.concat(JSON.parse(data));
-				}
-				callback && callback();
-			});
 		}
 	}
 };
 </script>
 
 <style lang="scss">
-	@import '@/common/global.scss';
-	.content {
-		padding-bottom: 60px;
-	}
-	.header {
-		width: 100%;
-		height: 30px;
-		line-height: 30px;
-		border-bottom: solid 1px $border-color;
+@import '@/common/global.scss';
+.content {
+	height: 100%;
+	overflow: hidden;
+}
+.header {
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	border-bottom: solid 1px $border-color;
+	
+	> li {
+		position: relative;
+		float: left;
+		width: 33.33%;
+		height: 100%;
+		text-align: center;
 		
-		> li {
+		.wrap-icon {
 			position: relative;
-			float: left;
-			width: 33.33%;
+			display: inline-block;
+			width: 20px;
 			height: 100%;
-			text-align: center;
+			vertical-align: middle;
+			// border: solid 1px;
 			
-			.wrap-icon {
-				position: relative;
-				display: inline-block;
-				width: 20px;
-				height: 100%;
-				vertical-align: middle;
-				// border: solid 1px;
-				
-				> .icon {
-					position: absolute;
-					top: 0;
-					right: 0;
-					bottom: 0;
-					left: 0;
-					margin: auto;
-				}
-				.tick {
-					top: -2px;
-					left: -6px;
-				}
-				.arrowup {
-					top: 2px;
-				}
-				.arrowdown {
-					top: 10px;
-				}
+			> .icon {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto;
+			}
+			.tick {
+				top: -2px;
+				left: -6px;
+			}
+			.arrowup {
+				top: 2px;
+			}
+			.arrowdown {
+				top: 10px;
 			}
 		}
-		> li.active {
-			color: $theme;
-		}
 	}
+	> li.active {
+		color: $theme;
+	}
+}
 
-	.main {
-		height: calc(100% - 30px - 60px - 1px);
-		overflow: auto;
-		
-		> .scroll-Y {
-			height: 100%;
-		}
+.main {
+	height: calc(100% - 30px - 60px - 1px);
+	
+	> .scroll-Y {
+		height: 100%;
 	}
+}
 
-	.footer {
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		padding-left: 10px;
-		width: 100%;
-		height: 60px;
-		line-height: 60px;
-		font-size: 16px;
-		color: #fff;
-		background-color: #333;
-		z-index: 3;
-		
-		> image {
-			display: inline-block;
-			margin-right: 10px;
-			width: 40px;
-			height: 40px;
-			border-radius: 50%;
-			vertical-align: middle;
-		}
-		
-		> .total {
-			float: right;
-			padding: 0 10px;
-			font-size: 18px;
-		}
-		
-		> button {
-			float: right;
-			width: 32%;
-			height: 100%;
-			line-height: inherit;
-			border-radius: 0;
-			color: inherit;
-			background-color: $theme-2;
-		}
-		> button:after {
-			border: 0;
-			border-radius: 0;
-		}
+.footer {
+	position: relative;
+	padding-left: 10px;
+	height: 60px;
+	line-height: 60px;
+	font-size: 16px;
+	color: #fff;
+	background-color: #333;
+	
+	> image {
+		display: inline-block;
+		margin-right: 10px;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		vertical-align: middle;
 	}
+	
+	> .total {
+		float: right;
+		padding: 0 10px;
+		font-size: 18px;
+	}
+	
+	> button {
+		float: right;
+		width: 32%;
+		height: 100%;
+		line-height: inherit;
+		border-radius: 0;
+		color: inherit;
+		background-color: $theme-2;
+	}
+	> button:after {
+		border: 0;
+		border-radius: 0;
+	}
+}
 </style>

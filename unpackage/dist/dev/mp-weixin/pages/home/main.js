@@ -46,16 +46,15 @@
 
 
 
-
-
 var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\github\\seafood\\common\\global.js");
-var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\seafood\\data\\ajax.js");var uniIcon = function uniIcon() {return __webpack_require__.e(/*! import() | components/uni-icon/uni-icon */ "components/uni-icon/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-icon/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-icon\\uni-icon.vue"));};var bugBtn = function bugBtn() {return __webpack_require__.e(/*! import() | components/uni-bug-btn/uni-bug-btn */ "components/uni-bug-btn/uni-bug-btn").then(__webpack_require__.bind(null, /*! @/components/uni-bug-btn/uni-bug-btn.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-bug-btn\\uni-bug-btn.vue"));};var goodList = function goodList() {return __webpack_require__.e(/*! import() | components/good-list/good-list */ "components/good-list/good-list").then(__webpack_require__.bind(null, /*! @/components/good-list/good-list.vue */ "F:\\linjinghui\\github\\seafood\\components\\good-list\\good-list.vue"));};var _default =
+var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\seafood\\data\\ajax.js");var uniIcon = function uniIcon() {return __webpack_require__.e(/*! import() | components/uni-icon/uni-icon */ "components/uni-icon/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-icon/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-icon\\uni-icon.vue"));};var bugBtn = function bugBtn() {return __webpack_require__.e(/*! import() | components/uni-bug-btn/uni-bug-btn */ "components/uni-bug-btn/uni-bug-btn").then(__webpack_require__.bind(null, /*! @/components/uni-bug-btn/uni-bug-btn.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-bug-btn\\uni-bug-btn.vue"));};var goodList = function goodList() {return __webpack_require__.e(/*! import() | components/good-list/good-list */ "components/good-list/good-list").then(__webpack_require__.bind(null, /*! @/components/good-list/good-list.vue */ "F:\\linjinghui\\github\\seafood\\components\\good-list\\good-list.vue"));};var uniLoadMore = function uniLoadMore() {return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-load-more\\uni-load-more.vue"));};var _default =
 {
   components: {
     uniIcon: uniIcon,
     bugBtn: bugBtn,
-    goodList: goodList },
+    goodList: goodList,
+    uniLoadMore: uniLoadMore },
 
   data: function data() {
     return {
@@ -70,7 +69,21 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
       // 选中的商品
       chooses: [],
       // 商品列表
-      goods: [] };
+      goods: [],
+      // 分页-当前页
+      page: 1,
+      // 分页-每页大小
+      size: 10,
+      // 分页-总页数
+      totalPage: 1,
+      // 上拉显示更多组件
+      // more loading noMore
+      status: 'more',
+      contentText: {
+        contentdown: '查看更多',
+        contentrefresh: '加载中',
+        contentnomore: '没有更多' } };
+
 
   },
   watch: {},
@@ -82,13 +95,34 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
       return this.$store.getters.doneSelectResult;
     } },
 
+  onPullDownRefresh: function onPullDownRefresh() {
+    var _this = this;
+    _this.page = 1;
+    _this.status = 'loading';
+    _this.getListData(function () {
+      uni.stopPullDownRefresh();
+      _this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+    });
+  },
+  onReachBottom: function onReachBottom() {
+    var _this = this;
+    if (_this.totalPage > _this.page) {
+      _this.page += 1;
+      // 获取列表数据
+      _this.status = 'loading';
+      _this.getListData(function () {
+        _this.status = 'more';
+      });
+    } else {
+      // 没有更多数据
+      _this.status = 'noMore';
+    }
+  },
   onLoad: function onLoad() {
     var _this = this;
-    var result = (0, _ajax.ajaxGetGoods)('', function (data) {
-      data = data.result || [];
-      // 注入初始数量 0
-      data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
-      _this.goods = JSON.parse(data);
+    // 获取列表数据
+    _this.getListData(function () {
+      _this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
     });
     // 获取微信用户信息
     (0, _global.getClientUser)(function (userInfo) {
@@ -146,6 +180,25 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
       if (count || count === 0) {
         this.$set(data, 'count', count);
       }
+    },
+    getListData: function getListData(callback) {
+      var _this = this;
+      var result = (0, _ajax.ajaxGetGoods)({
+        page: _this.page,
+        size: _this.size },
+      function (data) {
+        // 计算总页数
+        _this.totalPage = parseInt((data.total - 1) / _this.size + 1);
+        data = data.result || [];
+        // 注入初始数量 0
+        data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
+        if (_this.page <= 1) {
+          _this.goods = JSON.parse(data);
+        } else {
+          _this.goods = _this.goods.concat(JSON.parse(data));
+        }
+        callback && callback();
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

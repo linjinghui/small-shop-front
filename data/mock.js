@@ -8,7 +8,9 @@ export function ajaxGetGoods (pms, callback) {
 	let data = Mock.mock({
 		'msg': '',
 		'code': 200,
-		'result|1-10': [{
+		// 总记录数
+		'total': 32,
+		'result|6-10': [{
 			'id': '@id()',
 			// 图片地址
 			'pic': "@image(80x80)",
