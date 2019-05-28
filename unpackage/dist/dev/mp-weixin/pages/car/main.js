@@ -87,7 +87,7 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
     changeCount: function changeCount(data) {
       this.EVENTHUB.$emit('updateCount', data);
     },
-    clkPlaceOrder: function clkPlaceOrder() {
+    clkPlaceOrder: function clkPlaceOrder() {var _this2 = this;
       var obj = Object.assign(this.consignees[0] || {}, {
         goods: this.selectResult.selectGoods,
         money: this.selectResult.selectMoney,
@@ -95,7 +95,10 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
 
 
       (0, _ajax.ajaxPlaceOrder)(obj, function () {
+        var _this = _this2;
         uni.showToast({ 'title': '预定成功' });
+        // 删除购物车中已购买的商品
+        _this.$store.commit('delGoods');
         setTimeout(function () {
           (0, _global.turnPage)('order', 1);
         }, 2000);

@@ -9,8 +9,8 @@
 				<uni-list-item class="list-item" :show-arrow="false" :show-extra-icon-font="true" :extra-icon="eiconShdz" title="收货地址" @click="clkLine('consignee','my')" />
 			</uni-list>
 			<uni-list class="wrap-list">
-				<uni-list-item class="list-item" :show-arrow="false" :show-extra-icon-font="true" :extra-icon="eiconDfk" title="待付款" @click="clkLine('order',1)" />
-				<uni-list-item class="list-item" :show-arrow="false" :show-extra-icon-font="true" :extra-icon="eiconDsh" title="待收货" @click="clkLine('order',2)" />
+				<!-- <uni-list-item class="list-item" :show-arrow="false" :show-extra-icon-font="true" :extra-icon="eiconDfk" title="待付款" @click="clkLine('order',1)" />
+				<uni-list-item class="list-item" :show-arrow="false" :show-extra-icon-font="true" :extra-icon="eiconDsh" title="待收货" @click="clkLine('order',2)" /> -->
 				<uni-list-item class="list-item" :show-arrow="false" :show-extra-icon-font="true" :extra-icon="eiconQbdd" title="全部订单" @click="clkLine('order',3)" />
 			</uni-list>
 		</view>

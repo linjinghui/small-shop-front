@@ -120,6 +120,15 @@ export default new Vuex.Store({
 				state.car.data[i].select = select;
 			}
 		},
+		// 删除购物车中已购买成功的商品
+		delGoods (state) {
+			for (let i = state.car.data.length - 1;i >= 0;i--) {
+				let _item = state.car.data[i];
+				if (_item.select) {
+					state.car.data.splice(i, 1);
+				}
+			}
+		},
 		// 设置收货地址
 		setConsignee (state, data) {
 			state.consignees = data || [];

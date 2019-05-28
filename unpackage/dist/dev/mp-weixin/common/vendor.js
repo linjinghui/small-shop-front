@@ -17762,6 +17762,15 @@ new _vuex.default.Store({
         state.car.data[i].select = select;
       }
     },
+    // 删除购物车中已购买成功的商品
+    delGoods: function delGoods(state) {
+      for (var i = state.car.data.length - 1; i >= 0; i--) {
+        var _item = state.car.data[i];
+        if (_item.select) {
+          state.car.data.splice(i, 1);
+        }
+      }
+    },
     // 设置收货地址
     setConsignee: function setConsignee(state, data) {
       state.consignees = data || [];
