@@ -8192,9 +8192,9 @@ var encodeMobile = function encodeMobile(mobile) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxGetOrderInfo = exports.ajaxGetOrders = exports.ajaxPlaceOrder = exports.ajaxSaveAddresses = exports.ajaxGetAddresses = exports.ajaxGetRecommendGoods = exports.ajaxGetGoodInfo = exports.ajaxGetGoods = void 0; /**
-                                                                                                                                                                                                                                                                                                        * 交互接口
-                                                                                                                                                                                                                                                                                                        */
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxDelOrder = exports.ajaxGetOrderInfo = exports.ajaxGetOrders = exports.ajaxPlaceOrder = exports.ajaxSaveAddresses = exports.ajaxGetAddresses = exports.ajaxGetRecommendGoods = exports.ajaxGetGoodInfo = exports.ajaxGetGoods = void 0; /**
+                                                                                                                                                                                                                                                                                                                               * 交互接口
+                                                                                                                                                                                                                                                                                                                               */
 
 var URL = '';
 // 设置DEBUG模式，使用mock虚拟数据
@@ -8504,7 +8504,40 @@ exports.ajaxGetOrders = ajaxGetOrders;var ajaxGetOrderInfo = function ajaxGetOrd
       }
     } });
 
-};exports.ajaxGetOrderInfo = ajaxGetOrderInfo;
+};
+
+// 取消订单
+exports.ajaxGetOrderInfo = ajaxGetOrderInfo;var ajaxDelOrder = function ajaxDelOrder(pms, callback) {
+  var params = {
+    id: pms.id };
+
+
+  uni.showLoading({ title: LOADINGTEXT });
+  uni.request({
+    url: URL + '/order/delete',
+    method: 'POST',
+    data: params,
+    header: {
+      'AUTH': AUTH },
+
+    dataType: 'json',
+    complete: function complete(data) {
+      uni.hideLoading();
+    },
+    fail: function fail() {
+      uni.showToast({ title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom' });
+    },
+    success: function success(data) {
+      if (data.code === 200) {
+        callback && callback(data);
+      } else if (fail) {
+        fail(data);
+      } else {
+        uni.showToast({ title: '' + data.msg, icon: 'none', position: 'bottom' });
+      }
+    } });
+
+};exports.ajaxDelOrder = ajaxDelOrder;
 
 if (DEBUG) {
   var majax = __webpack_require__(/*! ./mock.js */ "F:\\linjinghui\\github\\seafood\\data\\mock.js");
@@ -8516,6 +8549,7 @@ if (DEBUG) {
   exports.ajaxPlaceOrder = ajaxPlaceOrder = majax.ajaxPlaceOrder;
   exports.ajaxGetOrders = ajaxGetOrders = majax.ajaxGetOrders;
   exports.ajaxGetOrderInfo = ajaxGetOrderInfo = majax.ajaxGetOrderInfo;
+  exports.ajaxDelOrder = ajaxDelOrder = majax.ajaxDelOrder;
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
@@ -8529,7 +8563,7 @@ if (DEBUG) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxGetGoods = ajaxGetGoods;exports.ajaxGetGoodInfo = ajaxGetGoodInfo;exports.ajaxGetRecommendGoods = ajaxGetRecommendGoods;exports.ajaxGetAddresses = ajaxGetAddresses;exports.ajaxSaveAddresses = ajaxSaveAddresses;exports.ajaxPlaceOrder = ajaxPlaceOrder;exports.ajaxGetOrders = ajaxGetOrders;exports.ajaxGetOrderInfo = ajaxGetOrderInfo;var _mock = _interopRequireDefault(__webpack_require__(/*! @/static/mock/mock.js */ "F:\\linjinghui\\github\\seafood\\static\\mock\\mock.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.ajaxGetGoods = ajaxGetGoods;exports.ajaxGetGoodInfo = ajaxGetGoodInfo;exports.ajaxGetRecommendGoods = ajaxGetRecommendGoods;exports.ajaxGetAddresses = ajaxGetAddresses;exports.ajaxSaveAddresses = ajaxSaveAddresses;exports.ajaxPlaceOrder = ajaxPlaceOrder;exports.ajaxGetOrders = ajaxGetOrders;exports.ajaxGetOrderInfo = ajaxGetOrderInfo;exports.ajaxDelOrder = ajaxDelOrder;var _mock = _interopRequireDefault(__webpack_require__(/*! @/static/mock/mock.js */ "F:\\linjinghui\\github\\seafood\\static\\mock\\mock.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 var Random = _mock.default.Random;
 var dure = 1000;
 var LOADINGTEXT = '加载中...';
@@ -8747,7 +8781,9 @@ function ajaxGetOrders(pms, callback) {
   var data = _mock.default.mock({
     'msg': '',
     'code': 200,
-    'result|0-10': [
+    // 总记录数
+    'total': 21,
+    'result|10': [
     {
       // 订单ID
       'id': '@id()',
@@ -8810,6 +8846,17 @@ function ajaxGetOrderInfo(pms, callback) {
       // 收货门牌地址
       'doorAddress': '@ctitle(5, 10)' } });
 
+
+  uni.showLoading({ title: LOADINGTEXT });
+  setTimeout(function () {uni.hideLoading();callback && callback(data);}, Math.floor(Math.random() * dure));
+}
+
+// 取消订单
+function ajaxDelOrder(pms, callback) {
+  var data = _mock.default.mock({
+    'msg': '',
+    'code': 200,
+    'result': {} });
 
   uni.showLoading({ title: LOADINGTEXT });
   setTimeout(function () {uni.hideLoading();callback && callback(data);}, Math.floor(Math.random() * dure));

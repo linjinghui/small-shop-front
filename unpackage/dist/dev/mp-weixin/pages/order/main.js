@@ -8,7 +8,9 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
 
 
 
@@ -42,34 +44,101 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\github\\seafood\\common\\global.js");
-var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\seafood\\data\\ajax.js");var uniIcon = function uniIcon() {return __webpack_require__.e(/*! import() | components/uni-icon/uni-icon */ "components/uni-icon/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-icon/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-icon\\uni-icon.vue"));};var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-iconfont\\uni-icon.vue"));};var _default =
+var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\seafood\\data\\ajax.js");var uniIcon = function uniIcon() {return __webpack_require__.e(/*! import() | components/uni-icon/uni-icon */ "components/uni-icon/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-icon/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-icon\\uni-icon.vue"));};var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-iconfont\\uni-icon.vue"));};var uniLoadMore = function uniLoadMore() {return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-load-more\\uni-load-more.vue"));};var _default =
 
 {
   components: {
     uniIcon: uniIcon,
-    uniIconfont: uniIconfont },
+    uniIconfont: uniIconfont,
+    uniLoadMore: uniLoadMore },
 
   data: function data() {
     return {
-      orders: [] };
+      orders: [],
+      // 分页-当前页
+      page: 1,
+      // 分页-每页大小
+      size: 10,
+      // 分页-总页数
+      totalPage: 1,
+      // 上拉显示更多组件
+      // more loading noMore
+      status: 'more',
+      contentText: {
+        contentdown: '查看更多',
+        contentrefresh: '加载中',
+        contentnomore: '没有更多' } };
+
 
   },
   computed: {},
   onLoad: function onLoad(e) {
     var _this = this;
-    (0, _ajax.ajaxGetOrders)({}, function (data) {
-      var result = data.result;
-      if (result && result.length > 0) {
-        _this.orders = result;
-      } else {
-        _this.orders = null;
-      }
+    // 获取订单数据
+    this.getOrderList(function () {
+      _this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
     });
+  },
+  onPullDownRefresh: function onPullDownRefresh() {
+    var _this = this;
+    _this.page = 1;
+    _this.status = 'loading';
+    _this.getOrderList(function () {
+      uni.stopPullDownRefresh();
+      _this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+    });
+  },
+  onReachBottom: function onReachBottom() {
+    var _this = this;
+    if (_this.totalPage > _this.page) {
+      _this.page += 1;
+      // 获取列表数据
+      _this.status = 'loading';
+      _this.getOrderList(function () {
+        _this.status = 'more';
+      });
+    } else {
+      // 没有更多数据
+      _this.status = 'noMore';
+    }
   },
   methods: {
     clkOrder: function clkOrder(data) {
       (0, _global.turnPage)('order-info', data.id);
+    },
+    clkDel: function clkDel(index, data) {
+      var _this = this;
+      uni.showModal({
+        title: '取消订单',
+        content: '确定取消该订单？',
+        success: function success(res) {
+          if (res.confirm) {
+            (0, _ajax.ajaxDelOrder)(data, function (result) {
+              uni.showToast({ title: '订单已取消！' });
+              _this.orders.splice(index, 1);
+            });
+          }
+        } });
+
+    },
+    getOrderList: function getOrderList(callback) {
+      var _this = this;
+      (0, _ajax.ajaxGetOrders)({
+        page: _this.page,
+        size: _this.size },
+      function (data) {
+        // 计算总页数
+        _this.totalPage = parseInt((data.total - 1) / _this.size + 1);
+        data = data.result || [];
+        if (_this.page <= 1) {
+          _this.orders = data;
+        } else {
+          _this.orders = _this.orders.concat(data);
+        }
+        callback && callback();
+      });
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),
 

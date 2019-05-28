@@ -312,6 +312,39 @@ let ajaxGetOrderInfo = (pms, callback) => {
 	});
 }
 
+// 取消订单
+let ajaxDelOrder = (pms, callback) => {
+	let params = {
+		id: pms.id
+	};
+	
+	uni.showLoading({title: LOADINGTEXT});
+	uni.request({
+		url: URL + '/order/delete',
+		method: 'POST',
+		data: params,
+		header: {
+			'AUTH': AUTH
+		},
+		dataType: 'json',
+		complete: (data) => {
+			uni.hideLoading();
+		},
+		fail: () => {
+			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+		},
+		success: (data) => {
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			} else {
+				uni.showToast({title: '' + data.msg, icon: 'none', position: 'bottom'});
+			}
+		}
+	});
+}
+
 if (DEBUG) {
 	const majax = require('./mock.js');
 	ajaxGetGoods = majax.ajaxGetGoods;
@@ -322,6 +355,7 @@ if (DEBUG) {
 	ajaxPlaceOrder = majax.ajaxPlaceOrder;
 	ajaxGetOrders = majax.ajaxGetOrders;
 	ajaxGetOrderInfo = majax.ajaxGetOrderInfo;
+	ajaxDelOrder = majax.ajaxDelOrder;
 }
 
-export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses, ajaxSaveAddresses, ajaxPlaceOrder, ajaxGetOrders, ajaxGetOrderInfo};
+export {ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses, ajaxSaveAddresses, ajaxPlaceOrder, ajaxGetOrders, ajaxGetOrderInfo, ajaxDelOrder};

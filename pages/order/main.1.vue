@@ -4,7 +4,7 @@
 			<uni-iconfont class="icon" size="50" type="sp" color="#ddd" />
 			<p>您还没有下单记录哦~</p>
 		</view>
-		<view class="wrap-order" v-else v-for="(info,index) in orders" :key="info.id" @click="clkOrder(info)">
+		<view class="wrap-order" v-if="orders&&orders.length>0" v-for="(info,index) in orders" :key="info.id" @click="clkOrder(info)">
 			<view class="wrap-header">
 				<text class="status">{{info.status===1?'等待卖家接单':info.status===2?'备货中':info.status===3?'配送中':'已完成'}}</text>
 				<text class="time">{{info.time}}</text>
@@ -21,11 +21,11 @@
 				</view>
 			</view>
 			<view class="wrap-footer">
-				<button class="del" v-if="info.status===1" @click.stop="clkDel(index,info)">取消订单</button>
+				<button class="del" v-if="info.status===1">删除订单</button>
 				<button>再来一单</button>
 			</view>
 		</view>
-		<uni-load-more :status="status" v-if="totalPage>0" />
+		<uni-load-more :status="status" />
 	</view>
 </template>
 
@@ -34,7 +34,7 @@
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 	import {turnPage} from '@/common/global.js';
-	import {ajaxGetOrders, ajaxDelOrder} from '@/data/ajax.js';
+	import {ajaxGetOrders} from '@/data/ajax.js';
 	
 	export default {
 		components: {
@@ -96,21 +96,6 @@
 			clkOrder (data) {
 				turnPage('order-info', data.id);
 			},
-			clkDel (index, data) {
-				let _this = this;
-				uni.showModal({
-					title: '取消订单',
-					content: '确定取消该订单？',
-					success: (res) => {
-						if (res.confirm) {
-							ajaxDelOrder(data, (result) => {
-								uni.showToast({title: '订单已取消！'});
-								_this.orders.splice(index, 1);
-							});
-						}
-					}
-				});
-			},
 			getOrderList (callback) {
 				let _this = this;
 				ajaxGetOrders({
@@ -136,7 +121,6 @@
 	@import '@/common/global.scss';
 	
 	.content {
-		min-height: 100%;
 		background-color: #f4f5f6;
 		
 		// 未选购提示

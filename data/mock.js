@@ -216,7 +216,9 @@ export function ajaxGetOrders (pms, callback) {
 	let data = Mock.mock({
 		'msg': '',
 		'code': 200,
-		'result|0-10': [
+		// 总记录数
+		'total': 21,
+		'result|10': [
 			{
 				// 订单ID
 				'id': '@id()',
@@ -279,6 +281,17 @@ export function ajaxGetOrderInfo (pms, callback) {
 			// 收货门牌地址
 			'doorAddress': '@ctitle(5, 10)'
 		}
+	});
+	uni.showLoading({title: LOADINGTEXT});
+	setTimeout(function () {uni.hideLoading(); callback && callback(data);}, Math.floor(Math.random() * dure));
+}
+
+// 取消订单
+export function ajaxDelOrder (pms, callback) {
+	let data = Mock.mock({
+		'msg': '',
+		'code': 200,
+		'result': {}
 	});
 	uni.showLoading({title: LOADINGTEXT});
 	setTimeout(function () {uni.hideLoading(); callback && callback(data);}, Math.floor(Math.random() * dure));

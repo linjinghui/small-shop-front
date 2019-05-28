@@ -51,8 +51,13 @@
 		{
 			"path": "pages/order/main",
 			"style": {
-				"navigationBarTitleText": "我的订单"
+				"navigationBarTitleText": "我的订单",
+				"enablePullDownRefresh": true,
+				// 下拉 loading 的样式，仅支持 dark/light
+				"backgroundTextStyle": "dark",
+				"onReachBottomDistance": 50
 			}
+			
 		},
 		// 订单详情页
 		{
