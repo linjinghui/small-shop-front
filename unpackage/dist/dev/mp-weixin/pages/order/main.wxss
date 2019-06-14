@@ -50,7 +50,8 @@
       line-height: 30px;
       font-size: inherit;
       color: #fff;
-      border-radius: 20px;
+      -webkit-border-radius: 20px;
+              border-radius: 20px;
       background-color: #029c45;
 }
 .content > .wrap-order {

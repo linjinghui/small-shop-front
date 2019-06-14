@@ -69,6 +69,7 @@
     color: #029c45;
 }
 .main {
+  height: -webkit-calc(100% - 30px - 60px - 1px);
   height: calc(100% - 30px - 60px - 1px);
   overflow: auto;
 }
@@ -93,7 +94,8 @@
     margin-right: 10px;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
     vertical-align: middle;
 }
 .footer > .total {
@@ -106,12 +108,14 @@
     width: 32%;
     height: 100%;
     line-height: inherit;
-    border-radius: 0;
+    -webkit-border-radius: 0;
+            border-radius: 0;
     color: inherit;
     background-color: #ff9000;
 }
 .footer > button:after {
     border: 0;
-    border-radius: 0;
+    -webkit-border-radius: 0;
+            border-radius: 0;
 }
 

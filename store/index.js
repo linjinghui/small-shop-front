@@ -70,7 +70,7 @@ export default new Vuex.Store({
 			let index = '';
 			for (let i = 0;i < state.car.data.length;i++) {
 				let _item = state.car.data[i];
-				if (_item.id === good.id) {
+				if (_item._id === good._id) {
 					index = i;
 					good = _item;
 					break;
@@ -107,7 +107,7 @@ export default new Vuex.Store({
 				// 更新商品
 				state.car.data.splice(index, 1, good);
 			}
-			
+			console.log(state.car.data);
 			callback && callback(good);
 		},
 		// 设置商品勾选状态

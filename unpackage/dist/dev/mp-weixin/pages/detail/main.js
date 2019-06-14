@@ -65,6 +65,10 @@
 
 
 
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
@@ -126,12 +130,27 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
 //
 //
 //
+//
+//
+//
+//
 var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-iconfont\\uni-icon.vue"));};var uniSwiperDot = function uniSwiperDot() {return __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-swiper-dot\\uni-swiper-dot.vue"));};var uniBadge = function uniBadge() {return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ "F:\\linjinghui\\github\\seafood\\components\\uni-badge\\uni-badge.vue"));};var _default = { components: { uniIconfont: uniIconfont, uniSwiperDot: uniSwiperDot, uniBadge: uniBadge }, computed: { selectResult: function selectResult() {return this.$store.getters.doneSelectResult;} }, data: function data() {return { current: 0, goodInfo: {}, covers: [// {colorClass: 'uni-bg-blue', url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',　content: '内容 C'}
       ], dotsStyles: { backgroundColor: '#fff', border: '0', color: '#fff', selectedBackgroundColor: '#fff', selectedBorder: '0' }, recommends: [] };}, onLoad: function onLoad(e) {// 获取商品详情
-    var _this = this;(0, _ajax.ajaxGetGoodInfo)(e, function (data) {_this.covers = [];data.result.covers.forEach(function (item) {_this.covers.push({ url: item });});_this.goodInfo = data.result;(0, _ajax.ajaxGetRecommendGoods)('', function (data) {_this.recommends = data.result;});});}, methods: { change: function change(e) {this.current = e.detail.current;}, clkCar: function clkCar() {(0, _global.turnPage)('car');}, clkAddCar: function clkAddCar() {var _this = this;this.$set(this.goodInfo, 'select', true);this.$store.commit('addGood', [this.goodInfo, function (data) {// 添加商品到购物车后的回调
-        _this.EVENTHUB.$emit('updateCount', data);uni.showToast({ 'title': '已添加到购物车' });}]);},
+    var _this = this;(0, _ajax.ajaxGetGoodInfo)(e, function (data) {var info = data.result; // banner
+      _this.covers = [];info.cover.forEach(function (item) {_this.covers.push({ url: item });});_this.goodInfo = info; // 默认规格设置
+      _this.chooseSpecs(0);console.log(_this.covers);console.log(_this.goodInfo);(0, _ajax.ajaxGetRecommendGoods)('', function (data) {_this.recommends = data.result;});});}, methods: { change: function change(e) {this.current = e.detail.current;}, clkCar: function clkCar() {(0, _global.turnPage)('car');}, clkAddCar: function clkAddCar() {// 规格选择
+      var _this = this;this.$set(this.goodInfo, 'select', true);this.$store.commit('addGood', [this.goodInfo, function (data) {// 添加商品到购物车后的回调
+        _this.EVENTHUB.$emit('updateCount', data);uni.showToast({ 'title': '已添加到购物车' });}]);
+    },
     clkRecommend: function clkRecommend(data) {
       (0, _global.turnPage)('detail', data);
+    },
+    // 选择规格
+    chooseSpecs: function chooseSpecs(index) {
+      var specsInfo = this.goodInfo.specs[index];
+      this.$set(this.goodInfo, 'unit', specsInfo.name);
+      this.$set(this.goodInfo, 'price', specsInfo.price);
+      this.$set(this.goodInfo, 'rprice', (this.goodInfo.rebate / 10 * specsInfo.price).toFixed(2));
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

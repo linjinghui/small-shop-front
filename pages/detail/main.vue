@@ -1,5 +1,5 @@
 <template>
-	<view class="content" v-if="goodInfo.id">
+	<view class="content" v-if="goodInfo._id">
 		<view class="wrap-good">
 			<view class="wrap-swiper">
 				<uni-swiper-dot :info="covers" :current="current" mode="long" :dots-styles="dotsStyles">
@@ -20,7 +20,7 @@
 			</p>
 			<view class="wrap-labels">
 				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="gwd" />{{goodInfo.unit}}</view>
-				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="shdd3" />{{goodInfo.pplace}}</view>
+				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="shdd3" />{{goodInfo.origin_place}}</view>
 			</view>
 		</view>
 		<view class="wrap-recommend" v-if="recommends.length>0">
@@ -39,9 +39,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="wrap-detail" v-if="goodInfo.dtlpics.length>0">
+		<view class="wrap-detail" v-if="goodInfo.detail.length>0">
 			<view class="title"><span>商品详情</span></view>
-			<image :lazy-load="true" mode="widthFix" v-for="(item,index) in goodInfo.dtlpics" :key="index" :src="item"></image>
+			<image :lazy-load="true" mode="widthFix" v-for="(item,index) in goodInfo.detail" :key="index" :src="item"></image>
 		</view>
 		<view class="wrap-placehold"></view>
 		<footer>
@@ -51,6 +51,10 @@
 			</view>
 			<button @click="clkAddCar">加入购物车</button>
 		</footer>
+		
+		<view class="wrap-gg">
+			<view class="wrap-main"></view>
+		</view>
 	</view>
 </template>
 
@@ -94,11 +98,17 @@
 			// 获取商品详情
 			let _this = this;
 			ajaxGetGoodInfo(e, function (data) {
+				let info = data.result;
+				// banner
 				_this.covers = [];
-				data.result.covers.forEach( item => {
+				info.cover.forEach( item => {
 					_this.covers.push({url: item});
 				});
-				_this.goodInfo = data.result;
+				_this.goodInfo = info;
+				// 默认规格设置
+				_this.chooseSpecs(0);
+				console.log(_this.covers);
+				console.log(_this.goodInfo);
 				ajaxGetRecommendGoods('', function (data) {
 					_this.recommends = data.result;
 				});
@@ -112,6 +122,8 @@
 				turnPage('car');
 			},
 			clkAddCar () {
+				// 规格选择
+				
 				let _this = this;
 				this.$set(this.goodInfo, 'select', true);
 				this.$store.commit('addGood', [this.goodInfo, (data) => {
@@ -122,6 +134,13 @@
 			},
 			clkRecommend (data) {
 				turnPage('detail', data);
+			},
+			// 选择规格
+			chooseSpecs (index) {
+				let specsInfo = this.goodInfo.specs[index];
+				this.$set(this.goodInfo, 'unit', specsInfo.name);
+				this.$set(this.goodInfo, 'price', specsInfo.price);
+				this.$set(this.goodInfo, 'rprice', (this.goodInfo.rebate / 10 * specsInfo.price).toFixed(2));
 			}
 		}
 	}
@@ -326,6 +345,17 @@
 				color: #fff;
 				background-color: $theme;
 			}
+		}
+		
+		// 规格选择
+		> .wrap-gg {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			z-index: 2;
 		}
 	}
 </style>

@@ -2,15 +2,15 @@
  * 交互接口
  */ 
 
-const URL = '';
+const URL = 'http://121.40.134.40:7001';
 // 设置DEBUG模式，使用mock虚拟数据
 const DEBUG = true;
 const LOADINGTEXT = '加载中...';
 // 小程序拥有者身份信息
-const AUTH = 'LINJINGHUI';
+const AUTH = (new Date().getTime() + 'a3loeA==').replace(/4/g,'#');
 
 // 获取商品列表
-let ajaxGetGoods = (pms, callback) => {
+let ajaxGetGoods = (pms, callback, fail) => {
 	let params = {
 		page: pms.page || 1,
 		size: pms.size || 10
@@ -18,7 +18,7 @@ let ajaxGetGoods = (pms, callback) => {
 	
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
-		url: URL + '/goods',
+		url: URL + '/client/product',
 		method: 'GET',
 		data: params,
 		header: {
@@ -31,7 +31,8 @@ let ajaxGetGoods = (pms, callback) => {
 		fail: () => {
 			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 		},
-		success: (data) => {
+		success: (ret) => {
+			let data = ret.data;
 			if (data.code === 200) {
 				callback && callback(data);
 			} else if (fail) {
@@ -51,9 +52,8 @@ let ajaxGetGoodInfo = (pms, callback, fail) => {
 	
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
-		url: URL + '/goods/info',
+		url: URL + '/client/product/' + params.id,
 		method: 'GET',
-		data: params,
 		header: {
 			'AUTH': AUTH
 		},
@@ -64,7 +64,8 @@ let ajaxGetGoodInfo = (pms, callback, fail) => {
 		fail: () => {
 			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 		},
-		success: (data) => {
+		success: (ret) => {
+			let data = ret.data;
 			if (data.code === 200) {
 				callback && callback(data);
 			} else if (fail) {
@@ -347,8 +348,8 @@ let ajaxDelOrder = (pms, callback) => {
 
 if (DEBUG) {
 	const majax = require('./mock.js');
-	ajaxGetGoods = majax.ajaxGetGoods;
-	ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
+	// ajaxGetGoods = majax.ajaxGetGoods;
+	// ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
 	ajaxGetRecommendGoods = majax.ajaxGetRecommendGoods;
 	ajaxGetAddresses = majax.ajaxGetAddresses;
 	ajaxSaveAddresses = majax.ajaxSaveAddresses;

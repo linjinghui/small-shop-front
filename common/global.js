@@ -37,7 +37,7 @@ const turnPage = (type, obj) => {
 			url = '/pages/car/main';
 			break;
 		case 'detail':
-			url = '/pages/detail/main?id=' + obj.id;
+			url = '/pages/detail/main?id=' + obj._id;
 			break;
 		case 'consignee':
 			url = '/pages/consignee/main?from=' + obj;

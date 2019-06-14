@@ -183,13 +183,19 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
     },
     getListData: function getListData(callback) {
       var _this = this;
-      var result = (0, _ajax.ajaxGetGoods)({
+      (0, _ajax.ajaxGetGoods)({
         page: _this.page,
         size: _this.size },
       function (data) {
         // 计算总页数
-        _this.totalPage = parseInt((data.total - 1) / _this.size + 1);
-        data = data.result || [];
+        _this.totalPage = parseInt((data.result.total - 1) / _this.size + 1);
+        data = data.result.list || [];
+        for (var i = 0; i < data.length; i++) {
+          data[i].unit = data[i].specs[0].name;
+          data[i].price = data[i].specs[0].price;
+          data[i].stock = data[i].specs[0].stock;
+          data[i].rprice = (data[i].rebate / 10 * data[i].price).toFixed(2);
+        }
         // 注入初始数量 0
         data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
         if (_this.page <= 1) {

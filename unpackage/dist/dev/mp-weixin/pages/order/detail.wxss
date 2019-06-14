@@ -59,7 +59,8 @@
       font-size: inherit;
       color: #999;
       border: solid 1px #f0f0f0;
-      border-radius: 2px;
+      -webkit-border-radius: 2px;
+              border-radius: 2px;
       background-color: transparent;
 }
 .content > .list > .item {
@@ -82,6 +83,7 @@
 }
 .content > .list > .item > .middle {
       float: left;
+      width: -webkit-calc(100% - 50px - 50px);
       width: calc(100% - 50px - 50px);
       line-height: 25px;
 }
@@ -112,6 +114,7 @@
       color: #999;
 }
 .content > .list.type-1 > .item > .middle {
+      width: -webkit-calc(100% - 80px);
       width: calc(100% - 80px);
       line-height: unset;
 }

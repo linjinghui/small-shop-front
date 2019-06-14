@@ -36,11 +36,13 @@ page {
   list-style: none;
 }
 button {
-  border-radius: 0;
+  -webkit-border-radius: 0;
+          border-radius: 0;
 }
 button:after {
   border: 0;
-  border-radius: 0;
+  -webkit-border-radius: 0;
+          border-radius: 0;
 }
 button:active,
 icon:active {

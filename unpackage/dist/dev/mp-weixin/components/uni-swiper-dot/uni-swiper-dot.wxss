@@ -30,7 +30,8 @@
 	    -ms-flex-negative: 0;
 	        flex-shrink: 0;
 	width: 16rpx;
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 	margin-left: 12rpx;
 	background: rgba(0, 0, 0, .3);
 	-webkit-transition: all 0.2s linear;
@@ -41,10 +42,12 @@
 	margin: 0;
 }
 .uni-swiper__dots-default {
-	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	        border-radius: 50%;
 }
 .uni-swiper__dots-long {
-	border-radius: 100rpx;
+	-webkit-border-radius: 100rpx;
+	        border-radius: 100rpx;
 }
 .uni-swiper__dots-nav {
 	bottom: 0;

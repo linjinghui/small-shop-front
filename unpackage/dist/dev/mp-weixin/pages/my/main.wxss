@@ -38,7 +38,8 @@
     width: 58px;
     height: 58px;
     border: solid 1px #fff;
-    border-radius: 50%;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
     vertical-align: middle;
 }
 .content > .header > ._p {
@@ -52,6 +53,7 @@
 }
 .content > .main {
   padding-top: 1px;
+  height: -webkit-calc(100% - 150px - 1px);
   height: calc(100% - 150px - 1px);
   background-color: #f4f5f6;
 }

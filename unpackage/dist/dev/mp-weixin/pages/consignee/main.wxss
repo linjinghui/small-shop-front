@@ -50,7 +50,8 @@
       line-height: 30px;
       font-size: inherit;
       color: #fff;
-      border-radius: 20px;
+      -webkit-border-radius: 20px;
+              border-radius: 20px;
       background-color: #029c45;
 }
 .content > .main {
@@ -63,6 +64,7 @@
       border-bottom: solid 1px #f0f0f0;
 }
 .content > .main > view > ._p {
+        width: -webkit-calc(100% - 40px);
         width: calc(100% - 40px);
 }
 .content > .main > view > .p-2 {

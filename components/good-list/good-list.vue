@@ -1,13 +1,13 @@
 <!-- 商品列表组件 -->
 <template>
 	<view class="wrap-good-list" :class="{'select':nselect,'small':small}">
-		<view class="wrap-good-item" v-for="(info,index) in list" :key="info.id" @click="clkLine(info)">
-			<span class="label" v-if="!nselect&&!small" v-for="lbinfo in info.label" :key="lbinfo.id" :style="{'color':lbinfo.color,'backgroundColor':lbinfo.bcolor}">{{lbinfo.text}}</span>
+		<view class="wrap-good-item" v-for="(info,index) in list" :key="info._id" @click="clkLine(info)">
+			<span class="label" v-if="!nselect&&!small" v-for="lbinfo in info.label" :key="lbinfo.id" :style="{'backgroundColor':lbinfo.bgcolor}">{{lbinfo.text}}</span>
 			<view class="wrap-icon" v-if="nselect&&!small">
 				<uni-iconfont class="icon center-hv" :type="info.select?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelect(index,info)" />
 			</view>
 			<view class="wrap-img">
-				<image class="center-hv" lazy-load="true" :src="info.pic"></image>
+				<image class="center-hv" lazy-load="true" :src="info.avatar"></image>
 			</view>
 			<view class="wrap-main">
 				<text class="name text-over">{{info.name}}</text>
@@ -68,6 +68,8 @@
 		methods: {
 			// 选中商品
 			clkChoose (e, data) {
+				console.log('==clkChoose==');
+				console.log(data);
 				if (e.error) {
 					uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
 				} else {
@@ -121,6 +123,7 @@
 			padding: 2px 8px;
 			border-radius: 2px;
 			font-size: 12px;
+			color: #fff;
 			z-index: 2;
 		}
 		> .label:nth-child(2) {

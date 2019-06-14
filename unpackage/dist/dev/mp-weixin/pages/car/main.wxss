@@ -50,7 +50,8 @@
       line-height: 30px;
       font-size: inherit;
       color: #fff;
-      border-radius: 20px;
+      -webkit-border-radius: 20px;
+              border-radius: 20px;
       background-color: #029c45;
 }
 .content > .main {
@@ -59,6 +60,7 @@
 .content > .main > .scroll-Y {
       margin: 0;
       padding: 0;
+      height: -webkit-calc(100% - 60px);
       height: calc(100% - 60px);
 }
 .content > .main > .scroll-Y .wrap-address {
@@ -106,12 +108,14 @@
         width: 32%;
         height: 100%;
         line-height: inherit;
-        border-radius: 0;
+        -webkit-border-radius: 0;
+                border-radius: 0;
         color: inherit;
         background-color: #ff9000;
 }
 .content > .main > .footer > button:after {
         border: 0;
-        border-radius: 0;
+        -webkit-border-radius: 0;
+                border-radius: 0;
 }
 

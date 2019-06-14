@@ -48,6 +48,7 @@
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1;
+    width: -webkit-calc(100% - 70px);
     width: calc(100% - 70px);
 }
 .content > .uni-form-item > .p-r > .with-fun {
@@ -80,7 +81,8 @@
   width: 80%;
   height: 40px;
   line-height: 40px;
-  border-radius: 40px;
+  -webkit-border-radius: 40px;
+          border-radius: 40px;
   color: #fff;
   font-size: 16px;
   background-color: #029c45;

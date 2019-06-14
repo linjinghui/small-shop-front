@@ -78,6 +78,8 @@ var _global = __webpack_require__(/*! @/common/global.js */ "F:\\linjinghui\\git
   methods: {
     // 选中商品
     clkChoose: function clkChoose(e, data) {
+      console.log('==clkChoose==');
+      console.log(data);
       if (e.error) {
         uni.showToast({ title: '无法购买更多', icon: 'none', position: 'bottom' });
       } else {
