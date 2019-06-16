@@ -348,8 +348,8 @@ let ajaxDelOrder = (pms, callback) => {
 
 if (DEBUG) {
 	const majax = require('./mock.js');
-	// ajaxGetGoods = majax.ajaxGetGoods;
-	// ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
+	ajaxGetGoods = majax.ajaxGetGoods;
+	ajaxGetGoodInfo = majax.ajaxGetGoodInfo;
 	ajaxGetRecommendGoods = majax.ajaxGetRecommendGoods;
 	ajaxGetAddresses = majax.ajaxGetAddresses;
 	ajaxSaveAddresses = majax.ajaxSaveAddresses;

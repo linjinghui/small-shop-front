@@ -52,8 +52,19 @@
 			<button @click="clkAddCar">加入购物车</button>
 		</footer>
 		
-		<view class="wrap-gg">
-			<view class="wrap-main"></view>
+		<view class="wrap-gg" v-if="ggoption.show" @click="hideGg">
+			<div class="wrap-main" :class="{show:ggoption.mainShow}" @click.stop>
+				<view class="wrap-header">
+					<image :src="goodInfo.avatar"></image>
+					<p class="price">{{goodInfo.specs[specsIndex].price}}</p>
+					<p>库存{{goodInfo.specs[specsIndex].stock}}件</p>
+					<p>已选：{{goodInfo.specs[specsIndex].name}}</p>
+				</view>
+				<view class="wrap-section">
+					<span v-for="(sinfo,index) in goodInfo.specs" :key="sinfo.name" :class="{active:specsIndex===index}" @click="clkSpecs(index)">{{sinfo.name}}</span>
+				</view>
+				<button class="wrap-footer">确定</button>
+			</div>
 		</view>
 	</view>
 </template>
@@ -91,7 +102,12 @@
 					selectedBackgroundColor: '#fff',
 					selectedBorder: '0'
 				},
-				recommends: []
+				recommends: [],
+				ggoption: {
+					show: false,
+					mainShow: false
+				},
+				specsIndex: 0
 			};
 		},
 		onLoad (e) {
@@ -107,8 +123,6 @@
 				_this.goodInfo = info;
 				// 默认规格设置
 				_this.chooseSpecs(0);
-				console.log(_this.covers);
-				console.log(_this.goodInfo);
 				ajaxGetRecommendGoods('', function (data) {
 					_this.recommends = data.result;
 				});
@@ -124,16 +138,21 @@
 			clkAddCar () {
 				// 规格选择
 				
-				let _this = this;
-				this.$set(this.goodInfo, 'select', true);
-				this.$store.commit('addGood', [this.goodInfo, (data) => {
-					// 添加商品到购物车后的回调
-					_this.EVENTHUB.$emit('updateCount', data);
-					uni.showToast({'title': '已添加到购物车'});
-				}]);
+				
+				// let _this = this;
+				this.showGg();
+				// this.$set(this.goodInfo, 'select', true);
+				// this.$store.commit('addGood', [this.goodInfo, (data) => {
+				// 	// 添加商品到购物车后的回调
+				// 	_this.EVENTHUB.$emit('updateCount', data);
+				// 	uni.showToast({'title': '已添加到购物车'});
+				// }]);
 			},
 			clkRecommend (data) {
 				turnPage('detail', data);
+			},
+			clkSpecs (index) {
+				this.specsIndex = index;
 			},
 			// 选择规格
 			chooseSpecs (index) {
@@ -141,6 +160,20 @@
 				this.$set(this.goodInfo, 'unit', specsInfo.name);
 				this.$set(this.goodInfo, 'price', specsInfo.price);
 				this.$set(this.goodInfo, 'rprice', (this.goodInfo.rebate / 10 * specsInfo.price).toFixed(2));
+			},
+			showGg () {
+				this.ggoption.show = true;
+				this.$nextTick(function(){
+					this.ggoption.mainShow = true;
+				});
+			},
+			hideGg () {
+				let _this = this;
+				
+				this.ggoption.mainShow = false;
+				setTimeout(() => {
+					_this.ggoption.show = false;
+				}, 200);
 			}
 		}
 	}
@@ -354,8 +387,71 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
+			background-color: rgba(0, 0, 0, .7);
 			z-index: 2;
+			
+			> .wrap-main {
+				position: absolute;
+				bottom: -50%;
+				left: 0;
+				width: 100%;
+				height: 50%;
+				transition: bottom .4s;
+				background-color: #fff;
+				z-index: 2;
+				
+				> .wrap-header {
+					height: 80px;
+					border-bottom: solid 1px $border-color;
+					
+					> image {
+						position: absolute;
+						top: -10px;
+						left: 10px;
+						width: 80px;
+						height: 80px;
+						border-radius: 5px;
+						border: solid 1px #ccc;
+					}
+					
+					> p {
+						padding-left: 100px;
+					}
+					> p:first-of-type {
+						margin-top: 5px;
+					}
+				}
+				> .wrap-section {
+					padding: 10px;
+					height: calc(100% - 80px - 50px - 20px);
+					> p {
+						font-size: 18px;
+					}
+					> span {
+						display: inline-block;
+						margin-top: 10px;
+						margin-right: 10px;
+						padding: 4px 6px;
+						border-radius: 4px;
+						border: solid 1px transparent;
+						background-color: #eee;
+					}
+					> span.active {
+						color: $theme;
+						border: solid 1px $theme;
+					}
+				}
+				> .wrap-footer {
+					height: 50px;
+					line-height: 50px;
+					color: #fff;
+					background-color: $theme;
+				}
+			}
+			
+			> .wrap-main.show {
+				bottom: 0;
+			}
 		}
 	}
 </style>

@@ -11,9 +11,9 @@ export function ajaxGetGoods (pms, callback) {
 		// 总记录数
 		'total': 32,
 		'result|6-10': [{
-			'id': '@id()',
+			'_id': '@id()',
 			// 图片地址
-			'pic': "@image(80x80)",
+			'avatar': "@image(80x80)",
 			// 商品名称
 			'name|1': '@ctitle(3, 8)',
 			// 商品描述
@@ -52,14 +52,15 @@ export function ajaxGetGoodInfo (pms, callback) {
 		'msg': '',
 		'code': 200,
 		'result': {
-			'id': pms.id,
-			'pic': "@image(80x80)",
+			'_id': 123,
+			'avatar': "@image(80x80)",
 			// 广告图片
-			'covers|1-2': ['https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg'],
+			'cover|1-2': ['https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg', 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg'],
 			// 商品名称
 			'name|1': '@ctitle(3, 8)',
 			// 商品描述
 			'desc': '@ctitle(10, 50)',
+			'specs': [{name: '斤', price: 11, stock: 20}, {name: '450-500/份', price: 21, stock: 120}],
 			// 购买单位
 			'unit|1': ['1kg-1.5kg/份', '2-2.5g/个', '3.5元/斤'],
 			// 单价
@@ -81,7 +82,7 @@ export function ajaxGetGoodInfo (pms, callback) {
 			// 产地
 			'pplace|1': ['福建', '连江', '苔箓', '北郊'],
 			// 商品详情图片
-			'dtlpics|1-5': ["@image(200x280)"],
+			'detail|1-5': ["@image(200x280)"],
 		}
 	});
 	uni.showLoading({title: LOADINGTEXT});
@@ -96,7 +97,7 @@ export function ajaxGetRecommendGoods (pms, callback) {
 		'result|1-10': [{
 			'id': '@id()',
 			// 图片地址
-			'pic': "@image(80x80)",
+			'avatar': "@image(80x80)",
 			// 商品名称
 			'name|1': '@ctitle(3, 8)',
 			// 商品描述
@@ -225,7 +226,7 @@ export function ajaxGetOrders (pms, callback) {
 				// 商品列表
 				'goods|2': [{
 					'id': '@id()',
-					'pic': "@image(80x80)",
+					'avatar': "@image(80x80)",
 					'name': '@ctitle(3, 8)',
 					'count|1': [1, 2, 3]
 				}],
@@ -255,7 +256,7 @@ export function ajaxGetOrderInfo (pms, callback) {
 			// 商品列表
 			'goods|1-5': [{
 				'id': '@id()',
-				'pic': "@image(80x80)",
+				'avatar': "@image(80x80)",
 				'name': '@ctitle(3, 8)',
 				'count|1': [1, 2, 3],
 				// 订购价格|折后价格
