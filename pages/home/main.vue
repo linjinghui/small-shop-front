@@ -181,10 +181,22 @@ export default {
 				_this.totalPage = parseInt((data.result.total - 1) / _this.size + 1);
 				data = data.result.list || [];
 				for (let i = 0;i < data.length;i++) {
-					data[i].unit = data[i].specs[0].name;
-					data[i].price = data[i].specs[0].price;
-					data[i].stock = data[i].specs[0].stock;
-					data[i].rprice = (data[i].rebate / 10 * data[i].price).toFixed(2);
+					// 规格按单价低-高排序，剔除库存为0的
+					let _specs = data[i].specs || [];
+					if (_specs.length > 1) {
+						// 排序
+						_specs.sort(function (a, b) { return a.price > b.price });
+						// 剔除库存为0的
+						_specs.forEach(function (item, index) { 
+							if(item.stock == 0) {
+								_specs.splice(index, 1);
+							} 
+						});
+					}
+					data[i].unit = _specs[0].name;
+					data[i].price = _specs[0].price;
+					data[i].stock = _specs[0].stock;
+					data[i].rprice = (data[i].rebate / 10 * data[i].price).toFixed(2) + (_specs.length > 1 && ' 起');
 				}
 				// 注入初始数量 0
 				data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');

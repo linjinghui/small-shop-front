@@ -289,13 +289,16 @@
           -webkit-border-radius: 4px;
                   border-radius: 4px;
           border: solid 1px transparent;
-          background-color: #eee;
+          background-color: #efefef;
 }
 .content > .wrap-gg > .wrap-main > .wrap-section > ._span.active {
           color: #029c45;
           border: solid 1px #029c45;
 }
-.content > .wrap-gg > .wrap-main > .wrap-footer {
+.content > .wrap-gg > .wrap-main > .wrap-section > ._span.disabled {
+          opacity: 0.5;
+}
+.content > .wrap-gg > .wrap-main > .wrap-footer:not([disabled]) {
         height: 50px;
         line-height: 50px;
         color: #fff;

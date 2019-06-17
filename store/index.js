@@ -64,13 +64,14 @@ export default new Vuex.Store({
         },
 		// 商品加入购物车
 		addGood (state, [good, callback]) {
+			console.log(good);
 			good = JSON.parse(JSON.stringify(good));
 			let count = good.count;	
 			// s-1 获取商品在购物车中的位置
 			let index = '';
 			for (let i = 0;i < state.car.data.length;i++) {
 				let _item = state.car.data[i];
-				if (_item._id === good._id) {
+				if (_item._id === good._id && _item.specs.name === good.specs.name) {
 					index = i;
 					good = _item;
 					break;

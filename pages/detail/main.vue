@@ -56,14 +56,17 @@
 			<div class="wrap-main" :class="{show:ggoption.mainShow}" @click.stop>
 				<view class="wrap-header">
 					<image :src="goodInfo.avatar"></image>
-					<p class="price">{{goodInfo.specs[specsIndex].price}}</p>
+					<p>
+						<span class="price">{{ggrprice}}</span>
+						<span class="price del" v-if="goodInfo.rebate<10">{{goodInfo.specs[specsIndex].price}}</span>
+					</p>
 					<p>库存{{goodInfo.specs[specsIndex].stock}}件</p>
 					<p>已选：{{goodInfo.specs[specsIndex].name}}</p>
 				</view>
 				<view class="wrap-section">
-					<span v-for="(sinfo,index) in goodInfo.specs" :key="sinfo.name" :class="{active:specsIndex===index}" @click="clkSpecs(index)">{{sinfo.name}}</span>
+					<span v-for="(sinfo,index) in goodInfo.specs" :key="sinfo.name" :class="{active:specsIndex===index}" @click="clkSpecs(index,sinfo)">{{sinfo.name}}</span>
 				</view>
-				<button class="wrap-footer">确定</button>
+				<button class="wrap-footer" :disabled="goodInfo.specs[specsIndex].stock==0" @click="addCar">确定</button>
 			</div>
 		</view>
 	</view>
@@ -86,6 +89,9 @@
 		computed: {
 			selectResult () {
 				return this.$store.getters.doneSelectResult;
+			},
+			ggrprice () {
+				return this.goodInfo.specs && this.goodInfo.specs.length > 0 && (this.goodInfo.rebate / 10 * this.goodInfo.specs[this.specsIndex].price).toFixed(2);
 			}
 		},
 		data () {
@@ -120,9 +126,15 @@
 				info.cover.forEach( item => {
 					_this.covers.push({url: item});
 				});
+				
+				(info.specs || []).sort(function (a, b) { return a.price > b.price });
+				info.unit = info.specs[0].name;
+				info.price = info.specs[0].price;
+				info.rprice = (info.rebate / 10 * info.price).toFixed(2) + (info.specs.length > 1 && ' 起');
+				
 				_this.goodInfo = info;
 				// 默认规格设置
-				_this.chooseSpecs(0);
+				// _this.chooseSpecs(0);
 				ajaxGetRecommendGoods('', function (data) {
 					_this.recommends = data.result;
 				});
@@ -137,22 +149,19 @@
 			},
 			clkAddCar () {
 				// 规格选择
-				
-				
-				// let _this = this;
-				this.showGg();
-				// this.$set(this.goodInfo, 'select', true);
-				// this.$store.commit('addGood', [this.goodInfo, (data) => {
-				// 	// 添加商品到购物车后的回调
-				// 	_this.EVENTHUB.$emit('updateCount', data);
-				// 	uni.showToast({'title': '已添加到购物车'});
-				// }]);
+				if (this.goodInfo.specs.length > 1) {
+					this.showGg();
+				} else {
+					this.addCar();
+				}
 			},
 			clkRecommend (data) {
 				turnPage('detail', data);
 			},
-			clkSpecs (index) {
-				this.specsIndex = index;
+			clkSpecs (index, info) {
+				// if (info.stock != 0) {
+				this.specsIndex = index;	
+				// }
 			},
 			// 选择规格
 			chooseSpecs (index) {
@@ -160,6 +169,20 @@
 				this.$set(this.goodInfo, 'unit', specsInfo.name);
 				this.$set(this.goodInfo, 'price', specsInfo.price);
 				this.$set(this.goodInfo, 'rprice', (this.goodInfo.rebate / 10 * specsInfo.price).toFixed(2));
+			},
+			addCar () {
+				this.$set(this.goodInfo, 'select', true);
+				this.hideGg();
+				
+				let _this = this;
+				let _info = JSON.parse(JSON.stringify(this.goodInfo));
+				
+				_info.specs = _info.specs[this.specsIndex];				
+				this.$store.commit('addGood', [_info, (data) => {
+					// 添加商品到购物车后的回调
+					_this.EVENTHUB.$emit('updateCount', data);
+					uni.showToast({'title': '已添加到购物车'});
+				}]);
 			},
 			showGg () {
 				this.ggoption.show = true;
@@ -434,14 +457,17 @@
 						padding: 4px 6px;
 						border-radius: 4px;
 						border: solid 1px transparent;
-						background-color: #eee;
+						background-color: #efefef;
 					}
 					> span.active {
 						color: $theme;
 						border: solid 1px $theme;
 					}
+					> span.disabled {
+						opacity: 0.5;
+					}
 				}
-				> .wrap-footer {
+				> .wrap-footer:not([disabled]) {
 					height: 50px;
 					line-height: 50px;
 					color: #fff;

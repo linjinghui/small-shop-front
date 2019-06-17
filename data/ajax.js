@@ -2,9 +2,9 @@
  * 交互接口
  */ 
 
-const URL = 'http://121.40.134.40:7001';
+const URL = 'http://192.168.1.40:7001';
 // 设置DEBUG模式，使用mock虚拟数据
-const DEBUG = true;
+const DEBUG = false;
 const LOADINGTEXT = '加载中...';
 // 小程序拥有者身份信息
 const AUTH = (new Date().getTime() + 'a3loeA==').replace(/4/g,'#');

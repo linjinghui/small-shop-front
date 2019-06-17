@@ -68,14 +68,15 @@
 		methods: {
 			// 选中商品
 			clkChoose (e, data) {
-				console.log('==clkChoose==');
-				console.log(data);
 				if (e.error) {
 					uni.showToast({title: '无法购买更多', icon: 'none', position: 'bottom'});
 				} else {
 					// 勾选中商品
 					this.$set(data, 'select', true);
-					this.$store.commit('addGood', [data]);
+					let _info = JSON.parse(JSON.stringify(data));					
+					
+					_info.specs = _info.specs[0];						
+					this.$store.commit('addGood', [_info]);
 					// 数量变化监听
 					this.$emit('changeCount', data);
 					this.$emit('input', this.list);
