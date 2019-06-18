@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   name: 'Bugbtn',
   data: function data() {
     return {
-      num: this.value };
+      num: this.value || 0 };
 
   },
   props: {

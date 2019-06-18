@@ -12,29 +12,28 @@
 					</swiper>
 				</uni-swiper-dot>
 			</view>
-			<p class="name">{{goodInfo.name}}</p>
+			<p class="name">{{goodInfo.name}}-{{recommends.length}}</p>
 			<p class="desc">{{goodInfo.desc}}</p>
 			<p class="wrap-price">
-				<span class="price">{{goodInfo.rprice}}</span>
-				<span class="price del" v-if="goodInfo.rebate<10">{{goodInfo.price}}</span>
+				<span class="price">{{goodInfo.specsInfo.rprice}}</span>
+				<span class="price del" v-if="goodInfo.rebate<10">{{goodInfo.specsInfo.price}}</span>
 			</p>
 			<view class="wrap-labels">
-				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="gwd" />{{goodInfo.unit}}</view>
+				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="gwd" />{{goodInfo.specsInfo.name}}</view>
 				<view class="label"><uni-iconfont class="icon" color="#ccc" size="24" type="shdd3" />{{goodInfo.origin_place}}</view>
 			</view>
 		</view>
 		<view class="wrap-recommend" v-if="recommends.length>0">
 			<view class="title"><span>推荐商品</span></view>
 			<view class="uni-product-list">
-				<view class="uni-product" v-for="(good,index) in recommends" :key="good.id" @click="clkRecommend(good)">
+				<view class="uni-product" v-for="(good,index) in recommends" :key="good" @click="clkRecommend(good)">
 					<view class="image-view">
-						<image class="uni-product-image" :src="good.pic"></image>
+						<image class="uni-product-image" :src="good.avatar"></image>
 					</view>
 					<view class="uni-product-title">{{good.name}}</view>
 					<view class="uni-product-price">
-						<text class="price">{{good.rprice}}</text>
-						<text class="price del">{{good.price}}</text>
-						<text class="uni-product-tip" v-if="good.label" :style="{color:good.label.color,backgroundColor:good.label.bcolor}">{{good.label.text}}</text>
+						<text class="price">{{good.specs[0].rprice}}</text>
+						<text class="price del" v-if="good.rebate<10">{{good.specs[0].price}}</text>
 					</view>
 				</view>
 			</view>
@@ -126,17 +125,18 @@
 				info.cover.forEach( item => {
 					_this.covers.push({url: item});
 				});
-				
-				(info.specs || []).sort(function (a, b) { return a.price > b.price });
-				info.unit = info.specs[0].name;
-				info.price = info.specs[0].price;
-				info.rprice = (info.rebate / 10 * info.price).toFixed(2) + (info.specs.length > 1 && ' 起');
-				
+				info.specsInfo = info.specs[0];
 				_this.goodInfo = info;
-				// 默认规格设置
-				// _this.chooseSpecs(0);
 				ajaxGetRecommendGoods('', function (data) {
-					_this.recommends = data.result;
+					// 删除本商品
+					let arr = data.result;
+					for (let i = 0;i < arr.length;i++) {
+						if (arr[i]._id === e.id) {
+							arr.splice(i, 1);
+							break;
+						}
+					}
+					_this.recommends = arr;
 				});
 			});
 		},
@@ -163,13 +163,6 @@
 				this.specsIndex = index;	
 				// }
 			},
-			// 选择规格
-			chooseSpecs (index) {
-				let specsInfo = this.goodInfo.specs[index];
-				this.$set(this.goodInfo, 'unit', specsInfo.name);
-				this.$set(this.goodInfo, 'price', specsInfo.price);
-				this.$set(this.goodInfo, 'rprice', (this.goodInfo.rebate / 10 * specsInfo.price).toFixed(2));
-			},
 			addCar () {
 				this.$set(this.goodInfo, 'select', true);
 				this.hideGg();
@@ -177,7 +170,7 @@
 				let _this = this;
 				let _info = JSON.parse(JSON.stringify(this.goodInfo));
 				
-				_info.specs = _info.specs[this.specsIndex];				
+				_info.specsInfo = _info.specs[this.specsIndex];				
 				this.$store.commit('addGood', [_info, (data) => {
 					// 添加商品到购物车后的回调
 					_this.EVENTHUB.$emit('updateCount', data);

@@ -129,12 +129,14 @@ export default {
 			this.$set(this.active, 'dire', dire);
 			this.goods.sort(function(a, b){
 				let result = false;
+				let specs_a = a.specs[0];
+				let specs_b = b.specs[0];
 				switch (index){
 					case 0:
-						result = a.stock < b.stock;
+						result = specs_a.stock < specs_b.stock;
 						break;
 					case 1:
-						result = dire === 'up' ? a.price > b.price : a.price < b.price;
+						result = dire === 'up' ? specs_a.price > specs_b.price : specs_a.price < specs_b.price;
 						break;
 					default:
 						result = dire === 'down' ? a.rebate > b.rebate : a.rebate < b.rebate;
@@ -158,11 +160,13 @@ export default {
 		},
 		// 更新商品数量
 		utlUpdateGoodCount (data) {
-			let id = data.id;
+			let id = data._id;
 			let count = data.count;
+			let specsName = data.specsInfo.name;
 			for (let i = 0; i < this.goods.length; i++) {
-				if (this.goods[i].id === id && this.goods[i].count !== count) {
-					data = this.goods[i];
+				let _item = this.goods[i];
+				if (_item._id === id && _item.specsInfo.name === specsName && _item.count !== count) {
+					data = _item;
 					break;
 				}
 			}
@@ -181,25 +185,11 @@ export default {
 				_this.totalPage = parseInt((data.result.total - 1) / _this.size + 1);
 				data = data.result.list || [];
 				for (let i = 0;i < data.length;i++) {
-					// 规格按单价低-高排序，剔除库存为0的
 					let _specs = data[i].specs || [];
-					if (_specs.length > 1) {
-						// 排序
-						_specs.sort(function (a, b) { return a.price > b.price });
-						// 剔除库存为0的
-						_specs.forEach(function (item, index) { 
-							if(item.stock == 0) {
-								_specs.splice(index, 1);
-							} 
-						});
-					}
-					data[i].unit = _specs[0].name;
-					data[i].price = _specs[0].price;
-					data[i].stock = _specs[0].stock;
-					data[i].rprice = (data[i].rebate / 10 * data[i].price).toFixed(2) + (_specs.length > 1 && ' 起');
+					data[i].specsInfo = _specs[0];
 				}
 				// 注入初始数量 0
-				data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
+				data = JSON.stringify(data).replace(/"_id"/g, '"count":0,"select":false,"_id"');
 				if (_this.page <= 1) {
 					_this.goods = JSON.parse(data);	
 				} else {

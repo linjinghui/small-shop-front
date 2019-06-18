@@ -82,9 +82,8 @@ let ajaxGetRecommendGoods = (pms, callback, fail) => {
 	let params = pms;
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
-		url: URL + '/goods/recommend',
+		url: URL + '/client/recommend',
 		method: 'GET',
-		data: params,
 		header: {
 			'AUTH': AUTH
 		},
@@ -95,7 +94,8 @@ let ajaxGetRecommendGoods = (pms, callback, fail) => {
 		fail: () => {
 			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 		},
-		success: (data) => {
+		success: (ret) => {
+			let data = ret.data;
 			if (data.code === 200) {
 				callback && callback(data);
 			} else if (fail) {

@@ -139,12 +139,14 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
       this.$set(this.active, 'dire', dire);
       this.goods.sort(function (a, b) {
         var result = false;
+        var specs_a = a.specs[0];
+        var specs_b = b.specs[0];
         switch (index) {
           case 0:
-            result = a.stock < b.stock;
+            result = specs_a.stock < specs_b.stock;
             break;
           case 1:
-            result = dire === 'up' ? a.price > b.price : a.price < b.price;
+            result = dire === 'up' ? specs_a.price > specs_b.price : specs_a.price < specs_b.price;
             break;
           default:
             result = dire === 'down' ? a.rebate > b.rebate : a.rebate < b.rebate;
@@ -168,11 +170,13 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
     },
     // 更新商品数量
     utlUpdateGoodCount: function utlUpdateGoodCount(data) {
-      var id = data.id;
+      var id = data._id;
       var count = data.count;
+      var specsName = data.specsInfo.name;
       for (var i = 0; i < this.goods.length; i++) {
-        if (this.goods[i].id === id && this.goods[i].count !== count) {
-          data = this.goods[i];
+        var _item = this.goods[i];
+        if (_item._id === id && _item.specsInfo.name === specsName && _item.count !== count) {
+          data = _item;
           break;
         }
       }
@@ -189,27 +193,13 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
       function (data) {
         // 计算总页数
         _this.totalPage = parseInt((data.result.total - 1) / _this.size + 1);
-        data = data.result.list || [];var _loop = function _loop(
-        i) {
-          // 规格按单价低-高排序，剔除库存为0的
+        data = data.result.list || [];
+        for (var i = 0; i < data.length; i++) {
           var _specs = data[i].specs || [];
-          if (_specs.length > 1) {
-            // 排序
-            _specs.sort(function (a, b) {return a.price > b.price;});
-            // 剔除库存为0的
-            _specs.forEach(function (item, index) {
-              if (item.stock == 0) {
-                _specs.splice(index, 1);
-              }
-            });
-          }
-          data[i].unit = _specs[0].name;
-          data[i].price = _specs[0].price;
-          data[i].stock = _specs[0].stock;
-          data[i].rprice = (data[i].rebate / 10 * data[i].price).toFixed(2) + (_specs.length > 1 && ' 起');};for (var i = 0; i < data.length; i++) {_loop(i);
+          data[i].specsInfo = _specs[0];
         }
         // 注入初始数量 0
-        data = JSON.stringify(data).replace(/"stock"/g, '"count":0,"select":false,"stock"');
+        data = JSON.stringify(data).replace(/"_id"/g, '"count":0,"select":false,"_id"');
         if (_this.page <= 1) {
           _this.goods = JSON.parse(data);
         } else {

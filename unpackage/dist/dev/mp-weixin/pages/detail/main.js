@@ -82,7 +82,6 @@
 
 
 
-
 var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
@@ -161,24 +160,18 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "F:\\linjinghui\\github\\s
 //
 //
 //
-//
 var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! import() | components/uni-iconfont/uni-icon */ "components/uni-iconfont/uni-icon").then(__webpack_require__.bind(null, /*! @/components/uni-iconfont/uni-icon.vue */ "F:\\linjinghui\\github\\small-shop-front\\components\\uni-iconfont\\uni-icon.vue"));};var uniSwiperDot = function uniSwiperDot() {return __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ "F:\\linjinghui\\github\\small-shop-front\\components\\uni-swiper-dot\\uni-swiper-dot.vue"));};var uniBadge = function uniBadge() {return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ "F:\\linjinghui\\github\\small-shop-front\\components\\uni-badge\\uni-badge.vue"));};var _default = { components: { uniIconfont: uniIconfont, uniSwiperDot: uniSwiperDot, uniBadge: uniBadge }, computed: { selectResult: function selectResult() {return this.$store.getters.doneSelectResult;}, ggrprice: function ggrprice() {return this.goodInfo.specs && this.goodInfo.specs.length > 0 && (this.goodInfo.rebate / 10 * this.goodInfo.specs[this.specsIndex].price).toFixed(2);} }, data: function data() {return { current: 0, goodInfo: {}, covers: [// {colorClass: 'uni-bg-blue', url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',　content: '内容 C'}
       ], dotsStyles: { backgroundColor: '#fff', border: '0', color: '#fff', selectedBackgroundColor: '#fff', selectedBorder: '0' }, recommends: [], ggoption: { show: false, mainShow: false }, specsIndex: 0 };}, onLoad: function onLoad(e) {// 获取商品详情
     var _this = this;(0, _ajax.ajaxGetGoodInfo)(e, function (data) {var info = data.result; // banner
-      _this.covers = [];info.cover.forEach(function (item) {_this.covers.push({ url: item });});(info.specs || []).sort(function (a, b) {return a.price > b.price;});info.unit = info.specs[0].name;info.price = info.specs[0].price;info.rprice = (info.rebate / 10 * info.price).toFixed(2) + (info.specs.length > 1 && ' 起');_this.goodInfo = info; // 默认规格设置
-      // _this.chooseSpecs(0);
-      (0, _ajax.ajaxGetRecommendGoods)('', function (data) {_this.recommends = data.result;});});}, methods: { change: function change(e) {this.current = e.detail.current;}, clkCar: function clkCar() {(0, _global.turnPage)('car');}, clkAddCar: function clkAddCar() {// 规格选择
-      if (this.goodInfo.specs.length > 1) {this.showGg();} else {this.addCar();}}, clkRecommend: function clkRecommend(data) {(0, _global.turnPage)('detail', data);}, clkSpecs: function clkSpecs(index, info) {
+      _this.covers = [];info.cover.forEach(function (item) {_this.covers.push({ url: item });});info.specsInfo = info.specs[0];_this.goodInfo = info;(0, _ajax.ajaxGetRecommendGoods)('', function (data) {// 删除本商品
+        var arr = data.result;for (var i = 0; i < arr.length; i++) {if (arr[i]._id === e.id) {arr.splice(i, 1);break;}}_this.recommends = arr;});});}, methods: { change: function change(e) {this.current = e.detail.current;}, clkCar: function clkCar() {(0, _global.turnPage)('car');}, clkAddCar: function clkAddCar() {// 规格选择
+      if (this.goodInfo.specs.length > 1) {this.showGg();} else {this.addCar();}}, clkRecommend: function clkRecommend(data) {
+      (0, _global.turnPage)('detail', data);
+    },
+    clkSpecs: function clkSpecs(index, info) {
       // if (info.stock != 0) {
       this.specsIndex = index;
       // }
-    },
-    // 选择规格
-    chooseSpecs: function chooseSpecs(index) {
-      var specsInfo = this.goodInfo.specs[index];
-      this.$set(this.goodInfo, 'unit', specsInfo.name);
-      this.$set(this.goodInfo, 'price', specsInfo.price);
-      this.$set(this.goodInfo, 'rprice', (this.goodInfo.rebate / 10 * specsInfo.price).toFixed(2));
     },
     addCar: function addCar() {
       this.$set(this.goodInfo, 'select', true);
@@ -187,7 +180,7 @@ var uniIconfont = function uniIconfont() {return __webpack_require__.e(/*! impor
       var _this = this;
       var _info = JSON.parse(JSON.stringify(this.goodInfo));
 
-      _info.specs = _info.specs[this.specsIndex];
+      _info.specsInfo = _info.specs[this.specsIndex];
       this.$store.commit('addGood', [_info, function (data) {
         // 添加商品到购物车后的回调
         _this.EVENTHUB.$emit('updateCount', data);

@@ -1,7 +1,7 @@
 <!-- 商品列表组件 -->
 <template>
 	<view class="wrap-good-list" :class="{'select':nselect,'small':small}">
-		<view class="wrap-good-item" v-for="(info,index) in list" :key="info._id" @click="clkLine(info)">
+		<view class="wrap-good-item" v-for="(info,index) in list" :key="info" @click="clkLine(info)">
 			<span class="label" v-if="!nselect&&!small" v-for="lbinfo in info.label" :key="lbinfo.id" :style="{'backgroundColor':lbinfo.bgcolor}">{{lbinfo.text}}</span>
 			<view class="wrap-icon" v-if="nselect&&!small">
 				<uni-iconfont class="icon center-hv" :type="info.select?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelect(index,info)" />
@@ -13,14 +13,14 @@
 				<text class="name text-over">{{info.name}}</text>
 				<text class="desc text-over" v-if="!small">{{info.desc}}</text>
 				<text class="preferential" v-if="info.rebate<9">特惠</text>
-				<text class="unit">{{info.unit}}</text>				
+				<text class="unit">{{info.specsInfo.name}}</text>				
 				<view class="wrap-price">
-					<text class="price">{{info.rprice}}</text>
-					<text class="price del" v-if="info.rebate<10">{{info.price}}</text>
+					<text class="price">{{info.specsInfo.rprice}}</text>
+					<text class="price del" v-if="info.rebate<10">{{info.specsInfo.price}}</text>
 				</view>	
 			</view>
 			<view class="wrap-btn" @click.stop>
-				<bug-btn class="bugBtn" v-model="info.count" :max="info.stock" @click="clkChoose($event,info)"></bug-btn>
+				<bug-btn class="bugBtn" v-model="info.count" :max="info.specsInfo.stock" @click="clkChoose($event,info)"></bug-btn>
 			</view>
 		</view>
 	</view>

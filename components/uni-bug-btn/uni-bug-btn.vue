@@ -16,7 +16,7 @@
 		name: 'Bugbtn',
 		data () {
 			return {
-				num: this.value
+				num: this.value || 0
 			};
 		},
 		props: {

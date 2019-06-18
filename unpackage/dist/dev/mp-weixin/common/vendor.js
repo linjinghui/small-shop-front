@@ -8396,9 +8396,8 @@ exports.ajaxGetGoodInfo = ajaxGetGoodInfo;var ajaxGetRecommendGoods = function a
   var params = pms;
   uni.showLoading({ title: LOADINGTEXT });
   uni.request({
-    url: URL + '/goods/recommend',
+    url: URL + '/client/recommend',
     method: 'GET',
-    data: params,
     header: {
       'AUTH': AUTH },
 
@@ -8409,7 +8408,8 @@ exports.ajaxGetGoodInfo = ajaxGetGoodInfo;var ajaxGetRecommendGoods = function a
     fail: function fail() {
       uni.showToast({ title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom' });
     },
-    success: function success(data) {
+    success: function success(ret) {
+      var data = ret.data;
       if (data.code === 200) {
         callback && callback(data);
       } else if (fail) {
@@ -17809,7 +17809,7 @@ new _vuex.default.Store({
         allCount += _item.count;
         if (_item.select) {
           selectCount += _item.count;
-          selectMoney += _item.rprice * _item.count;
+          selectMoney += _item.specsInfo.rprice * _item.count;
           selectGoods.push(_item);
         }
       }
@@ -17835,7 +17835,7 @@ new _vuex.default.Store({
       var index = '';
       for (var i = 0; i < state.car.data.length; i++) {
         var _item = state.car.data[i];
-        if (_item._id === good._id && _item.specs.name === good.specs.name) {
+        if (_item._id === good._id && _item.specsInfo.name === good.specsInfo.name) {
           index = i;
           good = _item;
           break;

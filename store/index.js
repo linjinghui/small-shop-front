@@ -45,7 +45,7 @@ export default new Vuex.Store({
 				allCount += _item.count;
 				if (_item.select) {
 					selectCount += _item.count;
-					selectMoney += _item.rprice * _item.count;
+					selectMoney += _item.specsInfo.rprice * _item.count;
 					selectGoods.push(_item);
 				}
 			}
@@ -64,14 +64,13 @@ export default new Vuex.Store({
         },
 		// 商品加入购物车
 		addGood (state, [good, callback]) {
-			console.log(good);
 			good = JSON.parse(JSON.stringify(good));
 			let count = good.count;	
 			// s-1 获取商品在购物车中的位置
 			let index = '';
 			for (let i = 0;i < state.car.data.length;i++) {
 				let _item = state.car.data[i];
-				if (_item._id === good._id && _item.specs.name === good.specs.name) {
+				if (_item._id === good._id && _item.specsInfo.name === good.specsInfo.name) {
 					index = i;
 					good = _item;
 					break;
@@ -108,7 +107,6 @@ export default new Vuex.Store({
 				// 更新商品
 				state.car.data.splice(index, 1, good);
 			}
-			console.log(state.car.data);
 			callback && callback(good);
 		},
 		// 设置商品勾选状态
