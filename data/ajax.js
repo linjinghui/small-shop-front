@@ -2,7 +2,8 @@
  * 交互接口
  */ 
 
-const URL = 'http://192.168.1.40:7001';
+// const URL = 'http://192.168.1.40:7001';
+const URL = 'https://hcbeng.com/api';
 // 设置DEBUG模式，使用mock虚拟数据
 const DEBUG = false;
 const LOADINGTEXT = '加载中...';

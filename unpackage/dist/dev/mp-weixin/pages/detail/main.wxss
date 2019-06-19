@@ -188,6 +188,7 @@
               border-radius: 5rpx;
 }
 .content > .wrap-detail > image {
+    display: block;
     width: 100%;
 }
 .content > .wrap-placehold {

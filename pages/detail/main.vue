@@ -3,7 +3,7 @@
 		<view class="wrap-good">
 			<view class="wrap-swiper">
 				<uni-swiper-dot :info="covers" :current="current" mode="long" :dots-styles="dotsStyles">
-					<swiper class="swiper-box" @change="change">
+					<swiper class="swiper-box" :style="{height:bannerHeight+'px'}" @change="change">
 						<swiper-item v-for="(item,index) in covers" :key="index">
 							<view :class="item.colorClass" class="swiper-item">
 								<image :src="item.url" mode="aspectFill" />
@@ -12,7 +12,7 @@
 					</swiper>
 				</uni-swiper-dot>
 			</view>
-			<p class="name">{{goodInfo.name}}-{{recommends.length}}</p>
+			<p class="name">{{goodInfo.name}}</p>
 			<p class="desc">{{goodInfo.desc}}</p>
 			<p class="wrap-price">
 				<span class="price">{{goodInfo.specsInfo.rprice}}</span>
@@ -96,6 +96,7 @@
 		data () {
 			return {
 				current: 0,
+				bannerHeight: uni.getSystemInfoSync().screenWidth,
 				goodInfo: {},
 				covers: [
 					// {colorClass: 'uni-bg-blue', url: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',　content: '内容 C'}
@@ -347,6 +348,7 @@
 		
 		> .wrap-detail {
 			> image {
+				display: block;
 				width: 100%;
 			}
 		}
