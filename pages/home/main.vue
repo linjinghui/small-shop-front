@@ -110,13 +110,13 @@ export default {
     },
 	onLoad() {
 		let _this = this;
-		// 获取列表数据
-		_this.getListData(() => {
-			_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
-		});
 		// 获取微信用户信息
 		getClientUser(function (userInfo) {
 			_this.$store.commit('setUser', userInfo);
+			// 获取列表数据
+			_this.getListData(() => {
+				_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+			});
 		});
 		
 		this.EVENTHUB.$on('updateCount', this.utlUpdateGoodCount);
@@ -179,7 +179,8 @@ export default {
 			let _this = this;
 			ajaxGetGoods({
 				page: _this.page,
-				size: _this.size
+				size: _this.size,
+				code: _this.$store.state.user.code
 			}, function (data) {
 				// 计算总页数
 				_this.totalPage = parseInt((data.result.total - 1) / _this.size + 1);

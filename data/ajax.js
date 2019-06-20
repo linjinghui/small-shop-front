@@ -2,8 +2,8 @@
  * 交互接口
  */ 
 
-// const URL = 'http://192.168.1.40:7001';
-const URL = 'https://hcbeng.com/api';
+const URL = 'http://127.0.0.1:7001';
+// const URL = 'https://hcbeng.com/api';
 // 设置DEBUG模式，使用mock虚拟数据
 const DEBUG = false;
 const LOADINGTEXT = '加载中...';
@@ -14,7 +14,8 @@ const AUTH = (new Date().getTime() + 'a3loeA==').replace(/4/g,'#');
 let ajaxGetGoods = (pms, callback, fail) => {
 	let params = {
 		page: pms.page || 1,
-		size: pms.size || 10
+		size: pms.size || 10,
+		code: pms.code || ''
 	};
 	
 	uni.showLoading({title: LOADINGTEXT});
