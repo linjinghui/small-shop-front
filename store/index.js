@@ -5,6 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({  
     state: {  
+		// 系统配置信息
+		config: {
+			addressLength: 5
+		},
 		// 用户信息
         user: {
 			openId: '',
@@ -146,6 +150,10 @@ export default new Vuex.Store({
 				// 修改
 				state.consignees.splice(index, 1, data);
 			}
+		},
+		// 删除收货地址
+		deleteConsignee (state, index) {
+			state.consignees.splice(index, 1);
 		}
     }  
 }) 

@@ -10,7 +10,7 @@
 		<view class="main" v-else>
 			<scroll-view class="scroll-Y" scroll-y="true">
 				<view class="wrap-address text-over" @click="clkConsignee">
-					{{consignees&&consignees.length>0?('配送至：'+consignees[0].doorAddress):'请选择配送地址'}}
+					{{consignees&&consignees.length>0?('配送至：'+consignees[0].door_address):'请选择配送地址'}}
 					<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
 				</view>
 				<good-list v-model="carData" :nselect="true" @changeCount="changeCount"></good-list>

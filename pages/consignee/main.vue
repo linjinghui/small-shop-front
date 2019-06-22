@@ -8,14 +8,14 @@
 		</view>
 		<view class="main" v-else>
 			<text class="item">我的收获地址</text>
-			<view class="item" v-for="(item,index) in consignees" :key="item.id" @click="clkItem(index)">
+			<view class="item" v-for="(item,index) in consignees" :key="item.id" @click="clkItem(index)" @longtap="clkDel(index)">
 				<view class="wrap-icon center-hv" @click.stop>
 					<uni-icon class="icon center-hv compose" size="30" type="compose" color="#029c45" @click="clkEdit(index)" />
 				</view>
-				<p>{{item.address}} {{item.doorAddress}}</p>
+				<p>{{item.address}} {{item.door_address}}</p>
 				<p class="p-2">{{item.name}} {{item.mobile}}</p>
 			</view>
-			<view class="item add" @click="clkAdd">
+			<view class="item add" v-if="consignees.length<config.addressLength" @click="clkAdd">
 				<uni-icon class="icon" size="40" type="plusempty" color="#ddd" />
 			</view>
 		</view>
@@ -26,7 +26,7 @@
 	import {mapState} from 'vuex';
 	import uniIcon from '@/components/uni-icon/uni-icon.vue'
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
-	import {ajaxGetAddresses} from '@/data/ajax.js';
+	import {ajaxGetAddresses, ajaxDelAddresses} from '@/data/ajax.js';
 	import {turnPage} from '@/common/global.js';
 	export default {
 		components: {
@@ -39,7 +39,7 @@
 			};
 		},
 		computed: {
-			...mapState(['consignees'])
+			...mapState(['config', 'consignees'])
 		},
 		onLoad(e) {
 			let _this = this;
@@ -58,6 +58,22 @@
 					this.$store.commit('setFirstConsignee', index);	
 					uni.navigateBack();
 				}
+			},
+			clkDel (index) {
+				var _this = this;
+				
+				uni.showModal({
+					title: '提示',
+					content: '确定删除该地址？',
+					success: function (res) {
+						if (res.confirm) {
+							ajaxDelAddresses(_this.consignees[index], () => {
+								uni.showToast({title: '地址已成功删除', position: 'bottom'});
+								_this.$store.commit('deleteConsignee', index);
+							});
+						}
+					}
+				});
 			},
 			clkEdit (index) {
 				turnPage('csg-creat', index);

@@ -38,7 +38,7 @@ import goodList from '@/components/good-list/good-list.vue';
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 import {mapState} from 'vuex';
 import {getClientUser, turnPage} from '@/common/global.js';
-import {ajaxGetGoods} from '@/data/ajax.js';
+import {ajaxSignin, ajaxGetGoods} from '@/data/ajax.js';
 export default {
 	components: {
 		uniIcon,
@@ -113,9 +113,14 @@ export default {
 		// 获取微信用户信息
 		getClientUser(function (userInfo) {
 			_this.$store.commit('setUser', userInfo);
-			// 获取列表数据
-			_this.getListData(() => {
-				_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+			// 登录
+			ajaxSignin({code: userInfo.code}, ret => {
+				// 缓存token
+				uni.setStorage({key: 'token', data: ret.result});
+				// 获取列表数据
+				_this.getListData(() => {
+					_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+				});
 			});
 		});
 		

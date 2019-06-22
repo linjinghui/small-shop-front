@@ -37,7 +37,7 @@
 			</view>
 			<view class="item">
 				<view class="left">收货地址：</view>
-				<view class="middle">{{orderInfo.address}} {{orderInfo.doorAddress}}</view>
+				<view class="middle">{{orderInfo.address}} {{orderInfo.door_address}}</view>
 			</view>
 		</view>
 		<view class="list type-1">

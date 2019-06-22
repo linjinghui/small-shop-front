@@ -140,7 +140,7 @@ export function ajaxGetAddresses (pms, callback) {
 			// 收获地址
 			'address': '@ctitle(10, 20)',
 			// 收获门牌地址
-			'doorAddress': '@ctitle(5, 10)'
+			'door_address': '@ctitle(5, 10)'
 		}]
 	});
 	uni.showLoading({title: LOADINGTEXT});
@@ -153,7 +153,7 @@ export function ajaxSaveAddresses (params, callback) {
 		uni.showToast({title: '请填写收货人名称', icon: 'none', position: 'bottom'});
 	} else if (!params.mobile) {
 		uni.showToast({title: '请填写收货人电话', icon: 'none', position: 'bottom'});
-	} else if (!params.address && !params.doorAddress) {
+	} else if (!params.address && !params.door_address) {
 		uni.showToast({title: '请选择收货地址', icon: 'none', position: 'bottom'});
 	} else {
 		let data = Mock.mock({
@@ -178,7 +178,7 @@ export function ajaxPlaceOrder (pms, callback) {
 		// 收货地址
 		address: pms.address,
 		// 收货门牌地址
-		doorAddress: pms.doorAddress,
+		door_address: pms.door_address,
 		goods: [],
 		money: pms.money || 0,
 		count: pms.count || 0
@@ -198,7 +198,7 @@ export function ajaxPlaceOrder (pms, callback) {
 		uni.showToast({title: '请选择收货地址', icon: 'none', position: 'bottom'});
 	} else if (!params.mobile) {
 		uni.showToast({title: '请选择收货地址', icon: 'none', position: 'bottom'});
-	} else if (!params.address && !params.doorAddress) {
+	} else if (!params.address && !params.door_address) {
 		uni.showToast({title: '请选择收货地址', icon: 'none', position: 'bottom'});
 	} else {
 		console.log('==下订单==');
@@ -280,7 +280,7 @@ export function ajaxGetOrderInfo (pms, callback) {
 			// 收货地址
 			'address': '@ctitle(10, 20)',
 			// 收货门牌地址
-			'doorAddress': '@ctitle(5, 10)'
+			'door_address': '@ctitle(5, 10)'
 		}
 	});
 	uni.showLoading({title: LOADINGTEXT});

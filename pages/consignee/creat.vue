@@ -15,7 +15,7 @@
 					<input class="uni-input" placeholder="请选择收货小区地址" disabled="disabled" v-model="consignee.address" @click="clkSelectAddress" />
 					<uni-icon class="icon center-hv arrowright" size="24" type="arrowright" color="#808080" @click="clkSelectAddress" />
 				</view>
-				<input class="uni-input" placeholder="楼号/门牌号" maxlength="100" v-model="consignee.doorAddress" />
+				<input class="uni-input" placeholder="楼号/门牌号" maxlength="100" v-model="consignee.door_address" />
 			</view>
 		</view>
 		<button @click="clkSave">保存收货地址</button>
@@ -49,17 +49,17 @@
 				uni.chooseLocation({
 					success: (res) => {
 						_this.$set(_this.consignee, 'address', res.address);
-						_this.$set(_this.consignee, 'doorAddress', res.name);
+						_this.$set(_this.consignee, 'door_address', res.name);
 					}
 				});
 			},
 			clkSave () {
 				let _this = this;
 				ajaxSaveAddresses(_this.consignee, (data) => {
-					_this.$set(_this.consignee, 'id', data.result);
-					if (_this.consignee.id) {
+					if (_this.consignee._id) {
 						_this.$store.commit('newEditConsignee', [_this.consignee, _this.index]);
 					} else {
+						_this.$set(_this.consignee, '_id', data.result);
 						_this.$store.commit('newEditConsignee', [_this.consignee]);
 					}
 					uni.navigateBack();
