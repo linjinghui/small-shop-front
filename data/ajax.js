@@ -2,8 +2,8 @@
  * 交互接口
  */ 
 
-// const URL = 'http://127.0.0.1:7001';
-const URL = 'https://hcbeng.com/api';
+const URL = 'http://127.0.0.1:7001';
+// const URL = 'https://hcbeng.com/api';
 // 设置DEBUG模式，使用mock虚拟数据
 const DEBUG = false;
 const LOADINGTEXT = '加载中...';
@@ -255,41 +255,15 @@ let ajaxDelAddresses = (pms, callback, fail) => {
 
 // 下订单
 let ajaxPlaceOrder = (pms, callback, fail) => {
-	let goods = pms.goods || [];
 	let params = {
-		userid: pms.openId,
-		// 收货人名称
-		name: pms.name,
-		// 收货人电话
-		mobile: pms.mobile,
-		// 收货地址
-		address: pms.address,
-		// 收货门牌地址
-		door_address: pms.door_address,
-		goods: [],
-		money: pms.money || 0,
-		count: pms.count || 0
+		consigneesId: pms.consigneesId || '',
+		goods: pms.goods || []
 	};
-	for (let i = 0; i < goods.length; i++) {
-		params.goods.push({
-			id: goods[i].id,
-			name: goods[i].name,
-			count: goods[i].count,
-			rprice: goods[i].rprice,
-			unit: goods[i].unit
-		});
-	}
 	if (!params.goods || params.goods.length === 0) {
 		uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});
-	} else if (!params.name) {
-		uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
-	} else if (!params.mobile) {
-		uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
-	} else if (!params.address && !params.door_address) {
+	} else if (!params.consigneesId) {
 		uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
 	} else {
-		console.log('==下订单==');
-		console.log(params);
 		uni.showLoading({title: LOADINGTEXT});
 		uni.request({
 			url: URL + '/user/address/save',

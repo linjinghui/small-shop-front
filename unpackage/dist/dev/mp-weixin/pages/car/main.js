@@ -162,7 +162,15 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "../../../../code/small-sh
       return result;
     } }),
 
-  onLoad: function onLoad() {},
+  onLoad: function onLoad() {
+    var _this = this;
+    // 获取收货地址信息
+    if (this.consignees.length === 0) {
+      (0, _ajax.ajaxGetAddresses)(this.$store.state.user, function (data) {
+        _this.$store.commit('setConsignee', data.result);
+      });
+    }
+  },
   methods: {
     clkQgg: function clkQgg() {
       uni.navigateBack();
@@ -178,13 +186,20 @@ var _ajax = __webpack_require__(/*! @/data/ajax.js */ "../../../../code/small-sh
       this.EVENTHUB.$emit('updateCount', data);
     },
     clkPlaceOrder: function clkPlaceOrder() {var _this2 = this;
-      var obj = Object.assign(this.consignees[0] || {}, {
-        goods: this.selectResult.selectGoods,
-        money: this.selectResult.selectMoney,
-        count: this.selectResult.selectCount });
+      var goods = [];
+      // let obj = Object.assign(this.consignees[0] || {}, {
+      // 	goods: this.selectResult.selectGoods,
+      // 	money: this.selectResult.selectMoney,
+      // 	count: this.selectResult.selectCount
+      // });
+      this.selectResult.selectGoods.forEach(function (item) {
+        goods.push({
+          _id: item._id,
+          specsId: item.specsInfo._id,
+          count: item.count });
 
-
-      (0, _ajax.ajaxPlaceOrder)(obj, function () {
+      });
+      (0, _ajax.ajaxPlaceOrder)({ goods: goods, consigneesId: this.consignees[0]._id }, function () {
         var _this = _this2;
         uni.showToast({ 'title': '预定成功' });
         // 删除购物车中已购买的商品

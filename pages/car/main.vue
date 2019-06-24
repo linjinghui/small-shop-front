@@ -34,7 +34,7 @@
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import goodList from '@/components/good-list/good-list.vue';
 	import {turnPage} from '@/common/global.js';
-	import {ajaxPlaceOrder} from '@/data/ajax.js';
+	import {ajaxGetAddresses, ajaxPlaceOrder} from '@/data/ajax.js';
 	export default {
 		components: {
 			uniIcon,
@@ -62,7 +62,15 @@
 				return result;
 			}
 		},
-		onLoad() {},
+		onLoad() {
+			let _this = this;
+			// 获取收货地址信息
+			if (this.consignees.length === 0) {
+				ajaxGetAddresses(this.$store.state.user, (data) => {
+					_this.$store.commit('setConsignee', data.result);
+				});
+			}
+		},
 		methods: {
 			clkQgg () {
 				uni.navigateBack();
@@ -78,13 +86,20 @@
 				this.EVENTHUB.$emit('updateCount', data);
 			},
 			clkPlaceOrder () {
-				let obj = Object.assign(this.consignees[0] || {}, {
-					goods: this.selectResult.selectGoods,
-					money: this.selectResult.selectMoney,
-					count: this.selectResult.selectCount
+				let goods = [];
+				// let obj = Object.assign(this.consignees[0] || {}, {
+				// 	goods: this.selectResult.selectGoods,
+				// 	money: this.selectResult.selectMoney,
+				// 	count: this.selectResult.selectCount
+				// });
+				this.selectResult.selectGoods.forEach(function (item) {
+					goods.push({
+						_id: item._id,
+						specsId: item.specsInfo._id,
+						count: item.count
+					});
 				});
-				
-				ajaxPlaceOrder(obj, () => {
+				ajaxPlaceOrder({goods: goods, consigneesId: this.consignees[0]._id}, () => {
 					let _this = this;
 					uni.showToast({'title': '预定成功'});
 					// 删除购物车中已购买的商品
