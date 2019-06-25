@@ -102,11 +102,11 @@
 				ajaxPlaceOrder({goods: goods, consigneesId: this.consignees[0]._id}, () => {
 					let _this = this;
 					uni.showToast({'title': '预定成功'});
-					// 删除购物车中已购买的商品
-					_this.$store.commit('delGoods');
 					setTimeout(() => {
 						turnPage('order', 1);
-					}, 2000);
+						// 删除购物车中已购买的商品
+						_this.$store.commit('delGoods');
+					}, 1500);
 				});
 			}
 		}

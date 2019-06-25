@@ -6,8 +6,8 @@
 		</view>
 		<view class="wrap-order" v-else v-for="(info,index) in orders" :key="info.id" @click="clkOrder(info)">
 			<view class="wrap-header">
-				<text class="status">{{info.status===1?'等待卖家接单':info.status===2?'备货中':info.status===3?'配送中':'已完成'}}</text>
-				<text class="time">{{info.time}}</text>
+				<text class="status">{{info.status===0?'已取消':info.status===1?'等待卖家接单':(info.status===2||info.status===3)?'备货中':(info.status===4||info.status===5)?'配送中':'已完成'}}</text>
+				<text class="time">{{formateDate(info.time)}}</text>
 				<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
 			</view>
 			<view class="wrap-list">
@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			<view class="wrap-footer">
-				<button class="del" v-if="info.status===1" @click.stop="clkDel(index,info)">取消订单</button>
+				<button class="del" v-if="info.status===1" @click.stop="clkDel(index)">取消订单</button>
 				<button>再来一单</button>
 			</view>
 		</view>
@@ -34,6 +34,7 @@
 	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 	import {turnPage} from '@/common/global.js';
+	import {dataFormat} from '@/common/tool.js';
 	import {ajaxGetOrders, ajaxDelOrder} from '@/data/ajax.js';
 	
 	export default {
@@ -96,8 +97,10 @@
 			clkOrder (data) {
 				turnPage('order-info', data.id);
 			},
-			clkDel (index, data) {
+			clkDel (index) {
+				console.log(index);
 				let _this = this;
+				let data = _this.orders[index];
 				uni.showModal({
 					title: '取消订单',
 					content: '确定取消该订单？',
@@ -118,8 +121,8 @@
 					size: _this.size
 				}, (data) => {
 					// 计算总页数
-					_this.totalPage = parseInt((data.total - 1) / _this.size + 1);
-					data = data.result || [];
+					_this.totalPage = parseInt((data.result.total - 1) / _this.size + 1);
+					data = data.result.list || [];
 					if (_this.page <= 1) {
 						_this.orders = data;
 					} else {
@@ -127,6 +130,9 @@
 					}
 					callback && callback();
 				});
+			},
+			formateDate (date) {
+				return dataFormat(new Date(date), 'yyyy-MM-dd hh:mm');
 			}
 		}
 	};

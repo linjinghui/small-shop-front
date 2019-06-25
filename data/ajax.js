@@ -281,11 +281,14 @@ let ajaxPlaceOrder = (pms, callback, fail) => {
 			fail: () => {
 				uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 			},
-			success: (data) => {
+			success: (ret) => {
+				let data = ret.data;
 				if (data.code === 200) {
 					callback && callback(data);
 				} else if (fail) {
 					fail(data);
+				} else {
+					uni.showToast({title: data.msg, icon: 'none', position: 'bottom'});
 				}
 			}
 		});
@@ -295,14 +298,13 @@ let ajaxPlaceOrder = (pms, callback, fail) => {
 // 获取订单列表
 let ajaxGetOrders = (pms, callback) => {
 	let params = {
-		userid: pms.openId,
 		page: pms.page || 1,
 		size: pms.size || 10
 	};
 	
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
-		url: URL + '/order',
+		url: URL + '/client/order',
 		method: 'GET',
 		data: params,
 		header: {
@@ -315,7 +317,8 @@ let ajaxGetOrders = (pms, callback) => {
 		fail: () => {
 			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 		},
-		success: (data) => {
+		success: (ret) => {
+			let data = ret.data;
 			if (data.code === 200) {
 				callback && callback(data);
 			} else if (fail) {
@@ -363,12 +366,12 @@ let ajaxGetOrderInfo = (pms, callback) => {
 // 取消订单
 let ajaxDelOrder = (pms, callback) => {
 	let params = {
-		id: pms.id
+		_id: pms._id
 	};
 	
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
-		url: URL + '/order/delete',
+		url: URL + '/client/order/cancel',
 		method: 'POST',
 		data: params,
 		header: {
@@ -381,7 +384,8 @@ let ajaxDelOrder = (pms, callback) => {
 		fail: () => {
 			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 		},
-		success: (data) => {
+		success: (ret) => {
+			let data = ret.data;
 			if (data.code === 200) {
 				callback && callback(data);
 			} else if (fail) {
