@@ -15,7 +15,9 @@ const AUTH = (new Date().getTime() + 'a3loeA==').replace(/4/g,'#');
 let ajaxSignin = (pms, callback, fail) => {
 	let params = {
 		auth: AUTH,
-		code: pms.code
+		code: pms.code,
+		name: pms.nickName,
+		avatar: pms.avatarUrl
 	};
 	
 	uni.showLoading({title: LOADINGTEXT});
@@ -266,7 +268,7 @@ let ajaxPlaceOrder = (pms, callback, fail) => {
 	} else {
 		uni.showLoading({title: LOADINGTEXT});
 		uni.request({
-			url: URL + '/user/address/save',
+			url: URL + '/client/order/save',
 			method: 'POST',
 			data: params,
 			header: {

@@ -112,9 +112,10 @@ export default {
 		let _this = this;
 		// 获取微信用户信息
 		getClientUser(function (userInfo) {
+			console.log(userInfo);
 			_this.$store.commit('setUser', userInfo);
 			// 登录
-			ajaxSignin({code: userInfo.code}, ret => {
+			ajaxSignin(userInfo, ret => {
 				// 缓存token
 				uni.setStorage({key: 'token', data: ret.result});
 				// 获取列表数据
