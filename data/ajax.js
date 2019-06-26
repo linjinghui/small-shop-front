@@ -338,9 +338,8 @@ let ajaxGetOrderInfo = (pms, callback, fail) => {
 	
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
-		url: URL + '/order/info',
+		url: URL + '/client/order/' + params.id,
 		method: 'GET',
-		data: params,
 		header: {
 			'TOKEN': uni.getStorageSync('token')
 		},
@@ -351,7 +350,8 @@ let ajaxGetOrderInfo = (pms, callback, fail) => {
 		fail: () => {
 			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
 		},
-		success: (data) => {
+		success: (ret) => {
+			let data = ret.data;
 			if (data.code === 200) {
 				callback && callback(data);
 			} else if (fail) {

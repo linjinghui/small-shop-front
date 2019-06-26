@@ -4,7 +4,7 @@
 			<uni-iconfont class="icon" size="50" type="sp" color="#ddd" />
 			<p>您还没有下单记录哦~</p>
 		</view>
-		<view class="wrap-order" v-else v-for="(info,index) in orders" :key="info.id" @click="clkOrder(info)">
+		<view class="wrap-order" v-else v-for="(info,index) in orders" :key="info.id" @click="clkOrder(index)">
 			<view class="wrap-header">
 				<text class="status">{{info.status===0?'已取消':info.status===1?'等待卖家接单':(info.status===2||info.status===3)?'备货中':(info.status===4||info.status===5)?'配送中':'已完成'}}</text>
 				<text class="time">{{formateDate(info.time)}}</text>
@@ -98,8 +98,8 @@
 			}
 		},
 		methods: {
-			clkOrder (data) {
-				turnPage('order-info', data._id);
+			clkOrder (index) {
+				turnPage('order-info', this.orders[index]._id);
 			},
 			clkCancel (index) {
 				console.log(index);

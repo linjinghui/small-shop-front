@@ -1,9 +1,9 @@
 <template>
-	<view class="content" v-if="orderInfo.id">
+	<view class="content" v-if="orderInfo._id">
 		<cust-service v-model="showCts"></cust-service>
 		<view class="header">
-			<text class="status">{{orderInfo.status===1?'等待卖家接单':orderInfo.status===2?'备货中':orderInfo.status===3?'配送中':'订单已完成'}}</text>
-			<text class="sub" v-if="orderInfo.status===4">感谢你您的信任，期待再次光临</text>
+			<text class="status">{{orderInfo.status===0?'订单已取消':orderInfo.status===1?'等待卖家接单':(orderInfo.status===2||orderInfo.status===3)?'备货中':(orderInfo.status===4||orderInfo.status===5)?'配送中':'订单已完成'}}</text>
+			<text class="sub" v-if="orderorderInfo.status===6">感谢你您的信任，期待再次光临</text>
 			<button @click="clkJxgm">继续购买</button>
 			<button @click="clkKf">客服</button>
 		</view>
@@ -11,15 +11,15 @@
 			<view class="item" style="padding-top:0;padding-bottom:0;">
 				商品<view class="right">{{orderInfo.count}}件</view>
 			</view>
-			<view class="item" v-for="(item,index) in orderInfo.goods" :key="item.id">
+			<view class="item" v-for="(item,index) in orderInfo.order_product" :key="item">
 				<view class="left">
-					<image class="center-hv" :src="item.pic"></image>
+					<image class="center-hv" :src="item.avatar"></image>
 				</view>
 				<view class="middle">
-					<p class="name text-over">{{item.name}}</p>
+					<p class="name text-over">{{item.name}}-{{item.specs_name}}</p>
 					<p class="jg">
 						<text class="price">{{item.rprice}}</text>
-						<text class="price del" v-if="item.nprice">{{item.nprice}}</text>
+						<text class="price del" v-if="item.rebate<10">{{item.price}}</text>
 					</p>
 				</view>
 				<view class="right">x {{item.count}}</view>
@@ -27,27 +27,27 @@
 		</view>
 		<view class="list total">
 			<view class="item">总价<view class="right price">{{orderInfo.money}}</view></view>
-			<view class="item">配送费<view class="right price">{{orderInfo.expMoney}}</view></view>
-			<view class="item">合计<view class="right price">{{orderInfo.money + orderInfo.expMoney}}</view></view>
+			<!-- <view class="item" v-if="orderInfo.expMoney">配送费<view class="right price">{{orderInfo.expMoney}}</view></view>
+			<view class="item" v-if="orderInfo.expMoney">合计<view class="right price">{{orderInfo.money + orderInfo.expMoney}}</view></view> -->
 		</view>
 		<view class="list type-1">
 			<view class="item">
 				<view class="left">收货人：</view>
-				<view class="middle">{{orderInfo.name}} {{parseMobile(orderInfo.mobile)}}</view>
+				<view class="middle">{{orderInfo.order_consignees.name}} {{parseMobile(orderInfo.order_consignees.mobile)}}</view>
 			</view>
 			<view class="item">
 				<view class="left">收货地址：</view>
-				<view class="middle">{{orderInfo.address}} {{orderInfo.door_address}}</view>
+				<view class="middle">{{orderInfo.order_consignees.address}} {{orderInfo.order_consignees.door_address}}</view>
 			</view>
 		</view>
 		<view class="list type-1">
 			<view class="item">
 				<view class="left">订单号：</view>
-				<view class="middle">{{orderInfo.id}} <button class="copy" @click="clkCopy">复制</button> </view>
+				<view class="middle">{{orderInfo._id}} <button class="copy" @click="clkCopy">复制</button> </view>
 			</view>
 			<view class="item">
 				<view class="left">下单时间：</view>
-				<view class="middle">{{orderInfo.time}}</view>
+				<view class="middle">{{formateDate(orderInfo.time)}}</view>
 			</view>
 		</view>
 	</view>
@@ -55,7 +55,7 @@
 
 <script>
 	import custService from '@/components/cust-service/cust-service.vue';
-	import {encodeMobile} from '@/common/tool.js';
+	import {dataFormat, encodeMobile} from '@/common/tool.js';
 	import {ajaxGetOrderInfo} from '@/data/ajax.js';
 	
 	export default {
@@ -80,7 +80,7 @@
 		methods: {
 			clkCopy () {
 				uni.setClipboardData({
-					data: this.orderInfo.id,
+					data: this.orderInfo._id,
 					success: function() {
 						uni.showToast({'title': '订单号复制成功'});
 					}
@@ -91,6 +91,9 @@
 			},
 			parseMobile (data) {
 				return encodeMobile(data);
+			},
+			formateDate (date) {
+				return dataFormat(new Date(date), 'yyyy-MM-dd hh:mm');
 			}
 		}
 	};
