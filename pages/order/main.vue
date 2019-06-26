@@ -11,18 +11,22 @@
 				<uni-icon class="icon" type="arrowright" size="16" color="#999" /> 
 			</view>
 			<view class="wrap-list">
-				<view class="wrap-item" v-for="(item,index) in info.goods" :key="item.id">
-					<image :src="item.pic"></image>
-					<text class="name">{{item.name}}</text>
-					<text class="count">x {{item.count}}</text>
+				<view class="wrap-item" v-for="(item,index) in info.order_product" :key="item">
+					<template v-if="index<2">
+						<image :src="item.avatar"></image>
+						<text class="name">{{item.name}}</text>
+						<text class="count">x {{item.count}}</text>
+					</template>
 				</view>
 				<view class="wrap-item">
-					...<view class="total">共{{info.count}}份，金额<text class="price">{{info.money}}</text></view>
+					<template v-if="info.order_product.length>2">...</template>
+					<view class="total">共{{info.count}}份，金额<text class="price">{{info.money}}</text></view>
 				</view>
 			</view>
 			<view class="wrap-footer">
-				<button class="del" v-if="info.status===1" @click.stop="clkDel(index)">取消订单</button>
-				<button>再来一单</button>
+				<button class="del" v-if="info.status===1" @click.stop="clkCancel(index)">取消订单</button>
+				<button v-if="info.status!==0">再来一单</button>
+				<button v-if="info.status===0" @click.stop="clkDel(index)">删除订单</button>
 			</view>
 		</view>
 		<uni-load-more :status="status" v-if="totalPage>0" />
@@ -35,7 +39,7 @@
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 	import {turnPage} from '@/common/global.js';
 	import {dataFormat} from '@/common/tool.js';
-	import {ajaxGetOrders, ajaxDelOrder} from '@/data/ajax.js';
+	import {ajaxGetOrders, ajaxCancelOrder, ajaxDelOrder} from '@/data/ajax.js';
 	
 	export default {
 		components: {
@@ -95,9 +99,9 @@
 		},
 		methods: {
 			clkOrder (data) {
-				turnPage('order-info', data.id);
+				turnPage('order-info', data._id);
 			},
-			clkDel (index) {
+			clkCancel (index) {
 				console.log(index);
 				let _this = this;
 				let data = _this.orders[index];
@@ -106,8 +110,25 @@
 					content: '确定取消该订单？',
 					success: (res) => {
 						if (res.confirm) {
-							ajaxDelOrder(data, (result) => {
+							ajaxCancelOrder(data, (result) => {
 								uni.showToast({title: '订单已取消！'});
+								_this.$set(data, 'status', 0);
+								// _this.orders.splice(index, 1);
+							});
+						}
+					}
+				});
+			},
+			clkDel (index) {
+				let _this = this;
+				let data = _this.orders[index];
+				uni.showModal({
+					title: '删除订单',
+					content: '确定删除该订单？',
+					success: (res) => {
+						if (res.confirm) {
+							ajaxDelOrder(data, (result) => {
+								uni.showToast({title: '订单已删除！'});
 								_this.orders.splice(index, 1);
 							});
 						}

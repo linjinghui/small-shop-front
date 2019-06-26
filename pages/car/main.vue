@@ -83,6 +83,8 @@
 				turnPage('consignee', 'car');
 			},
 			changeCount (data) {
+				console.log('===changeCount===');
+				console.log(data);
 				this.EVENTHUB.$emit('updateCount', data);
 			},
 			clkPlaceOrder () {
@@ -99,12 +101,20 @@
 						count: item.count
 					});
 				});
+				console.log('===clkPlaceOrder===');
+				console.log(this.selectResult.selectGoods);
 				ajaxPlaceOrder({goods: goods, consigneesId: this.consignees[0]._id}, () => {
 					let _this = this;
 					uni.showToast({'title': '预定成功'});
 					setTimeout(() => {
 						turnPage('order', 1);
+					}, 1000);
+					setTimeout(() => {
 						// 删除购物车中已购买的商品
+						_this.selectResult.selectGoods.forEach(function (item) {
+							item.count = 0;
+							_this.EVENTHUB.$emit('updateCount', item);
+						});
 						_this.$store.commit('delGoods');
 					}, 1500);
 				});

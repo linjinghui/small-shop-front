@@ -331,7 +331,7 @@ let ajaxGetOrders = (pms, callback) => {
 }
 
 // 获取订单详情
-let ajaxGetOrderInfo = (pms, callback) => {
+let ajaxGetOrderInfo = (pms, callback, fail) => {
 	let params = {
 		id: pms.id
 	};
@@ -364,7 +364,7 @@ let ajaxGetOrderInfo = (pms, callback) => {
 }
 
 // 取消订单
-let ajaxDelOrder = (pms, callback) => {
+let ajaxCancelOrder = (pms, callback, fail) => {
 	let params = {
 		_id: pms._id
 	};
@@ -372,6 +372,39 @@ let ajaxDelOrder = (pms, callback) => {
 	uni.showLoading({title: LOADINGTEXT});
 	uni.request({
 		url: URL + '/client/order/cancel',
+		method: 'POST',
+		data: params,
+		header: {
+			'TOKEN': uni.getStorageSync('token')
+		},
+		dataType: 'json',
+		complete: (data) => {
+			uni.hideLoading();
+		},
+		fail: () => {
+			uni.showToast({title: '网络错误，请稍后再试！', icon: 'none', position: 'bottom'});
+		},
+		success: (ret) => {
+			let data = ret.data;
+			if (data.code === 200) {
+				callback && callback(data);
+			} else if (fail) {
+				fail(data);
+			} else {
+				uni.showToast({title: '' + data.msg, icon: 'none', position: 'bottom'});
+			}
+		}
+	});
+}
+
+let ajaxDelOrder = (pms, callback, fail) => {
+	let params = {
+		_id: pms._id
+	};
+	
+	uni.showLoading({title: LOADINGTEXT});
+	uni.request({
+		url: URL + '/client/order/delete',
 		method: 'POST',
 		data: params,
 		header: {
@@ -409,7 +442,8 @@ if (DEBUG) {
 	ajaxPlaceOrder = majax.ajaxPlaceOrder;
 	ajaxGetOrders = majax.ajaxGetOrders;
 	ajaxGetOrderInfo = majax.ajaxGetOrderInfo;
+	ajaxCancelOrder = majax.ajaxCancelOrder;
 	ajaxDelOrder = majax.ajaxDelOrder;
 }
 
-export {ajaxSignin, ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses, ajaxSaveAddresses, ajaxDelAddresses, ajaxPlaceOrder, ajaxGetOrders, ajaxGetOrderInfo, ajaxDelOrder};
+export {ajaxSignin, ajaxGetGoods, ajaxGetGoodInfo, ajaxGetRecommendGoods, ajaxGetAddresses, ajaxSaveAddresses, ajaxDelAddresses, ajaxPlaceOrder, ajaxGetOrders, ajaxGetOrderInfo, ajaxCancelOrder, ajaxDelOrder};

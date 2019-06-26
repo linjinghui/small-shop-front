@@ -126,6 +126,7 @@ export default {
 		});
 		
 		this.EVENTHUB.$on('updateCount', this.utlUpdateGoodCount);
+		// this.EVENTHUB.$on('clearCount', this.utlClearGoodCount);
 	},
 	methods: {
 		// 顶部排序导航点击
@@ -179,6 +180,16 @@ export default {
 				
 			if (count || count === 0) {
 				this.$set(data, 'count', count);	
+			}
+		},
+		// 清空商品数量
+		utlClearGoodCount () {
+			let _this = this;
+			for (let i = 0; i < this.goods.length; i++) {
+				let _item = this.goods[i];
+				if (_item.count) {
+					_this.$set(_item, 'count', 0);	
+				}
 			}
 		},
 		getListData (callback) {
