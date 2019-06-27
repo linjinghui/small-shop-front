@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/car/sub",
     "pages/home/main",
     "pages/car/main",
-    "pages/car/sub",
     "pages/my/main",
     "pages/detail/main",
     "pages/consignee/main",
