@@ -33,7 +33,7 @@
 		<view class="list type-1">
 			<view class="item">
 				<view class="left">收货人：</view>
-				<view class="middle">{{orderInfo.order_consignees.name}} {{parseMobile(orderInfo.order_consignees.mobile)}}</view>
+				<view class="middle">{{orderInfo.order_consignees.name}} {{parseMobile(orderInfo.order_consignees?orderInfo.order_consignees.mobile:'')}}</view>
 			</view>
 			<view class="item">
 				<view class="left">收货地址：</view>
@@ -90,7 +90,7 @@
 				this.showCts = true;
 			},
 			parseMobile (data) {
-				return encodeMobile(data);
+				return data && encodeMobile(data);
 			},
 			formateDate (date) {
 				return dataFormat(new Date(date), 'yyyy-MM-dd hh:mm');

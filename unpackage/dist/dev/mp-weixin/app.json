@@ -2,6 +2,7 @@
   "pages": [
     "pages/home/main",
     "pages/car/main",
+    "pages/car/sub",
     "pages/my/main",
     "pages/detail/main",
     "pages/consignee/main",
@@ -21,6 +22,5 @@
       "desc": "用户配送信息填写"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap27.json"
+  "usingComponents": {}
 }

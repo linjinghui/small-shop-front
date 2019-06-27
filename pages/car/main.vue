@@ -21,7 +21,7 @@
 					<uni-iconfont class="icon center-hv" :type="selectAll?'gx':'wgx'" size="26" color="#ff9000" @click="clkSelectAll" />
 				</view>
 				已选 ({{selectResult.selectCount}})
-				<button @click="clkPlaceOrder">去预定</button>
+				<button @click="clkNext">去预定</button>
 				<p class="price total">{{selectResult.selectMoney}}</p>
 			</view>
 		</view>
@@ -87,6 +87,25 @@
 				console.log(data);
 				this.EVENTHUB.$emit('updateCount', data);
 			},
+			clkNext () {
+				let consigneesId = this.consignees && this.consignees[0] && this.consignees[0]._id;
+				let goods = [];
+				this.selectResult.selectGoods.forEach(function (item) {
+					goods.push({
+						_id: item._id,
+						specsId: item.specsInfo._id,
+						count: item.count
+					});
+				});
+				
+				if (!goods || goods.length === 0) {
+					uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});
+				} else if (!consigneesId) {
+					uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
+				} else {
+					turnPage('car-sub', {goods: goods, consigneesId: consigneesId});
+				}
+			},
 			clkPlaceOrder () {
 				let goods = [];
 				// let obj = Object.assign(this.consignees[0] || {}, {
@@ -103,7 +122,7 @@
 				});
 				console.log('===clkPlaceOrder===');
 				console.log(this.selectResult.selectGoods);
-				ajaxPlaceOrder({goods: goods, consigneesId: this.consignees[0]._id}, () => {
+				ajaxPlaceOrder({goods: goods, consigneesId: this.consignees[0] && this.consignees[0]._id}, () => {
 					let _this = this;
 					uni.showToast({'title': '预定成功'});
 					setTimeout(() => {
