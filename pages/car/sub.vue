@@ -1,25 +1,38 @@
 <template>
 	<view class="content">
-		<ol>
-			<dd class="arrow">
-				<div>送达时间</div>
-				<div>暂无可用</div>
-			</dd>
-		</ol>
-		<ol>
-			<dt class="noline">备注</dt>
-			<dd class="noline">
-				<input type="text" placeholder="输入备注信息" value="" />
-			</dd>
-			<dd>
-				<div>商品</div>
-				<div>3件</div>
-			</dd>
-			<dd>
-				<div>xx</div>
-				<div>x1</div>
-			</dd>
-		</ol>
+		<view class="main">
+			<ol>
+				<dd class="arrow">
+					<div>送达时间</div>
+					<div>
+						<picker mode="multiSelector" :range="pickOpt.data" :value="pickOpt.val" :disabled="curDisabled">尽快送达</picker>
+						<!-- <picker mode="date" :start="startDate"><view>尽快送达</view></picker> -->
+					</div>
+				</dd>
+			</ol>
+			<ol>
+				<dt class="noline">备注</dt>
+				<dd class="noline">
+					<input type="text" placeholder="输入备注信息" value="" />
+				</dd>
+				<!-- <dd>
+					<div>商品</div>
+					<div>3件</div>
+				</dd>
+				<dd>
+					<div class="good">
+						<img src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg">
+						<view class="">撒收到大多所多阿萨德</view>
+						<view class="">30.1</view>
+					</div>
+					<div>x1</div>
+				</dd> -->
+			</ol>
+		</view>
+		<view class="footer">
+			合计 <span class="price">99.40</span>
+			<button>去预定</button>
+		</view>
 	</view>
 </template>
 
@@ -30,15 +43,65 @@
 		components: {},
 		data() {
 			return {
-				orderInfo: ''
+				startDate: '2019-06-27',
+				orderInfo: '',
+				// times: [['2019','2020'], ['01','02'], ['01','02'], ['01','02'], ['01','02']],
+				timesIndex: [1,1],
 			};
 		},
-		computed: {},
+		computed: {
+			pickOpt () {
+				var year = new Date().getFullYear();
+				var month = new Date().getMonth() + 1;
+				var day = new Date().getDate();
+				var hour = new Date().getHours();
+				var min = new Date().getMinutes();
+				console.log(year + ':' + month + ':' + day + ' ' + hour + ':' + min);
+				var years = function () {
+					var arr = [];
+					for (var i = 0;i < 2;i++) {
+						arr.push(year + i + '年');
+					}
+					return arr;
+				}();
+				var months = function () {
+					var arr = [];
+					for (var i = 0;i < 12;i++) {
+						arr.push(i + 1 + '月');
+					}
+					return arr;
+				}();
+				var days = function () {
+					var arr = [];
+					var d = new Date();
+					d.setDate(0);
+					for (var i = 0;i < d.getDate();i++) {
+						arr.push(i + 1 + '日');
+					}
+					return arr;
+				}();
+				var hours = function () {
+					var arr = [];
+					for (var i = 9;i < 24;i++) {
+						arr.push(i + 1 + ' 点前');
+					}
+					return arr;
+				}();
+				return {
+					data: [years, months, days, hours],
+					val: [0, month - 1, day]
+				};
+			}
+		},
 		onLoad(e) {
 			console.log(JSON.parse(e.data));
 			this.orderInfo = JSON.parse(e.data);
 		},
 		methods: {
+			utlYear () {
+				var arr = [new Date().getYear()];
+				return arr;
+			},
 			clkPlaceOrder () {
 				let goods = [];
 				// let obj = Object.assign(this.consignees[0] || {}, {
@@ -78,13 +141,49 @@
 <style lang="scss">
 	@import '@/common/global.scss';
 	.content {
-		padding-top: 1px;
+		// padding-top: 1px;
 		height: 100%;
 		background-color: #f4f5f6;
+		// background-color: red;
+		
+		> .main {
+			position: relative;
+			height: calc(100% - 60px);
+			// background-color: blue;
+			overflow: hidden;
+		}
+		> .footer {
+			position: relative;
+			padding-left: 20px;
+			height: 60px;
+			line-height: 60px;
+			font-size: 16px;
+			color: #fff;
+			background-color: #333;
+			overflow: hidden;
+			
+			> .price {
+				color: #fff;
+			}
+			
+			> button {
+				float: right;
+				width: 32%;
+				height: 100%;
+				line-height: inherit;
+				border-radius: 0;
+				color: inherit;
+				background-color: $theme-2;
+			}
+			> button:after {
+				border: 0;
+				border-radius: 0;
+			}
+		}
 	}
 	
 	ol {
-		margin-top: 10px;
+		margin-bottom: 10px;
 		padding: 0 10px;
 		background-color: #fff;
 		
@@ -137,6 +236,22 @@
 				height: 34px;
 				border: solid 1px #e3e3e3;
 				border-radius: 4px;
+			}
+			
+			> div.good {
+				flex: 2;
+				color: #999;
+				> img {
+					float: left;
+					margin-right: 10px;
+					width: 40px;
+					height: 40px;
+					border-radius: 5px;
+				}
+			}
+			> div.good + div {
+				line-height: 40px;
+				color: #999;
 			}
 		}
 	}
