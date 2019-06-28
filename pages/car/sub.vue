@@ -4,16 +4,15 @@
 			<ol>
 				<dd class="arrow">
 					<div>送达时间</div>
-					<div>
-						<picker mode="multiSelector" :range="pickOpt.data" :value="pickOpt.val" :disabled="curDisabled">尽快送达</picker>
-						<!-- <picker mode="date" :start="startDate"><view>尽快送达</view></picker> -->
+					<div style="flex:calc(100% - 150px);">
+						<picker-date v-model="arriveTime"></picker-date>
 					</div>
 				</dd>
 			</ol>
 			<ol>
 				<dt class="noline">备注</dt>
 				<dd class="noline">
-					<input type="text" placeholder="输入备注信息" value="" />
+					<input type="text" placeholder="输入备注信息" v-model="remark" />
 				</dd>
 				<!-- <dd>
 					<div>商品</div>
@@ -37,71 +36,28 @@
 </template>
 
 <script>
+	import pickerDate from '@/components/picker-date/picker-date.vue';
 	import {turnPage} from '@/common/global.js';
 	import {ajaxPlaceOrder} from '@/data/ajax.js';
 	export default {
-		components: {},
+		components: {
+			pickerDate
+		},
 		data() {
 			return {
-				startDate: '2019-06-27',
 				orderInfo: '',
-				// times: [['2019','2020'], ['01','02'], ['01','02'], ['01','02'], ['01','02']],
-				timesIndex: [1,1],
+				//  送达时间
+				arriveTime: '',
+				// 备注
+				remark: ''
 			};
 		},
-		computed: {
-			pickOpt () {
-				var year = new Date().getFullYear();
-				var month = new Date().getMonth() + 1;
-				var day = new Date().getDate();
-				var hour = new Date().getHours();
-				var min = new Date().getMinutes();
-				console.log(year + ':' + month + ':' + day + ' ' + hour + ':' + min);
-				var years = function () {
-					var arr = [];
-					for (var i = 0;i < 2;i++) {
-						arr.push(year + i + '年');
-					}
-					return arr;
-				}();
-				var months = function () {
-					var arr = [];
-					for (var i = 0;i < 12;i++) {
-						arr.push(i + 1 + '月');
-					}
-					return arr;
-				}();
-				var days = function () {
-					var arr = [];
-					var d = new Date();
-					d.setDate(0);
-					for (var i = 0;i < d.getDate();i++) {
-						arr.push(i + 1 + '日');
-					}
-					return arr;
-				}();
-				var hours = function () {
-					var arr = [];
-					for (var i = 9;i < 24;i++) {
-						arr.push(i + 1 + ' 点前');
-					}
-					return arr;
-				}();
-				return {
-					data: [years, months, days, hours],
-					val: [0, month - 1, day]
-				};
-			}
-		},
+		computed: {},
 		onLoad(e) {
-			console.log(JSON.parse(e.data));
-			this.orderInfo = JSON.parse(e.data);
+			// console.log(JSON.parse(e.data));
+			// this.orderInfo = JSON.parse(e.data);
 		},
 		methods: {
-			utlYear () {
-				var arr = [new Date().getYear()];
-				return arr;
-			},
 			clkPlaceOrder () {
 				let goods = [];
 				// let obj = Object.assign(this.consignees[0] || {}, {
