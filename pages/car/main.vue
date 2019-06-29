@@ -88,22 +88,15 @@
 				this.EVENTHUB.$emit('updateCount', data);
 			},
 			clkNext () {
+				let selectGoods = this.selectResult.selectGoods;
 				let consigneesId = this.consignees && this.consignees[0] && this.consignees[0]._id;
-				let goods = [];
-				this.selectResult.selectGoods.forEach(function (item) {
-					goods.push({
-						_id: item._id,
-						specsId: item.specsInfo._id,
-						count: item.count
-					});
-				});
 				
-				if (!goods || goods.length === 0) {
+				if (!selectGoods || selectGoods.length === 0) {
 					uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});
 				} else if (!consigneesId) {
 					uni.showToast({title: '请选择配送地址', icon: 'none', position: 'bottom'});
 				} else {
-					turnPage('car-sub', {goods: goods, consigneesId: consigneesId});
+					turnPage('car-sub');
 				}
 			},
 			clkPlaceOrder () {

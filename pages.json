@@ -1,13 +1,6 @@
 {
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/car/sub",
-			"style": {
-				"navigationBarTitleText": "提交订单"
-			}
-		},
-		
 		// 首页
 		{
 			"path": "pages/home/main",
@@ -26,8 +19,12 @@
 			}
 		},
 		// 购物车 - 子页面
-		
-		
+		{
+			"path": "pages/car/sub",
+			"style": {
+				"navigationBarTitleText": "提交订单"
+			}
+		},
 		// 我的
 		{
 			"path": "pages/my/main",

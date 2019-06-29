@@ -29,13 +29,14 @@
 			</ol>
 		</view>
 		<view class="footer">
-			合计 <span class="price">99.40</span>
-			<button>去预定</button>
+			合计 <span class="price">{{selectResult.selectMoney}}</span>
+			<button @click="clkCommit">去预定</button>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {mapState} from 'vuex';
 	import pickerDate from '@/components/picker-date/picker-date.vue';
 	import {turnPage} from '@/common/global.js';
 	import {ajaxPlaceOrder} from '@/data/ajax.js';
@@ -47,24 +48,26 @@
 			return {
 				orderInfo: '',
 				//  送达时间
-				arriveTime: '',
+				arriveTime: '尽快送达',
 				// 备注
 				remark: ''
 			};
 		},
-		computed: {},
+		computed: {
+			...mapState(['car', 'consignees']),
+			selectResult () {
+				let result = this.$store.getters.doneSelectResult;
+				this.selectAll = result.allCount === result.selectCount;
+				return result;
+			}
+		},
 		onLoad(e) {
 			// console.log(JSON.parse(e.data));
 			// this.orderInfo = JSON.parse(e.data);
 		},
 		methods: {
-			clkPlaceOrder () {
+			clkCommit () {
 				let goods = [];
-				// let obj = Object.assign(this.consignees[0] || {}, {
-				// 	goods: this.selectResult.selectGoods,
-				// 	money: this.selectResult.selectMoney,
-				// 	count: this.selectResult.selectCount
-				// });
 				this.selectResult.selectGoods.forEach(function (item) {
 					goods.push({
 						_id: item._id,
@@ -74,11 +77,16 @@
 				});
 				console.log('===clkPlaceOrder===');
 				console.log(this.selectResult.selectGoods);
-				ajaxPlaceOrder({goods: goods, consigneesId: this.consignees[0] && this.consignees[0]._id}, () => {
+				ajaxPlaceOrder({
+					goods: goods, 
+					consigneesId: this.consignees[0] && this.consignees[0]._id,
+					remark: this.remark,
+					arriveTime: this.arriveTime
+				}, () => {
 					let _this = this;
 					uni.showToast({'title': '预定成功'});
 					setTimeout(() => {
-						turnPage('order', 1);
+						turnPage('order', '', true);
 					}, 1000);
 					setTimeout(() => {
 						// 删除购物车中已购买的商品

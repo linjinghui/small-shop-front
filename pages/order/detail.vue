@@ -55,6 +55,7 @@
 
 <script>
 	import custService from '@/components/cust-service/cust-service.vue';
+	import {turnPage} from '@/common/global.js';
 	import {dataFormat, encodeMobile} from '@/common/tool.js';
 	import {ajaxGetOrderInfo} from '@/data/ajax.js';
 	
@@ -85,6 +86,9 @@
 						uni.showToast({'title': '订单号复制成功'});
 					}
 				})
+			},
+			clkJxgm () {
+				turnPage('home', '', true);
 			},
 			clkKf () {
 				this.showCts = true;

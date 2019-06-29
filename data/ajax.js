@@ -259,7 +259,9 @@ let ajaxDelAddresses = (pms, callback, fail) => {
 let ajaxPlaceOrder = (pms, callback, fail) => {
 	let params = {
 		consigneesId: pms.consigneesId || '',
-		goods: pms.goods || []
+		goods: pms.goods || [],
+		remark: pms.remark || '',
+		arriveTime: pms.arriveTime || ''
 	};
 	if (!params.goods || params.goods.length === 0) {
 		uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});

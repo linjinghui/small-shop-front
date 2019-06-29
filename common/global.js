@@ -24,7 +24,7 @@ const getClientUser = (callback) => {
 }
 
 // 页面跳转
-const turnPage = (type, obj) => {
+const turnPage = (type, obj, redirect) => {
 	let url = '';
 	switch (type) {
 		case 'home':
@@ -61,7 +61,11 @@ const turnPage = (type, obj) => {
 			url = '/pages/home/main';
 			break;
 	}
-	uni.navigateTo({url: url});
+	if (redirect) {
+		uni.redirectTo({url: url});
+	} else {
+		uni.navigateTo({url: url});
+	}
 }
 
 // // 计算折扣后的真实价格
