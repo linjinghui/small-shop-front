@@ -2,8 +2,8 @@
  * 交互接口
  */ 
 
-const URL = 'http://127.0.0.1:7001';
-// const URL = 'https://hcbeng.com/api';
+// const URL = 'http://127.0.0.1:7001';
+const URL = 'https://hcbeng.com/api';
 // 设置DEBUG模式，使用mock虚拟数据
 const DEBUG = false;
 const LOADINGTEXT = '加载中...';

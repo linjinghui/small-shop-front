@@ -75,7 +75,8 @@
 					this.$set(data, 'select', true);
 					let _info = JSON.parse(JSON.stringify(data));					
 					
-					_info.specs = _info.specs[0];						
+					_info.specs = _info.specs[0];	
+					console.log('==specs==', _info.specs);
 					this.$store.commit('addGood', [_info]);
 					// 数量变化监听
 					this.$emit('changeCount', data);

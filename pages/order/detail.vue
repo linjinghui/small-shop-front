@@ -2,7 +2,7 @@
 	<view class="content" v-if="orderInfo._id">
 		<cust-service v-model="showCts"></cust-service>
 		<view class="header">
-			<text class="status">{{orderInfo.status===0?'订单已取消':orderInfo.status===1?'等待卖家接单':(orderInfo.status===2||orderInfo.status===3)?'备货中':(orderInfo.status===4||orderInfo.status===5)?'配送中':'订单已完成'}}</text>
+			<text class="status">{{orderInfo.status===0?'订单已取消':orderInfo.status===1?'等待卖家接单':(orderInfo.status===2||orderInfo.status===3||orderInfo.status===4)?'备货中':(orderInfo.status===5||orderInfo.status===6)?'配送中':'订单已完成'}}</text>
 			<text class="sub" v-if="orderorderInfo.status===6">感谢你您的信任，期待再次光临</text>
 			<button @click="clkJxgm">继续购买</button>
 			<button @click="clkKf">客服</button>

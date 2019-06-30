@@ -160,6 +160,7 @@
 				turnPage('detail', data);
 			},
 			clkSpecs (index, info) {
+				console.log('===', index);
 				// if (info.stock != 0) {
 				this.specsIndex = index;	
 				// }
@@ -172,6 +173,7 @@
 				let _info = JSON.parse(JSON.stringify(this.goodInfo));
 				
 				_info.specsInfo = _info.specs[this.specsIndex];				
+				console.log('==specsInfo==', _info.specsInfo);
 				this.$store.commit('addGood', [_info, (data) => {
 					// 添加商品到购物车后的回调
 					_this.EVENTHUB.$emit('updateCount', data);

@@ -14,7 +14,7 @@
 				<view class="wrap-item" v-for="(item,index) in info.order_product" :key="item">
 					<template v-if="index<2">
 						<image :src="item.avatar"></image>
-						<text class="name">{{item.name}}</text>
+						<text class="name">{{item.name}}|{{item.specs_name}}</text>
 						<text class="count">x {{item.count}}</text>
 					</template>
 				</view>
