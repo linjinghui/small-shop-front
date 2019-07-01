@@ -12,7 +12,7 @@ export default new Vuex.Store({
 		// 用户信息
         user: {
 			openId: '',
-			nickName: '未登录',
+			nickName: '',
 			avatarUrl: require('../static/img/avater.png')
 		},
 		// 购物车

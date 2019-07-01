@@ -19,7 +19,8 @@ const getClientUser = (callback) => {
 		userInfo.signature = result.signature;
 		callback &&　callback(userInfo);
 	}).catch(err => {
-		uni.showModal({ title: '获取用户信息失败', content: '接口调用失败', showCancel: false });
+		// uni.showModal({ title: '获取用户信息失败', content: '接口调用失败', showCancel: false });
+		callback('');
 	});
 }
 

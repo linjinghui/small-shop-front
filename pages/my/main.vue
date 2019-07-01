@@ -1,8 +1,11 @@
 <template>
 	<view class="content">
 		<view class="header" :style="'background-image:url('+bgpUrl+')'">
-			<image :src="user.avatarUrl"></image>
-			<p>{{user.nickName}}</p>
+			<template v-if="user.nickName">
+				<image :src="user.avatarUrl"></image>
+				<p>{{user.nickName}}</p>
+			</template>
+			<button v-else open-type="getUserInfo" @getuserinfo="clkLogin">点击登录</button>
 		</view>
 		<view class="main">
 			<uni-list class="wrap-list">
@@ -28,7 +31,10 @@
 			uniListItem
 		},
 		computed: {
-			...mapState(['user'])
+			// ...mapState(['user'])
+			user () {
+				return this.userInfo || this.$store.getters.doneUser;
+			}
 		},
 		data () {
 			return {
@@ -52,13 +58,19 @@
 					color: '#17b356',
 					size: '28',
 					type: 'qbdd'
-				}
+				},
+				userInfo: ''
 			};
 		},
 		onLoad () {},
 		methods: {
 			clkLine (type, obj) {
 				turnPage(type, obj);
+			},
+			clkLogin (e) {
+				this.userInfo = e.detail.userInfo;
+				uni.showToast({title: '登录成功~'});
+				setTimeout(function() {turnPage('home', '', true);}, 100);
 			}
 		}
 	}
@@ -91,6 +103,14 @@
 				white-space: nowrap;
 				font-size: 18px;
 				color: #fff;
+			}
+			> button {
+				display: inline-block;
+				margin-top: 50px;
+				width: 120px;
+				height: 34px;
+				line-height: 34px;
+				font-size: 14px;
 			}
 		}
 		> .main {

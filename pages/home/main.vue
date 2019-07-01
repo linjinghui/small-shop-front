@@ -112,17 +112,24 @@ export default {
 		let _this = this;
 		// 获取微信用户信息
 		getClientUser(function (userInfo) {
-			console.log(userInfo);
-			_this.$store.commit('setUser', userInfo);
-			// 登录
-			ajaxSignin(userInfo, ret => {
-				// 缓存token
-				uni.setStorage({key: 'token', data: ret.result});
-				// 获取列表数据
-				_this.getListData(() => {
-					_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+			if (userInfo) {
+				uni.showToast({title: userInfo.avatarUrl, icon: 'none'});
+				_this.$store.commit('setUser', userInfo);
+				// 登录
+				ajaxSignin(userInfo, ret => {
+					// 缓存token
+					uni.setStorageSync('token', ret.result);
+					// uni.setStorage({key: 'token', data: ret.result});
+					// 获取列表数据
+					_this.getListData(() => {
+						_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+					});
 				});
-			});
+			} else {
+				// 需要手动登录
+				uni.showToast({title: '请先登录~', icon: 'none', position: 'bottom'});
+				setTimeout(function() {turnPage('my', '', true);}, 800);
+			}			
 		});
 		
 		this.EVENTHUB.$on('updateCount', this.utlUpdateGoodCount);
