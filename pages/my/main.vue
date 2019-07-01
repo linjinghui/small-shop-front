@@ -70,7 +70,7 @@
 			clkLogin (e) {
 				this.userInfo = e.detail.userInfo;
 				uni.showToast({title: '登录成功~'});
-				setTimeout(function() {turnPage('home', '', true);}, 100);
+				setTimeout(function() {turnPage('home', '', true);}, 1000);
 			}
 		}
 	}
