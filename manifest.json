@@ -1,5 +1,5 @@
 {
-    "name" : "xcx",
+    "name" : "快鱼海捕",
     "appid" : "__UNI__793F11E",
     "description" : "",
     "versionName" : "1.0.0",
@@ -49,7 +49,7 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "wx32656ba9761508f9",
+        "appid" : "wx65672d6decafe72a",
         "setting" : {
             "urlCheck" : true
         },

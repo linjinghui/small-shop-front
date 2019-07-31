@@ -114,9 +114,10 @@ export default {
 		getClientUser(function (userInfo) {
 			if (userInfo) {
 				uni.showToast({title: userInfo.avatarUrl, icon: 'none'});
-				_this.$store.commit('setUser', userInfo);
+				// _this.$store.commit('setUser', userInfo);
 				// 登录
 				ajaxSignin(userInfo, ret => {
+					_this.$store.commit('setUser', userInfo);
 					// 缓存token
 					uni.setStorageSync('token', ret.result);
 					// uni.setStorage({key: 'token', data: ret.result});
@@ -124,6 +125,9 @@ export default {
 					_this.getListData(() => {
 						_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
 					});
+				}, err => {
+					uni.showToast({title: err.msg, icon: 'none', position: 'bottom'});
+					setTimeout(function() {turnPage('my', '', true);}, 800);
 				});
 			} else {
 				// 需要手动登录
