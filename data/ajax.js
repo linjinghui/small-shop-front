@@ -3,7 +3,8 @@
  */ 
 
 // const URL = 'http://127.0.0.1:7001';
-const URL = 'https://hcbeng.com/api';
+// const URL = 'https://hcbeng.com/api';
+const URL = 'https://fjljsea.com/api';
 // 设置DEBUG模式，使用mock虚拟数据
 const DEBUG = false;
 const LOADINGTEXT = '加载中...';
@@ -298,7 +299,7 @@ let ajaxPlaceOrder = (pms, callback, fail) => {
 }
 
 // 获取订单列表
-let ajaxGetOrders = (pms, callback) => {
+let ajaxGetOrders = (pms, callback, fail) => {
 	let params = {
 		page: pms.page || 1,
 		size: pms.size || 10
