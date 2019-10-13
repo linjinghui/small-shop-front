@@ -3,7 +3,7 @@
 	<view class="wrap-cust-service" v-if="value" @click="clkHide">
 		<view class="main center-hv">
 			<image :src="qrKf" @click.stop="clkQrcode"></image>
-			<text class="mobile" @click.stop="clkBh">客服电话：13511111111</text>
+			<text class="mobile" @click.stop="clkBh">客服电话：17396562909</text>
 			<text>1、点击图片预览 - 长按保存</text>
 			<text>2、进入微信，右上角‘添加朋友’</text>
 			<text>3、扫一扫</text>
