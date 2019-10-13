@@ -130,7 +130,15 @@
 				_this.goodInfo = info;
 				ajaxGetRecommendGoods('', function (data) {
 					// 删除本商品
-					let arr = data.result;
+					// let arr = data.result;
+					let arr = [];
+					// 随机获取6个
+					let sjarr = _this.rnd(0, data.result.length, 6)
+					if (sjarr && sjarr.length > 0) {
+						for (let j = 0;j < sjarr.length;j++) {
+							arr.push(data.result[sjarr[j]])
+						}
+					}
 					for (let i = 0;i < arr.length;i++) {
 						if (arr[i]._id === e.id) {
 							arr.splice(i, 1);
@@ -142,6 +150,23 @@
 			});
 		},
 		methods: {
+			rnd (min, max, count) {
+				if (max <= min || !max || max < 0) {
+					return;
+				}
+				if (max <= count) {
+					count = max - 1;
+				}
+				 var arr = [];
+				 for (var i = 0;i < count;i++) {
+				   var num = parseInt(Math.random() * (max - min) + min);
+				   while (arr.indexOf(num) > -1) {
+					num = parseInt(Math.random() * (max - min) + min);
+				   }
+				   arr.push(num);
+				 }
+				 return arr;	
+			},
 			change (e) {
 				this.current = e.detail.current;
 			},
