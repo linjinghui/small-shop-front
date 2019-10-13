@@ -469,6 +469,7 @@
 				> .wrap-section {
 					padding: 10px;
 					height: calc(100% - 80px - 50px - 20px);
+					overflow: auto;
 					> p {
 						font-size: 18px;
 					}
