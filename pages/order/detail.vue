@@ -20,9 +20,10 @@
 					<p class="jg">
 						<text class="price">{{item.rprice}}</text>
 						<text class="price del" v-if="item.rebate<10">{{item.price}}</text>
+						<text>x {{item.count}}</text>
 					</p>
 				</view>
-				<view class="right">x {{item.count}}</view>
+				<view class="right" v-if="item.weight">{{item.weight}}g</view>
 			</view>
 		</view>
 		<view class="list total">
