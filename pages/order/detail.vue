@@ -11,7 +11,7 @@
 			<view class="item" style="padding-top:0;padding-bottom:0;">
 				商品<view class="right">{{orderInfo.count}}件</view>
 			</view>
-			<view class="item" v-for="(item,index) in orderInfo.order_product" :key="item">
+			<!-- <view class="item" v-for="(item,index) in orderInfo.order_product" :key="item">
 				<view class="left">
 					<image class="center-hv" :src="item.avatar"></image>
 				</view>
@@ -24,6 +24,15 @@
 					</p>
 				</view>
 				<view class="right" v-if="item.weight">{{item.weight}}g</view>
+			</view> -->
+			<view class="item" v-for="(item,index) in orderInfo.order_product" :key="item" style="display:flex;align-items:center;line-height:18px;">
+				<image style="width:40px;height:40px;" :src="item.avatar"></image>
+				<text style="flex:1;padding:0 5px;">{{item.name}}-{{item.specs_name}}</text>
+				<view style="width:50px;text-align:center;font-size:12px;">
+					<p style="display:flex;align-items:center;">19 <text style="color:#999;">元/斤<br>元/盒</text></p>
+					 <p style="display:flex;align-items:center;">10 <text style="color:#999;">斤/盒</text></p>
+				</view>
+				<view style="width:50px;text-align:center;">190.00</view>
 			</view>
 		</view>
 		<view class="list total">
