@@ -85,6 +85,9 @@ export default {
 			return this.$store.getters.doneSelectResult;
 		}
 	},
+	onShareAppMessage: function () {
+		// 
+	},
 	onPullDownRefresh () {
 		let _this = this;
 		_this.page = 1;

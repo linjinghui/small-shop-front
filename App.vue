@@ -1,19 +1,8 @@
 <script>
 export default {
 	onLaunch: function() {
-		console.log('App Launch');
-
-		// setTimeout(() => {
-		// 	// 设置角标
-		// 	uni.setTabBarBadge({
-		// 		index: 1,
-		// 		text: '31'
-		// 	});
-		// 	// 设置红点
-		// 	uni.showTabBarRedDot({
-		// 		index: 3
-		// 	});
-		// }, 1000);
+		
+		
 	},
 	onShow: function() {
 		console.log('App Show');

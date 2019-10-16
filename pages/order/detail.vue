@@ -25,14 +25,18 @@
 				</view>
 				<view class="right" v-if="item.weight">{{item.weight}}g</view>
 			</view> -->
-			<view class="item" v-for="(item,index) in orderInfo.order_product" :key="item" style="display:flex;align-items:center;line-height:18px;">
+			<view class="item" v-for="(item,index) in orderInfo.order_product" :key="item" style="display:flex;align-items:center;line-height:16px;font-size:12px;">
 				<image style="width:40px;height:40px;" :src="item.avatar"></image>
-				<text style="flex:1;padding:0 5px;">{{item.name}}-{{item.specs_name}}</text>
-				<view style="width:50px;text-align:center;font-size:12px;">
-					<p style="display:flex;align-items:center;">19 <text style="color:#999;">元/斤<br>元/盒</text></p>
-					 <p style="display:flex;align-items:center;">10 <text style="color:#999;">斤/盒</text></p>
+				<view style="width:calc(100% - 40px - 60px - 50px);padding:0 5px;">
+					<view class="text-over">{{item.name}}</view>
+					<view class="text-over">{{item.specs_name}}</view>
 				</view>
-				<view style="width:50px;text-align:center;">190.00</view>
+				<!-- <text style="flex:1;padding:0 5px;"><br>{{item.specs_name}}</text> -->
+				<view style="width:60px;text-align:center;">
+					<p style="display:flex;align-items:center;">{{item.price}} <span class="unit" style="width:40px;color:#999;font-size:10px;">元/斤 元/盒</span></p>
+					<p style="display:flex;align-items:center;">{{item.weight}} <span class="unit" style="width:40px;color:#999;font-size:10px;">斤/盒</span></p>
+				</view>
+				<view style="width:50px;text-align:right;">{{item.money}}</view>
 			</view>
 		</view>
 		<view class="list total">
@@ -262,6 +266,34 @@
 					display: block;
 				}
 			}
+		}
+		.unit {
+			position: relative;
+			padding: 0 5px;
+		}
+		.unit:before {
+			content: '(';
+			width: 5px;
+			height: 16px;
+			color: inherit;
+			position: absolute;
+			left: 2px;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+			font-size: 12px;
+		}
+		.unit:after {
+			content: ')';
+			width: 5px;
+			height: 16px;
+			color: inherit;
+			position: absolute;
+			right: 2px;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+			font-size: 12px;
 		}
 	}
 </style>
