@@ -113,6 +113,7 @@ export default {
     },
 	onLoad() {
 		let _this = this;
+		
 		// 获取微信用户信息
 		getClientUser(function (userInfo) {
 			if (userInfo) {
@@ -134,8 +135,12 @@ export default {
 				});
 			} else {
 				// 需要手动登录
-				uni.showToast({title: '请先登录~', icon: 'none', position: 'bottom'});
-				setTimeout(function() {turnPage('my', '', true);}, 800);
+				// uni.showToast({title: '请先登录~', icon: 'none', position: 'bottom'});
+				// setTimeout(function() {turnPage('my', '', true);}, 800);
+				// 未登录、允许查看列表、获取列表数据
+				_this.getListData(() => {
+					_this.status = _this.totalPage > _this.page ? 'more' : 'noMore';
+				});
 			}			
 		});
 		
@@ -170,14 +175,24 @@ export default {
 			turnPage('my');
 		},
 		clkConfirm () {
-			if (this.$store.state.car.data.length === 0) {
+			// 判断是否登录			
+			if (!uni.getStorageSync('token')) {
+				uni.showToast({title: '请先登录~', icon: 'none', position: 'bottom'});
+				setTimeout(function() {turnPage('my', '');}, 800);	
+			} else if (this.$store.state.car.data.length === 0) {
 				uni.showToast({title: '请先选择商品', icon: 'none', position: 'bottom'});
 			} else {
 				turnPage('car');
 			}
 		},
 		clkLine (data) {
-			turnPage('detail', data);
+			// 判断是否登录
+			if (uni.getStorageSync('token')) {
+				turnPage('detail', data);
+			} else {
+				uni.showToast({title: '请先登录~', icon: 'none', position: 'bottom'});
+				setTimeout(function() {turnPage('my', '');}, 800);	
+			}			
 		},
 		// 更新商品数量
 		utlUpdateGoodCount (data) {
