@@ -188,6 +188,8 @@ let ajaxSaveAddresses = (pms, callback, fail) => {
 	};
 	if (!params.name) {
 		uni.showToast({title: '请填写收货人名称', icon: 'none', position: 'bottom'});
+	} else if (params.name.length < 2) {
+		uni.showToast({title: '收货人名称长度不能小于2个字', icon: 'none', position: 'bottom'});
 	} else if (!params.mobile) {
 		uni.showToast({title: '请填写收货人电话', icon: 'none', position: 'bottom'});
 	} else if (!params.address && !params.door_address) {

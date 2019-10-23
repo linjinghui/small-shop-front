@@ -116,6 +116,9 @@
 				specsIndex: 0
 			};
 		},
+		onShareAppMessage: function () {
+			// 
+		},
 		onLoad (e) {
 			// 获取商品详情
 			let _this = this;
@@ -126,6 +129,15 @@
 				info.cover.forEach( item => {
 					_this.covers.push({url: item});
 				});
+				info.specs = info.specs.sort(function(a, b){
+					if (parseFloat(a.price) > parseFloat(b.price) ) {
+						return 1;
+					}
+					if (parseFloat(a.price) < parseFloat(b.price) ) {
+						return -1;
+					}
+					return 0;
+				})
 				info.specsInfo = info.specs[0];
 				_this.goodInfo = info;
 				ajaxGetRecommendGoods('', function (data) {

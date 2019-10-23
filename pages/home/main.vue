@@ -233,6 +233,15 @@ export default {
 				data = data.result.list || [];
 				for (let i = 0;i < data.length;i++) {
 					let _specs = data[i].specs || [];
+					_specs = _specs.sort(function(a, b){
+						if (parseFloat(a.price) > parseFloat(b.price) ) {
+							return 1;
+						}
+						if (parseFloat(a.price) < parseFloat(b.price) ) {
+							return -1;
+						}
+						return 0;
+					})
 					data[i].specsInfo = _specs[0];
 				}
 				// 注入初始数量 0
