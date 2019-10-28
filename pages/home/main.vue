@@ -162,10 +162,24 @@ export default {
 						result = specs_a.stock < specs_b.stock;
 						break;
 					case 1:
-						result = dire === 'up' ? specs_a.price > specs_b.price : specs_a.price < specs_b.price;
+						if (parseFloat(specs_a.price) > parseFloat(specs_b.price)) {
+							result = dire === 'up' ? 1 : -1;
+						} else if (parseFloat(specs_a.price) < parseFloat(specs_b.price)) {
+							result = dire === 'up' ? -1 : 1;
+						} else {
+							result = 0;
+						}
+						// result = dire === 'up' ? (parseFloat(specs_a.price) > parseFloat(specs_b.price)) : (parseFloat(specs_a.price) < parseFloat(specs_b.price));
 						break;
 					default:
-						result = dire === 'down' ? a.rebate > b.rebate : a.rebate < b.rebate;
+						if (parseFloat(a.rebate) > parseFloat(b.rebate)) {
+							result = dire === 'up' ? 1 : -1;
+						} else if (parseFloat(a.rebate) < parseFloat(b.rebate)) {
+							result = dire === 'up' ? -1 : 1;
+						} else {
+							result = 0;
+						}
+						// result = dire === 'down' ? (parseFloat(a.rebate) > parseFloat(b.rebate)) : (parseFloat(a.rebate) < parseFloat(b.rebate));
 						break;
 				}
 				return result;
