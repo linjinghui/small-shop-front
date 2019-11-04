@@ -1,3 +1,4 @@
+<!-- 商品列表展示页面 -->
 <template>
 	<view class="content">
 		<ul class="header">
@@ -19,20 +20,7 @@
 				</view>
 			</li>
 		</ul>
-		<!-- <good-list v-model="goods" @click="clkLine"></good-list> -->
-		<ul class="wrap-goods">
-			<li v-for="(item,index) in goods" :key="item.id" @click="clkLine(index)">
-				<image lazy-load="true" :src="item.avatar"></image>
-				<view class="wrap-name">
-					<span class="label" v-if="!nselect&&!small" v-for="lbinfo in item.label" :key="lbinfo.id" :style="{'backgroundColor':lbinfo.bgcolor}">{{lbinfo.text}}</span>
-					<text>{{item.name}}</text>
-				</view>
-				<view class="wrap-price">
-					<text class="price">{{item.specsInfo.rprice}}</text>
-					<uni-iconfont class="icon-car" type="car" size="22" color="#ff9000" />
-				</view>
-			</li>
-		</ul>
+		<good-list v-model="goods" @click="clkLine"></good-list>
 		<uni-load-more :status="status" />
 		<view class="footer">
 			<image :src="user.avatarUrl" @click="clkImage"></image>
@@ -44,18 +32,16 @@
 </template>
 
 <script>
-	import uniIcon from '@/components/uni-icon/uni-icon.vue';
-	import uniIconfont from '@/components/uni-iconfont/uni-icon.vue'
-	import bugBtn from '@/components/uni-bug-btn/uni-bug-btn.vue';
-	import goodList from '@/components/good-list/good-list.vue';
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
-	import {mapState} from 'vuex';
-	import {getClientUser, turnPage} from '@/common/global.js';
-	import {ajaxSignin, ajaxGetGoods} from '@/data/ajax.js';
-	export default {
+import uniIcon from '@/components/uni-icon/uni-icon.vue';
+import bugBtn from '@/components/uni-bug-btn/uni-bug-btn.vue';
+import goodList from '@/components/good-list/good-list.vue';
+import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
+import {mapState} from 'vuex';
+import {getClientUser, turnPage} from '@/common/global.js';
+import {ajaxSignin, ajaxGetGoods} from '@/data/ajax.js';
+export default {
 	components: {
 		uniIcon,
-		uniIconfont,
 		bugBtn,
 		goodList,
 		uniLoadMore
@@ -213,11 +199,9 @@
 				turnPage('car');
 			}
 		},
-		clkLine (index) {
-			let data = this.goods[index];
+		clkLine (data) {
 			// 判断是否登录
 			if (uni.getStorageSync('token')) {
-				console.log('===', data);
 				turnPage('detail', data);
 			} else {
 				uni.showToast({title: '请先登录~', icon: 'none', position: 'bottom'});
@@ -345,52 +329,6 @@
 		
 		> .scroll-Y {
 			height: 100%;
-		}
-	}
-	
-	.wrap-goods {
-		display: flex;
-		flex-shrink: 0;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		padding-left: 10px;
-		padding-right: 10px;
-		
-		> li {
-			margin-top: 10px;
-			width: calc(50vw - 15px);
-			border-radius: 4px;
-			overflow: hidden;
-			box-shadow: 0 0 10px rgba(0,0,0,0.1);
-			
-			image {
-				width: 100%;
-				height: calc(50vw - 15px);
-			}
-			
-			.wrap-name {
-				height: 40px;
-				overflow: hidden;
-			}
-			
-			.label {
-				margin-right: 2px;
-				padding: 0 2px;
-				vertical-align: 1px; 
-				font-size: 10px;
-				color: #fff;
-				border-radius: 2px;
-				background-color:red;
-			}
-			
-			.wrap-price {
-				display: flex;
-				flex-shrink: 0;
-				justify-content: space-between;
-			}
-			.icon-car {
-				
-			}
 		}
 	}
 
