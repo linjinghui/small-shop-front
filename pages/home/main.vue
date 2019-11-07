@@ -358,6 +358,7 @@
 		
 		> li {
 			margin-top: 10px;
+			padding-bottom: 5px;
 			width: calc(50vw - 15px);
 			border-radius: 4px;
 			overflow: hidden;
@@ -370,6 +371,7 @@
 			
 			.wrap-name {
 				height: 40px;
+				font-size: 16px;
 				overflow: hidden;
 			}
 			
@@ -382,9 +384,14 @@
 				border-radius: 2px;
 				background-color:red;
 			}
-			
+			.wrap-name {
+				padding-left: 5px;
+				padding-right: 5px;
+			}
 			.wrap-price {
 				display: flex;
+				padding-left: 5px;
+				padding-right: 5px;
 				flex-shrink: 0;
 				justify-content: space-between;
 			}
