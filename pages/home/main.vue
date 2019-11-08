@@ -370,9 +370,19 @@
 			}
 			
 			.wrap-name {
-				height: 40px;
-				font-size: 16px;
+				padding-left: 5px;
+				padding-right: 5px;
+				height: 42px;
+				line-height: 18px;
 				overflow: hidden;
+				font-size: 16px;
+				
+				// text-overflow: -o-ellipsis-lastline;
+				// overflow: hidden;
+				// text-overflow: ellipsis;
+				// display: -webkit-box;
+				// -webkit-line-clamp: 2;
+				// -webkit-box-orient: vertical;
 			}
 			
 			.label {
@@ -383,10 +393,6 @@
 				color: #fff;
 				border-radius: 2px;
 				background-color:red;
-			}
-			.wrap-name {
-				padding-left: 5px;
-				padding-right: 5px;
 			}
 			.wrap-price {
 				display: flex;
